@@ -1,0 +1,18 @@
+<h1>Roles</h1>
+<p><%= flash[:error_name] %>
+   </p>
+<ul>
+
+  <% @roles.each do |role| %>
+    <li>
+      <%= role.name %>
+      |
+      <%= link_to "Edit", edit_role_path(role) %>
+      |
+      <%= link_to "Destroy", role_path(role), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } %>
+    </li>
+  <% end %>
+</ul>
