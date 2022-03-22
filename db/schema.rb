@@ -10,7 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_18_053056) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_22_114511) do
+  create_table "costs", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "total_cost"
+    t.index ["project_id"], name: "index_costs_on_project_id"
+  end
+
+  create_table "projects", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "staus", null: false
+    t.date "endingdate", null: false
+    t.text "description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "creator_id", null: false
+    t.integer "client_id", null: false
+    t.index ["client_id"], name: "index_projects_on_client_id"
+    t.index ["creator_id"], name: "index_projects_on_creator_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.string "role_type"
@@ -21,6 +40,31 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_18_053056) do
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["name"], name: "index_roles_on_name"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource"
+  end
+
+  create_table "sprints", force: :cascade do |t|
+    t.integer "project_id"
+    t.string "title"
+    t.date "expected_end_date"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_sprints_on_project_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string "title"
+    t.integer "sprint_id"
+    t.integer "user_id"
+    t.date "due_date"
+    t.string "status"
+    t.date "status_update_date"
+    t.text "description"
+    t.string "task_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -44,4 +88,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_18_053056) do
     t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
+  add_foreign_key "costs", "projects"
+  add_foreign_key "projects", "users", column: "client_id"
+  add_foreign_key "projects", "users", column: "creator_id"
+  add_foreign_key "sprints", "projects"
+  add_foreign_key "tasks", "sprints"
+  add_foreign_key "tasks", "users"
 end
