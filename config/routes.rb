@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   resources :role
-  resources :users_crud
+  resources :users
 
   root 'home#index'
 end
