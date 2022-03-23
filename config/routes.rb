@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   # devise_for :users
   default_url_options :host => ENV['HOST']
@@ -11,7 +13,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   resources :role
-  resources :users_crud
+  resources :users
 
   resources :admin do
     collection do

@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class SprintTest < ActiveSupport::TestCase
+class UsersControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end
