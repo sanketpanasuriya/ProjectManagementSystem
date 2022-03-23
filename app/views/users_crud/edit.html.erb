@@ -18,16 +18,16 @@
 
     </div>
     <div  class="field">
-        <%= form.label :current_password %><br>
-        <%= form.password_field :current_password %>
-        <%  @user.errors.full_messages_for(:current_password).each do |message| %>
+        <%= form.label :password %><br>
+        <%= form.password_field :password %>
+        <%  @user.errors.full_messages_for(:password).each do |message| %>
         <div><%= message %></div>
         <% end %>
 
     </div>
     <div  class="field">
-        <%= form.label :password_confirmation %><br>
-        <%= form.password_field :password_confirmation %>
+      <%= form.label :password_confirmation %><br>
+      <%= form.password_field :password_confirmation %>
     </div>
 
   <div class="field">
