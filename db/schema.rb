@@ -10,9 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_22_114511) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_23_093407) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "costs", force: :cascade do |t|
-    t.integer "project_id"
+    t.bigint "project_id"
     t.integer "total_cost"
     t.index ["project_id"], name: "index_costs_on_project_id"
   end
@@ -24,8 +27,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_22_114511) do
     t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "creator_id", null: false
-    t.integer "client_id", null: false
+    t.bigint "creator_id", null: false
+    t.bigint "client_id", null: false
     t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["creator_id"], name: "index_projects_on_creator_id"
   end
@@ -34,7 +37,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_22_114511) do
     t.string "name"
     t.string "role_type"
     t.string "resource_type"
-    t.integer "resource_id"
+    t.bigint "resource_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
@@ -43,7 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_22_114511) do
   end
 
   create_table "sprints", force: :cascade do |t|
-    t.integer "project_id"
+    t.bigint "project_id"
     t.string "title"
     t.date "expected_end_date"
     t.text "description"
@@ -54,8 +57,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_22_114511) do
 
   create_table "tasks", force: :cascade do |t|
     t.string "title"
-    t.integer "sprint_id"
-    t.integer "user_id"
+    t.bigint "sprint_id"
+    t.bigint "user_id"
     t.date "due_date"
     t.string "status"
     t.date "status_update_date"
@@ -76,13 +79,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_22_114511) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "delete_user", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   create_table "users_roles", id: false, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "role_id"
+    t.bigint "user_id"
+    t.bigint "role_id"
     t.index ["role_id"], name: "index_users_roles_on_role_id"
     t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
     t.index ["user_id"], name: "index_users_roles_on_user_id"

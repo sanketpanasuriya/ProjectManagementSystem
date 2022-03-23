@@ -10,6 +10,13 @@ Rails.application.routes.draw do
   # root "articles#index"
   resources :role
   resources :users_crud
+
+  resources :admin do
+    collection do
+      get 'soft_delete'
+      get "alluser"
+    end
+  end
   
   root "home#index"
 end
