@@ -1,0 +1,36 @@
+<table border="10" frame="VOID" rules="ALL">
+  <tr>
+    <th>User Name</th>
+    <th>Role</th>
+    <th> Action </th>
+  </tr>
+  <% @users.each do |user| %>
+  <tr>
+    <td>
+      <%= user.name %>
+    </td>
+    <td>
+      <%= user.roles.first.name %>
+    </td>
+    <td>
+        
+        <% if user.delete_user %>
+            <%= link_to "Restore User",action: "soft_delete", id: user.id,isdelete: false, method: 'get',data: {
+                    
+                    confirm: "Are you sure?"
+                  }  %>    
+        <% else %>
+           <%= link_to "Delete User",action: "soft_delete", id: user.id,isdelete: true,method: 'get', data: {
+                    confirm: "Are you sure?"
+                  }  %>    
+        <% end %>
+        
+          
+    </td>
+   
+   
+  </tr>
+    
+  <% end %>
+</table>
+<%= link_to "Home Page ", controller:"home" %> <br>

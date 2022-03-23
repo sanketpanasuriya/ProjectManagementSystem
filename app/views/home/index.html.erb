@@ -1,4 +1,4 @@
-<h1>Users</h1>
+<h1>All Active Users</h1>
 <%= link_to "Add New Manager", new_users_crud_path %>    
 <%= link_to "Logout", destroy_user_session_path, data: {
   turbo_method: :delete,
@@ -30,5 +30,7 @@
   </tr>
     
   <% end %>
-
 </table>
+<%= link_to "All Role", role_index_path %> <br>
+
+<%= link_to "All User", controller:"admin",action: "alluser" %> <br>
