@@ -3,13 +3,15 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-
+  prepend_before_action :authenticate_scope!, only: [:new,:create]
   # GET /resource/sign_up
+  
   def new
     @roles =[]
     Role.select("id","name").where(:role_type == 'user' ).each {|v| @roles << [v.name, v.id]}
     @roles
-    super
+    @user=User.new
+    # super
   end
 
   # POST /resource
@@ -78,4 +80,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def account_update_params
 		params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password, :roles)
 	end
+  before_action :authenticate_user!
+  
 end

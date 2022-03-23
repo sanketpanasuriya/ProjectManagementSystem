@@ -1,0 +1,38 @@
+<h1>Create New Role</h1>
+<%= form_with model: @user,:url => {:action => :create}  do |form| %>
+    <div  class="field">
+        <%= form.label :name %><br>
+        <%= form.text_field :name %>
+        <% @user.errors.full_messages_for(:name).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+
+    </div>
+    <div  class="field">
+        <%= form.label :email %><br>
+        <%= form.email_field :email %>
+        <% @user.errors.full_messages_for(:email).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+
+    </div>
+    <div  class="field">
+        <%= form.label :password %><br>
+        <%= form.password_field :password %>
+        <%  @user.errors.full_messages_for(:password).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+
+    </div>
+    <div  class="field">
+        <%= form.label :password_confirmation %><br>
+        <%= form.password_field :password_confirmation %>
+    </div>
+      <div class="field">
+     <%= form.label :roles %> </br>
+    <%= form.select :roles , @roles, :selected => params[:selected_value] %>
+  </div>
+<div>
+    <%= form.submit %>
+  </div>
+<% end %>
