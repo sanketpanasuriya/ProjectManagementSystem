@@ -11,6 +11,14 @@ class Ability
     #     can :read, :all
     #   end
     #
-    
+    if user.has_role? "admin"
+      can :create, User
+    else
+      can :update, User, user_id: user.id
+    end
+
+    # if user.manager?
+    #   can :edit
+    # end
   end
 end
