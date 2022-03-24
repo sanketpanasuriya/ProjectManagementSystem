@@ -3,8 +3,8 @@
 <%= render @project %>
 
 <div>
-  <%= link_to "Edit this project", edit_project_path(@project) %> |
+  <%= link_to "Edit this project", edit_project_path(@project) if can? :update, @project %> |
   <%= link_to "Back to projects", projects_path %>
 
-  <%= button_to "Destroy this project", @project, method: :delete %>
+  <%= button_to "Destroy this project", @project, method: :delete if can? :destroy, @project%>
 </div>
