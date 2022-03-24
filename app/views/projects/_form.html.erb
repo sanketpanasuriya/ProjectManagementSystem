@@ -12,6 +12,7 @@
   <% end %>
 
   <div>
+  <div>
     <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>
   </div>
@@ -19,6 +20,16 @@
   <div>
     <%= form.label :description, style: "display: block" %>
     <%= form.text_area :description %>
+  </div>
+
+  <div>
+    <%= form.label "Expected Ending date", style: "display: block" %>
+    <%= form.date_select :endingdate %>
+  </div>
+
+  <div>
+    <%= form.label :client, style: "display: block" %>
+     <%= form.select :client_id , @client, :selected => params[:selected_value] %>
   </div>
 
   <div>

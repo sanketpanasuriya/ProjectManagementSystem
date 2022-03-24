@@ -10,17 +10,25 @@ class ProjectsController < ApplicationController
   end
 
   def new
+    @client =[]
+    User.joins(:roles).where(roles: {name: "customer"}).select(:id, :name).each {|v| @client << [v.name, v.id]}
     @project = Project.new
   end
 
 
   def edit
+    @project = Project.find(params[:id])
+    params[:selected_value]=@project.client_id
+    @client = []
+    User.joins(:roles).where(roles: {name: "customer"}).select(:id, :name).each {|v| @client << [v.name, v.id]}
   end
 
 
   def create
     @project = Project.new(project_params)
-
+    @project.creator_id = current_user.id
+    @project.status = "Created"
+    params[:selected_value]=@project.client_id
     respond_to do |format|
       if @project.save
         format.html { redirect_to project_url(@project), notice: "Project was successfully created." }
@@ -60,6 +68,6 @@ class ProjectsController < ApplicationController
     end
 
     def project_params
-      params.require(:project).permit(:name, :description)
+      params.require(:project).permit(:name, :description, :client_id, :endingdate)
     end
 end
