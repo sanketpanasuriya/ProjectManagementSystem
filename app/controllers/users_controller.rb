@@ -33,6 +33,10 @@ class UsersController < ApplicationController
     
       def edit
         @user = User.find(params[:id])
+
+        render :file => 'public/403.html' unless can? :update, @user
+
+
         params[:selected_value]=@user.roles.first.id
         
 
