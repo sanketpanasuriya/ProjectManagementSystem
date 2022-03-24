@@ -15,6 +15,8 @@ Rails.application.routes.draw do
   resources :role
   resources :users 
 
+
+  resources :projects
   # post "/users", to: "users#create_user"
 
   resources :users do
@@ -22,6 +24,7 @@ Rails.application.routes.draw do
       post 'create_user'
     end
   end
+  
   resources :admin do
     collection do
       get 'soft_delete'
