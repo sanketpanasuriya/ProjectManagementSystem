@@ -1,38 +1,55 @@
-<h1>Create New Role</h1>
-<%= form_with model: @user,:url => {:action => :create_user}  do |form| %>
-    <div  class="field">
-        <%= form.label :name %><br>
-        <%= form.text_field :name %>
-        <% @user.errors.full_messages_for(:name).each do |message| %>
-        <div><%= message %></div>
-        <% end %>
+<div class="container"  style="width: 500px; padding-top: 50px;" >
+        <div class="col-md-6 pb-4">
+            <h4>Create User</h4>
+          </div>
+    <%= form_with model: @user,:url => {:action => "create_user"},:html => {:class => 'row g-3 my-1'}  do |form| %>
 
-    </div>
-    <div  class="field">
-        <%= form.label :email %><br>
-        <%= form.email_field :email %>
+        <div class="col-md-6">
+          <%= form.label :name, :class=>"form-label" %><br>
+          <%= form.text_field :name, :class=> "form-control" %>
+          <% @user.errors.full_messages_for(:name).each do |message| %>
+          <div class="text-danger"><%= message %></div>
+          <% end %>
+        </div>
+
+        <div class="col-md-6">
+        <%= form.label :email, :class=>"form-label" %><br>
+        <%= form.email_field :email ,:class=>"form-control"%>
         <% @user.errors.full_messages_for(:email).each do |message| %>
-        <div><%= message %></div>
+        <div class="text-danger"><%= message %></div>
         <% end %>
+        </div>
 
-    </div>
-    <div  class="field">
-        <%= form.label :password %><br>
-        <%= form.password_field :password %>
-        <%  @user.errors.full_messages_for(:password).each do |message| %>
-        <div><%= message %></div>
+        <div class="col-12">
+          <%= form.label :password,:class=>"form-label" %><br>
+          <%= form.password_field :password ,:class=>"form-control"%>
+          <%  @user.errors.full_messages_for(:password).each do |message| %>
+          <div class="text-danger"><%= message %></div>
+          <% end %>
+      </div>
+        <div class="col-12">
+      <%= form.label :password_confirmation,:class=>"form-label" %><br>
+        <%= form.password_field :password_confirmation,:class=>"form-control" %>
+        
+          </div>
+    
+    
+
+        <div class="col-md-12">
+        <%= form.label :roles,:class=>"form-label" %> </br>
+        <%= form.select(:roles,@roles , {selected: params[:selected_value]}, { :class => 'form-control' }) %>
+        </div>
+       
+
+        <div class="col-12">
+
+    <%= form.submit "Create", :class=>"btn btn-primary m-2" %>
+           </div>
+      
         <% end %>
+      </div>
+  
+         
+      </div>
 
-    </div>
-    <div  class="field">
-        <%= form.label :password_confirmation %><br>
-        <%= form.password_field :password_confirmation %>
-    </div>
-      <div class="field">
-     <%= form.label :roles %> </br>
-    <%= form.select :roles , @roles, :selected => params[:selected_value] %>
-  </div>
-<div>
-    <%= form.submit %>
-  </div>
-<% end %>
+      
