@@ -1,7 +1,5 @@
 <h1>Users</h1>
-<%= if can? :create, @users
- link_to "Add New Manager", new_users_crud_path 
- end%>    
+<%= link_to "Add New Manager", new_users_path %>    
 <%= link_to "Logout", destroy_user_session_path, data: {
   turbo_method: :delete,
   turbo_confirm: "Are you sure for logout?"
@@ -24,7 +22,7 @@
     </td><td>
       <ul>
         <li>
-          <%= link_to "Edit", edit_users_crud_path(user) %>
+          <%= link_to "Edit", edit_users_path(user) %>
         </li>
       </ul>
     </td>
