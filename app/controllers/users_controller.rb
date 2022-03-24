@@ -15,7 +15,7 @@ class UsersController < ApplicationController
         
     end
     
-      def create
+      def create_user
         role = params['user']['roles']
         params[:selected_value]=params['user']['roles']
         params['user'].delete 'roles'

@@ -1,5 +1,5 @@
 <h1>Create New Role</h1>
-<%= form_with model: @user,:url => {:action => :create}  do |form| %>
+<%= form_with model: @user,:url => {:action => :create_user}  do |form| %>
     <div  class="field">
         <%= form.label :name %><br>
         <%= form.text_field :name %>
