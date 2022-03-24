@@ -1,11 +1,13 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: project_management_system_dev
+  database: <%= "postgres" %>
   pool: 5
-  host: localhost
-  username: postgres
-  password: postgres
+  host: <%= "ror.ceibsxzkmwuv.ap-south-1.rds.amazonaws.com" %>
+  
+  username: <%= "postgres" %>
+  password: <%= "ZhTgXqE1g2n3N46P2now" %>
+  port: 5432
 
 staging:
   url: <%= ENV['DATABASE_URL'] %>
