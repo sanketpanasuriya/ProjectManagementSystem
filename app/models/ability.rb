@@ -13,15 +13,19 @@ class Ability
     #     can :read, :all
     #   end
     #
-    can :update, User, id: user.id
-    
+    can [:update, :edit], User, id: user.id
+
     if user.has_role? "admin"
-      can :create, User
+      can :manage, User
+      can :manage, Role
+      can :manage, Project
     elsif user.has_role? "manager"
-      can :create, Project
-      can [:update, :destroy], Project, creator_id: user.id
+      # can :create, Project
+      can :manage, Project, creator_id: user.id
     elsif user.has_role? "employee"
       
+    else
+      can :show, Project, client_id: user.id
     end
 
     # if user.manager?

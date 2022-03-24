@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class RoleController < ApplicationController
+  before_action :checking_role
   def index
     @roles = Role.all
   end
@@ -56,5 +57,8 @@ class RoleController < ApplicationController
 
   def role_params
     params.require(:role).permit(:name)
+  end
+  def  checking_role
+      render :file => 'public/403.html' unless can? :manage, Role
   end
 end
