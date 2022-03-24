@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
 class ApplicationMailer < ActionMailer::Base
-  default from: "from@example.com"
+  default from: "leavesystem29@gmail.com"  ## Password = leave@29
   layout "mailer"
 end

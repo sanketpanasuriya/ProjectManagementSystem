@@ -1,8 +1,12 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   # devise_for :users
+  default_url_options :host => ENV['HOST']
   devise_for :users, controllers: { 
     registrations: 'users/registrations', 
-    sessions: 'users/sessions'
+    sessions: 'users/sessions',
+    passwords: 'users/passwords'
   }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
