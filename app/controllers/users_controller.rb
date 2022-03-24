@@ -25,6 +25,7 @@ class UsersController < ApplicationController
         Role.select("id","name").all.each {|v| @roles << [v.name, v.id]}
     
         if @user.save
+          PasswordMailer.with(user: @user, password: @user.password).new_cridential_mail.deliver_later
           redirect_to '/'
         else
           render :new, status: :unprocessable_entity

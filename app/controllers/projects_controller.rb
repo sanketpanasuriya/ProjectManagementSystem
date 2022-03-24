@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show edit update destroy ]
-
+  before_action :checking_authenticity, only: %i[edit update new destroy create]
   # GET /projects or /projects.json
   def index
     @projects = Project.all
@@ -69,5 +69,9 @@ class ProjectsController < ApplicationController
 
     def project_params
       params.require(:project).permit(:name, :description, :client_id, :endingdate)
+    end
+
+    def checking_authenticity
+      render :file => 'public/403.html' unless can? :manage, Project
     end
 end

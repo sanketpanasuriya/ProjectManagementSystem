@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <p>Your email is <%= @user.email%> </p>
+    <p>Your password is <%= @password %></p>
+    <p>And your role is <%= @user.roles.first.name%></p>
+    <p>You can login via <%= root_url%></p>
+  </body>
+</html>
