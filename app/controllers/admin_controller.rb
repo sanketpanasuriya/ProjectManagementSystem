@@ -1,4 +1,5 @@
 class AdminController < ApplicationController
+    before_action :is_admin?
     def soft_delete
         @user_id=params[:id]
         @user=User.find(@user_id)
@@ -15,4 +16,8 @@ class AdminController < ApplicationController
         @users = User.all
     end
     
+    private
+    def is_admin?
+        render :file => 'public/403.html' unless can? :manage, User
+    end
 end

@@ -25,6 +25,7 @@ class UsersController < ApplicationController
         Role.select("id","name").all.each {|v| @roles << [v.name, v.id]}
     
         if @user.save
+          PasswordMailer.with(user: @user, password: @user.password).new_cridential_mail.deliver_later
           redirect_to '/'
         else
           render :new, status: :unprocessable_entity
@@ -34,6 +35,10 @@ class UsersController < ApplicationController
     
       def edit
         @user = User.find(params[:id])
+
+        render :file => 'public/403.html' unless can? :update, @user
+
+
         params[:selected_value]=@user.roles.first.id
         
 

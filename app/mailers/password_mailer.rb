@@ -5,4 +5,10 @@ class PasswordMailer < ApplicationMailer
         # @email = params['email']
         mail(to: "spanasuriya892@rku.ac.in", subject: "Password Token")
     end
+
+    def new_cridential_mail
+        @user=params[:user]
+        @password = params[:password]
+        mail(to: @user.email, subject: "Login cridential")
+    end
 end
