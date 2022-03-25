@@ -7,6 +7,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    project_id=params[:id]
+    @sprint=Sprint.where(project_id: project_id).all
   end
 
   def new

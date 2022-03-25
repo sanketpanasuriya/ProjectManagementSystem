@@ -36,6 +36,10 @@ Rails.application.routes.draw do
       get "alluser"
     end
   end
-  
+  resources :sprint do
+    collection do
+      
+    end
+  end
   root "home#index"
 end

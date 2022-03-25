@@ -34,3 +34,5 @@
 <%= link_to "All Role", role_index_path if can? :manage, Role%> <br>
 
 <%= link_to "All User", controller:"admin",action: "alluser"  if can? :manage, User%> <br>
+
+<%= link_to "Project", controller:"projects",action: "index" %> <br>

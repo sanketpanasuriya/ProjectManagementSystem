@@ -16,16 +16,19 @@ class Ability
     can [:update, :edit], User, id: user.id
 
     if user.has_role? "admin"
-      can :manage, User
+      can [:create_user,:destroy], User #Admin Can not update profile for other user  
       can :manage, Role
       can :manage, Project
     elsif user.has_role? "manager"
       # can :create, Project
       can :manage, Project, creator_id: user.id
+      
+      
     elsif user.has_role? "employee"
       
     else
       can :show, Project, client_id: user.id
+    
     end
 
     # if user.manager?
