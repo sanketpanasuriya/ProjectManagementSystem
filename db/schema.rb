@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_24_080950) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_25_102030) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_24_080950) do
     t.bigint "project_id"
     t.integer "total_cost"
     t.index ["project_id"], name: "index_costs_on_project_id"
+  end
+
+  create_table "issues", force: :cascade do |t|
+    t.bigint "project_id"
+    t.string "title"
+    t.text "description"
+    t.string "type"
+    t.string "status"
+    t.bigint "creator_id"
+    t.bigint "employee_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["creator_id"], name: "index_issues_on_creator_id"
+    t.index ["employee_id"], name: "index_issues_on_employee_id"
+    t.index ["project_id"], name: "index_issues_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|
@@ -93,6 +108,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_24_080950) do
   end
 
   add_foreign_key "costs", "projects"
+  add_foreign_key "issues", "projects"
+  add_foreign_key "issues", "users", column: "creator_id"
+  add_foreign_key "issues", "users", column: "employee_id"
   add_foreign_key "projects", "users", column: "client_id"
   add_foreign_key "projects", "users", column: "creator_id"
   add_foreign_key "sprints", "projects"
