@@ -4,6 +4,10 @@ class TaskController < ApplicationController
         @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]})
     end
 
+    def show 
+        @task = Task.find(params[:id])
+    end
+
     def new
         @task = Task.new
         @employees = getEmployee
@@ -60,7 +64,7 @@ class TaskController < ApplicationController
         @task =  Task.find(params[:id])
         respond_to do |format|
             if @task.destroy
-                format.html { redirect_to project_task_index_path, notice: "Project was successfully destroyed." }
+                format.html { redirect_to project_task_index_path, notice: "Task was successfully destroyed." }
             else
                 format.html { render :new, status: :unprocessable_entity }
             end

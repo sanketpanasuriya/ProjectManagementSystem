@@ -23,8 +23,6 @@ Rails.application.routes.draw do
 
   resources :projects do
     resources :task
-  end
-  resources :users do
     collection do
 
       patch "save_review_rating"
@@ -33,7 +31,6 @@ Rails.application.routes.draw do
      
     end
   end
-  # post "/users", to: "users#create_user"
 
   
   resources :admin do

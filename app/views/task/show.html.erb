@@ -1,0 +1,29 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render "task", task: @task%>
+
+<div>
+  <%= link_to "Edit this Task", edit_project_task_path(id: @task) %> |
+  <%= link_to "Back to Tasks", project_task_index_path(@task.sprint.project) %> 
+
+  <%= button_to "Destroy this Task", [@task.sprint.project, @task], method: :delete %>
+    
+</div>
+<br>
+<div>
+    <strong>Employee Name : </strong>
+    <%= @task.user.name%>
+</div>
+<div>
+    <strong>Email : </strong>
+    <%= @task.user.email%>
+</div>
+<div>
+    <strong>Due Data : </strong>
+    <%= @task.due_date%>
+</div>
+<div>
+    <strong>Status : </strong>
+    <%= @task.status%>
+</div>
+<br>
