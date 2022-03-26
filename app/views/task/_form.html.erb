@@ -1,5 +1,5 @@
 <%= form_with model: @task,:url => {:action => place},:html => {:class => 'row g-3 my-1'}  do |form| %>
-
+<% unless current_user.has_role? "employee"%>
 <div class="col-md-12">
     <%= form.label :title, :class=>"form-label" %><br>
     <%= form.text_field :title, :class=> "form-control" %>
@@ -15,10 +15,7 @@
     <%= form.select(:user_id,@employees , {selected: params[:employee_id]}, { :class => 'form-control' }) %>
 </div>
 
-<div class="col-md-12">
-    <%= form.label :Status,:class=>"form-label" %> <br>
-    <%= form.select(:status,@status , {selected: params[:status_id]}, { :class => 'form-control' }) %>
-</div>
+
 
 <div class="col-md-12">
     <%= form.label "Due Date", style: "display: block" %>
@@ -27,6 +24,11 @@
 <div class="col-md-12">
     <%= form.label :description %>
     <%= form.text_area :description, :class => 'form-control'%>
+</div>
+<% end%>
+<div class="col-md-12">
+    <%= form.label :Status,:class=>"form-label" %> <br>
+    <%= form.select(:status,@status , {selected: params[:status_id]}, { :class => 'form-control' }) %>
 </div>
 
 

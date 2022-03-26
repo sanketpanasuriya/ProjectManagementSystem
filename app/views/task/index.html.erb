@@ -1,6 +1,6 @@
 <h1>Tasks</h1>
 <p style="color: green"><%= notice %></p>
-<%= link_to "Add New Task", new_project_task_path %>
+<%= link_to "Add New Task", new_project_task_path if can? :new, Task%>
 
 <br><br>
 <table border="10" frame="VOID" rules="ALL">
@@ -36,11 +36,12 @@
       <%= task.status %>
     </td>
     <td>
-      <%= link_to "Edit Task", edit_project_task_path(id: task) %>
+      <%= link_to "View", project_task_path(id: task) if can? :show, task %>
+      <%= link_to "Edit", edit_project_task_path(id: task) if can? :edit, task %>
       <%= link_to "Delete", [task.sprint.project, task] , data: {
                     turbo_method: :delete,
                     turbo_confirm: "Are you sure?"
-                  }%>
+                  } if can? :destroy, task%>
     </td>
     
   </tr>
