@@ -28,7 +28,9 @@ class Ability
       
     else
       can :show, Project, client_id: user.id
-    
+      can :review_rating, Project
+
+
     end
 
     # if user.manager?
