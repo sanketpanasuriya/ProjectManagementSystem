@@ -21,7 +21,10 @@ Rails.application.routes.draw do
   end
 
 
-  resources :projects do 
+  resources :projects do
+    resources :task
+  end
+  resources :users do
     collection do
 
       patch "save_review_rating"
@@ -40,6 +43,7 @@ Rails.application.routes.draw do
     end
   end
   resources :sprint do
+    resources :task
     collection do
       
     end

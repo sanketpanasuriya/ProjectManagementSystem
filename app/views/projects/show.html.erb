@@ -28,6 +28,7 @@ Change project status to:
 <%@sprint.each do|x|%>
 <%= render "sprint",sprint: x %>
 |<%= link_to "More Detail", sprint_path(x) %>
+<%= link_to "View Task", project_task_index_path(@project)%>
 |<%= link_to "Edit Sprint", edit_sprint_path(x) if can? :update, @project%>
 |<%= link_to "Destroy", sprint_path(x), data: {
                     turbo_method: :delete,
