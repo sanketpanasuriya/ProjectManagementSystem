@@ -1,8 +1,13 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i"[ show edit update destroy ]"
-  before_action :checking_authenticity, only: %i[edit update new destroy create]
+  before_action :checking_authenticity, only: %i[edit update new destroy create show]
   # GET /projects or /projects.json
   def index
+    if current_user.has_role? 'employee'
+      arr = Task.select(:sprint_id).where(user_id: current_user.id).map {|x| x.sprint_id}.uniq
+      @projects = Project.joins(:sprints).where(sprints: {id: arr})
+      return @projects
+    end
     @projects = Project.all
   end
 
@@ -96,7 +101,13 @@ end
     end
 
     def checking_authenticity
-      render :file => 'public/403.html' unless can? :manage, Project
+      if (current_user.has_role? "employee") || (current_user.has_role? "customer")
+        render :file => 'public/403.html' unless can? :show, @project
+      else 
+        render :file => 'public/403.html' unless can? :manage, @project
+      end
+
+      
     end
     def project_params_review
       params.require(:project).permit(:reviews, :rating)
