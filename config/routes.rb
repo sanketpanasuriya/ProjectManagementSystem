@@ -21,14 +21,17 @@ Rails.application.routes.draw do
   end
 
 
-  resources :projects
-  # post "/users", to: "users#create_user"
-
-  resources :users do
+  resources :projects do 
     collection do
-      post 'create_user'
+
+      patch "save_review_rating"
+      get "project_status"
+      get "review_rating"
+     
     end
   end
+  # post "/users", to: "users#create_user"
+
   
   resources :admin do
     collection do

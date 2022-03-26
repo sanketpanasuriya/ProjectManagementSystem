@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i[ show edit update destroy ]
+  before_action :set_project, only: %i"[ show edit update destroy ]"
   before_action :checking_authenticity, only: %i[edit update new destroy create]
   # GET /projects or /projects.json
   def index
@@ -53,15 +53,37 @@ class ProjectsController < ApplicationController
       end
     end
   end
+  def review_rating
+    @project=Project.find(params[:format])
+  end
 
+  def save_review_rating
+    
+    @project=Project.find(params[:project][:id])
+    respond_to do |format|
+      if @project.update(project_params_review)
+        format.html { redirect_to project_url(@project), notice: "Thank You for Rating" }
+        format.json { render :show, status: :ok, location: @project }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @project.errors, status: :unprocessable_entity }
+      end
+    end
+  end
   def destroy
     @project.destroy
-
-    respond_to do |format|
+   respond_to do |format|
       format.html { redirect_to projects_url, notice: "Project was successfully destroyed." }
       format.json { head :no_content }
     end
   end
+  def project_status
+    @project=Project.find(params[:format])
+    @project.status=params[:status]=="true" ? "completed" : "ongoing"
+    if(@project.save)
+      redirect_to action: "show", id: @project
+    end
+end
 
   private
   
@@ -75,5 +97,8 @@ class ProjectsController < ApplicationController
 
     def checking_authenticity
       render :file => 'public/403.html' unless can? :manage, Project
+    end
+    def project_params_review
+      params.require(:project).permit(:reviews, :rating)
     end
 end

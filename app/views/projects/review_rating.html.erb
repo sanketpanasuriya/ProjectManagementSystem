@@ -1,0 +1,16 @@
+<%= form_with model: @project,url: save_review_rating_projects_path do |form| %>
+   
+        <%= form.hidden_field :id %> 
+    <div>
+        <%= form.label :reviews, style: "display: block" %>
+        <%= form.text_area :reviews %>
+  </div>
+ <div>
+        <%= form.label :rating, style: "display: block" %>
+       <%= form.select :rating ,(1..10).each %>
+  </div>
+   <div>
+    <%= form.submit value="Save Project"%>
+  </div>
+
+<%end%>
