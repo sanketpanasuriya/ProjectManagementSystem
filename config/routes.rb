@@ -21,9 +21,9 @@ Rails.application.routes.draw do
   end
 
 
-  resources :projects
-  # post "/users", to: "users#create_user"
-
+  resources :projects do
+    resources :task
+  end
   resources :users do
     collection do
       post 'create_user'
@@ -37,6 +37,7 @@ Rails.application.routes.draw do
     end
   end
   resources :sprint do
+    resources :task
     collection do
       
     end

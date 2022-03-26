@@ -1,0 +1,38 @@
+<%= form_with model: @task,:url => {:action => place},:html => {:class => 'row g-3 my-1'}  do |form| %>
+
+<div class="col-md-12">
+    <%= form.label :title, :class=>"form-label" %><br>
+    <%= form.text_field :title, :class=> "form-control" %>
+</div>
+
+    <div class="col-md-12">
+    <%= form.label :Sprint,:class=>"form-label" %> <br>
+    <%= form.select(:sprint_id,@sprints , {selected: params[:sprint_id]}, { :class => 'form-control' }) %>
+</div>
+
+<div class="col-md-12">
+    <%= form.label :Employee,:class=>"form-label" %> <br>
+    <%= form.select(:user_id,@employees , {selected: params[:employee_id]}, { :class => 'form-control' }) %>
+</div>
+
+<div class="col-md-12">
+    <%= form.label :Status,:class=>"form-label" %> <br>
+    <%= form.select(:status,@status , {selected: params[:status_id]}, { :class => 'form-control' }) %>
+</div>
+
+<div class="col-md-12">
+    <%= form.label "Due Date", style: "display: block" %>
+    <%= form.date_select :due_date, :class => 'form-control' %>
+</div>
+<div class="col-md-12">
+    <%= form.label :description %>
+    <%= form.text_area :description, :class => 'form-control'%>
+</div>
+
+
+<div class="col-12">
+    <%= form.submit place,:class=>"btn btn-primary m-2" %>
+</div>
+
+<% end %>
+      
