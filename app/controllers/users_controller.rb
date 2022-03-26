@@ -48,24 +48,23 @@ class UsersController < ApplicationController
     
       def update
         @user = User.find(params[:id])
-        
+
         roles = params['user']['roles']
         params[:selected_value]=params['user']['roles']
         @roles =[]
         Role.select("id","name").all.each {|v| @roles << [v.name, v.id]}
-       
-        for role in @user.roles
-          if role
-            @user.roles.delete(role)
+        if current_user.has_role? 'admin'
+          for role in @user.roles
+            if role
+              @user.roles.delete(role)
+            end
           end
+          @user.roles << Role.find(roles)
         end
-        @user.roles << Role.find(roles)
 
         current_password = params['user']['current_password']
 
         if current_password != ""
-          demo = (@user.password == current_password)
-          # raise demo
           if @user.update_with_password(account_update_params_with_password)
             redirect_to action: "index" 
           else

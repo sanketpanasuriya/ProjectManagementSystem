@@ -34,12 +34,12 @@
     <%= form.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
     <%= form.password_field :current_password, autocomplete: "current-password" %>
   </div>
-
-      <div class="field">
+  <% if current_user.has_role? 'admin'%>
+  <div class="field">
      <%= form.label :roles %> </br>
-    <%= form.select :roles,   options_for_select( @roles,  params[:selected_value] ),required: true %>
-   
+    <%= form.select :roles,   options_for_select( @roles,  params[:selected_value] ),required: true%>
    </div>
+   <% end %>
 <div>
     <%= form.submit %>
   </div>
