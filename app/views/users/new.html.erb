@@ -1,0 +1,55 @@
+<div class="container"  style="width: 500px; padding-top: 50px;" >
+        <div class="col-md-6 pb-4">
+            <h4>Create User</h4>
+          </div>
+    <%= form_with model: @user,:url => {:action => "create_user"},:html => {:class => 'row g-3 my-1'}  do |form| %>
+
+        <div class="col-md-6">
+          <%= form.label :name, :class=>"form-label" %><br>
+          <%= form.text_field :name, :class=> "form-control" %>
+          <% @user.errors.full_messages_for(:name).each do |message| %>
+          <div class="text-danger"><%= message %></div>
+          <% end %>
+        </div>
+
+        <div class="col-md-6">
+        <%= form.label :email, :class=>"form-label" %><br>
+        <%= form.email_field :email ,:class=>"form-control"%>
+        <% @user.errors.full_messages_for(:email).each do |message| %>
+        <div class="text-danger"><%= message %></div>
+        <% end %>
+        </div>
+
+        <div class="col-12">
+          <%= form.label :password,:class=>"form-label" %><br>
+          <%= form.password_field :password ,:class=>"form-control"%>
+          <%  @user.errors.full_messages_for(:password).each do |message| %>
+          <div class="text-danger"><%= message %></div>
+          <% end %>
+      </div>
+        <div class="col-12">
+      <%= form.label :password_confirmation,:class=>"form-label" %><br>
+        <%= form.password_field :password_confirmation,:class=>"form-control" %>
+        
+          </div>
+    
+    
+
+        <div class="col-md-12">
+        <%= form.label :roles,:class=>"form-label" %> </br>
+        <%= form.select(:roles,@roles , {selected: params[:selected_value]}, { :class => 'form-control' }) %>
+        </div>
+       
+
+        <div class="col-12">
+
+    <%= form.submit "Create", :class=>"btn btn-primary m-2" %>
+           </div>
+      
+        <% end %>
+      </div>
+  
+         
+      </div>
+
+      

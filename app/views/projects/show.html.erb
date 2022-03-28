@@ -1,0 +1,37 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @project %>
+
+<div>
+  <%= link_to "Edit this project", edit_project_path(@project) if can? :update, @project %> |
+  <%= link_to "Back to projects", projects_path %>
+
+  <%= button_to "Destroy this project", @project, method: :delete if can? :destroy, @project%>
+  |<%= link_to "Create Sprint", new_sprint_path(@project) if can? :create, @project %> 
+    
+</div>
+<%if @project.status=="completed" && @project.client_id==current_user.id%>
+  
+  <%= link_to "Review And Rating", review_rating_projects_path(@project)%>
+<%end%>
+<br>
+Change project status to:
+<%if @project.status=="completed"%>
+  <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :review_rating, @project %>
+
+  <% else %>
+  <%= link_to "Completed", project_status_projects_path(@project,status: true) if can? :review_rating, @project %>
+  
+<%end%>
+
+<h2 class="my-5">All Sprint </h2>
+<%@sprint.each do|x|%>
+<%= render "sprint",sprint: x %>
+|<%= link_to "More Detail", sprint_path(x) %>
+<%= link_to "View Task", project_task_index_path(@project)%>
+|<%= link_to "Edit Sprint", edit_sprint_path(x) if can? :update, @project%>
+|<%= link_to "Destroy", sprint_path(x), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } if can? :destroy, @project%>
+<%end%>

@@ -1,0 +1,18 @@
+<div>
+        <h4>
+            <strong>Title:</strong> 
+            <%= @sprint.title %>
+        </h4>
+        <h5>
+            <strong>Description:</strong> 
+            <%= @sprint.description %>
+         
+        </h5>
+        <p>Expected End Date : <%= @sprint.expected_end_date %></p>
+        <p>Created Date : <%= @sprint.created_at %></p>
+        <%unless @sprint.created_at==@sprint.updated_at %>
+        <p>Last Update Date: <%= @sprint.updated_at %></p>
+        
+        <%end%>
+        
+    </div>

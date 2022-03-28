@@ -1,0 +1,17 @@
+<div id="<%=dom_id sprint%>">
+     <div>
+        <h4>
+            <strong>Title:</strong> 
+            <%= sprint.title %>
+        </h4>
+        <h5>
+            <strong>Description:</strong> 
+            <%= sprint.description[0..100] %>
+            <%if(sprint.description.length>10)%>
+                ...
+            <%end%>
+        </h5>
+        <p><%= sprint.expected_end_date %></p>
+    </div>
+
+</div>

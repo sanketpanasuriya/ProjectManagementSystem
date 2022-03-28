@@ -1,75 +1,101 @@
-# frozen_string_literal: true
-
 class UsersController < ApplicationController
-  def index
-    @users = User.all
-  end
-
-  def show
-    @user = User.find(params[:id])
-  end
-
-  def new
-    @user = User.new
-    @roles = []
-    Role.select('id', 'name').all.each { |v| @roles << [v.name, v.id] }
-  end
-
-  def create
-    role = params['user']['roles']
-    params[:selected_value] = params['user']['roles']
-    params['user'].delete 'roles'
-    @user = User.new(user_params)
-    @user.roles << Role.find(role)
-    @roles = []
-    Role.select('id', 'name').all.each { |v| @roles << [v.name, v.id] }
-
-    if @user.save
-      redirect_to '/'
-    else
-      render :new, status: :unprocessable_entity
+    def index
+        @users = User.all
+        redirect_to "/"
+      end
+    
+      def show
+        @user = User.find(params[:id])
+        
+      end
+    
+      def new
+        @user = User.new
+        @roles =[]
+        Role.select("id","name").all.each {|v| @roles << [v.name, v.id]}
+        
     end
-  end
+    
+      def create_user
+        role = params['user']['roles']
+        params[:selected_value]=params['user']['roles']
+        @user = User.new(user_params)
+        @user.roles << Role.find(role)
+        @roles =[]
+        Role.select("id","name").all.each {|v| @roles << [v.name, v.id]}
+    
+        if @user.save
+          PasswordMailer.with(user: @user, password: @user.password).new_cridential_mail.deliver_later
+          redirect_to '/'
+        else
+          render :new, status: :unprocessable_entity
+        end
 
-  def edit
-    @user = User.find(params[:id])
-    params[:selected_value] = @user.roles.first.id
+      end
+    
+      def edit
+        @user = User.find(params[:id])
 
-    @roles = []
-    Role.select('id', 'name').all.each { |v| @roles << [v.name, v.id] }
-  end
+        render :file => 'public/403.html' unless can? :update, @user
 
-  def update
-    @user = User.find(params[:id])
 
-    role = params['user']['roles']
-    params[:selected_value] = params['user']['roles']
-    @roles = []
-    Role.select('id', 'name').all.each { |v| @roles << [v.name, v.id] }
+        params[:selected_value]=@user.roles.first.id
+        
 
-    params['user'].delete 'roles'
-    @user.roles << Role.find(role)
-    if @user.update(account_update_params)
-      redirect_to action: 'index'
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
+        @roles =[]
+        Role.select("id","name").all.each {|v| @roles << [v.name, v.id]}
+      end
+    
+      def update
+        @user = User.find(params[:id])
 
-  def destroy
-    @user = User.find(params[:id])
-    user_list = User.with_user @user.name
-    @user.destroy
-    redirect_to action: 'index'
-  end
+        roles = params['user']['roles']
+        params[:selected_value]=params['user']['roles']
+        @roles =[]
+        Role.select("id","name").all.each {|v| @roles << [v.name, v.id]}
+        if current_user.has_role? 'admin'
+          for role in @user.roles
+            if role
+              @user.roles.delete(role)
+            end
+          end
+          @user.roles << Role.find(roles)
+        end
 
-  private
+        current_password = params['user']['current_password']
 
-  def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :roles)
-  end
+        if current_password != ""
+          if @user.update_with_password(account_update_params_with_password)
+            redirect_to action: "index" 
+          else
+            render :edit, status: :unprocessable_entity
+          end
+        else
+          if @user.update(account_update_params_without_password)
+            redirect_to action: "index" 
+          else
+            render :edit, status: :unprocessable_entity
+          end
+        end
+      end
+    
+      def destroy
+        @user = User.find(params[:id])
+        user_list=User.with_user @user.name
+        @user.destroy
+        redirect_to action: "index" 
+      end
+    
+      private
+        def user_params
+          params.require(:user).permit(:name,:email,:password,:password_confirmation)
+        end
 
-  def account_update_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :roles)
-  end
+        def account_update_params_with_password
+          params.require(:user).permit(:name, :email, :password, :password_confirmation, :current_password)
+        end
+
+        def account_update_params_without_password
+          params.require(:user).permit(:name, :email)
+        end
 end
