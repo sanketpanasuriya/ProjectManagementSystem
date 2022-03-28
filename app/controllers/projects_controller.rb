@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i"[ show edit update destroy]"
+  before_action :set_project, only: %i[ show edit update destroy]
   before_action :set_project_by_format, only: %i[project_status]
   before_action :checking_authenticity_update, only: %i[edit update destroy]
   before_action :checking_authenticity_show, only: %i[show]
@@ -41,7 +41,8 @@ class ProjectsController < ApplicationController
     @project.status = "Created"
     params[:selected_value]=@project.client_id
     respond_to do |format|
-      if @project.save
+      if @project.save     
+        mail = ProjectMailer.with(project: @project).project_created.deliver_later
         format.html { redirect_to project_url(@project), notice: "Project was successfully created." }
         format.json { render :show, status: :created, location: @project }
       else
@@ -81,7 +82,7 @@ class ProjectsController < ApplicationController
   end
   def destroy
     @project.destroy
-   respond_to do |format|
+    respond_to do |format|
       format.html { redirect_to projects_url, notice: "Project was successfully destroyed." }
       format.json { head :no_content }
     end
