@@ -1,5 +1,6 @@
 <h1>All Active Users</h1>
-<%= link_to "Add New Manager", new_user_path if can? :create_user, User%>    
+<%= link_to "Add New Manager", new_user_path if can? :create_user, User%>
+<%= link_to "Edit Profile", edit_user_path(current_user) if can? :update, current_user %>   
 <%= link_to "Logout", destroy_user_session_path, data: {
   turbo_method: :delete,
   turbo_confirm: "Are you sure for logout?"
@@ -10,7 +11,7 @@
   <tr>
     <th>User Name</th>
     <th>Role</th>
-    <th> Action </th>
+    <th> <%= "Action" if current_user.roles.first.name == "admin"%></th>
   </tr>
   <% @users.each do |user| %>
   <tr>
@@ -20,11 +21,13 @@
     <td>
       <%= user.roles.first.name %>
     </td><td>
+    <% if (can? :change_user_role, user) && (current_user.id != user.id)%>
       <ul>
         <li>
-          <%= link_to "Edit", edit_user_path(user) if can? :update, user%>
+          <%= link_to "Edit Role", edit_user_path(user) %>
         </li>
       </ul>
+      <% end%>
     </td>
     
   </tr>

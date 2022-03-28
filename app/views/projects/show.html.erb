@@ -6,21 +6,28 @@
   <%= link_to "Edit this project", edit_project_path(@project) if can? :update, @project %> |
   <%= link_to "Back to projects", projects_path %>
 
+
   <%= button_to "Destroy this project", @project, method: :delete if can? :destroy, @project%>
-  |<%= link_to "Create Sprint", new_project_sprint_path(@project) if can? :create, @project %> 
+  |<%= link_to "Create Sprint", new_sprint_path(@project) if can? :create, @project %>  
+
     
 </div>
 <%if @project.status=="completed" && @project.client_id==current_user.id%>
   
-  <%= link_to "Review And Rating", review_rating_projects_path(@project)%>
+  <%= link_to "Review And Rating", review_rating_projects_path(@project) if can? :review_rating, @project%>
 <%end%>
 <br>
-Change project status to:
+
+<%
+  if current_user.roles.first.name == "manager"  %>
+    Change project status to:
+  <% end %>
+
 <%if @project.status=="completed"%>
-  <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :review_rating, @project %>
+  <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :update_task_status, @project %>
 
   <% else %>
-  <%= link_to "Completed", project_status_projects_path(@project,status: true) if can? :review_rating, @project %>
+  <%= link_to "Completed", project_status_projects_path(@project,status: true) if can? :update_task_status, @project %>
   
 <%end%>
 
