@@ -21,15 +21,18 @@ class Ability
       can [:create_user,:destroy, :new], User #Admin Can not update profile for other user  
       can :manage, Role
       can :manage, Project
+      can :manage, Task
+      can :manage, Sprint
       can :change_user_role, User
+
     elsif user.has_role? "manager"
       # can :create, Project
-      can %i[edit update destroy show project_status], Project, creator_id: user.id
+      can %i[edit update destroy show project_status ], Project, creator_id: user.id
       can %i[new create] , Project
-      can :manage, Task
-      can :manage, Sprint do |sprint|
-        sprint.project.creator_id == user.id
-      end
+      can :manage, Task, sprint: {project: {creator_id: user.id}}
+  
+      can :manage, Sprint, project: { creator_id: user.id}
+
       can :project_status, Project, creator_id: user.id
       
     elsif user.has_role? "employee"
