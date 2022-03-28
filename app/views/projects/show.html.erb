@@ -8,6 +8,14 @@
 
   <%= button_to "Destroy this project", @project, method: :delete if can? :destroy, @project%>
   |<%= link_to "Create Sprint", new_sprint_path(@project) if can? :create, @project %> 
+
+  |<%= link_to "Create issue", new_issue_path(@project) if can? :create, @project %>
+
+  |
+  <%= link_to "Show issues", issues_path %>
+
+ 
+  
     
 </div>
 <%if @project.status=="completed" && @project.client_id==current_user.id%>
