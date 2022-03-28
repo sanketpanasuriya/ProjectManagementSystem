@@ -46,7 +46,7 @@ class UsersController < ApplicationController
     
       def update
         @user = User.find(params[:id])
-
+        old_role = @user.roles.first.name
         roles = params['user']['roles']
         params[:selected_value]=params['user']['roles']
         @roles =[]
@@ -71,6 +71,7 @@ class UsersController < ApplicationController
             render :edit, status: :unprocessable_entity
           end
         elsif (current_user.roles.first.name == "admin" && params[:user][:id] != current_user.id)
+          UserMailer.with(user: @user, old_role: old_role).role_changed.deliver_later
           redirect_to action: "index" 
         else
           if @user.update(account_update_params_without_password)
