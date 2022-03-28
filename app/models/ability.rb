@@ -24,6 +24,10 @@ class Ability
     elsif user.has_role? "manager"
       can :manage, Project, creator_id: user.id
       can :manage, Task
+      can :manage, Sprint do |sprint|
+        sprint.project.creator_id == user.id
+      end
+      can :project_status, Project, creator_id: user.id
       
     elsif user.has_role? "employee"
       can [:show, :edit], Task, user_id: user.id

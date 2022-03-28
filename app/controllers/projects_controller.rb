@@ -1,6 +1,8 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: %i"[ show edit update destroy ]"
+  before_action :set_project, only: %i"[ show edit update destroy]"
+  before_action :set_project_by_format, only: %i[project_status]
   before_action :checking_authenticity, only: %i[edit update new destroy create show]
+  before_action :checking_authenticity_status, only: %i[ project_status ]
   # GET /projects or /projects.json
   def index
     if current_user.has_role? 'employee'
@@ -96,6 +98,10 @@ end
       @project = Project.find(params[:id])
     end
 
+    def set_project_by_format
+      @project = Project.find(params[:format])
+    end
+
     def project_params
       params.require(:project).permit(:name, :description, :client_id, :endingdate)
     end
@@ -107,6 +113,9 @@ end
         render :file => 'public/403.html' unless can? :manage, @project
       end
 
+    def checking_authenticity_status
+      render :file => 'public/403.html' unless can? :project_status, @project
+    end
       
     end
     def project_params_review
