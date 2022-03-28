@@ -1,6 +1,8 @@
 class SprintController < ApplicationController
-
-  before_action :checking_authenticity, only: %i[edit update new destroy create]
+  before_action :set_sprint, only: %i[ edit update destroy show]
+  before_action :set_project, only: %i[new]
+  before_action :checking_authenticity, only: %i[edit update destroy show]
+  before_action :checking_authenticity_create, only: %i[new]
   def index
         
         @sprint = Sprint.all
@@ -14,7 +16,7 @@ class SprintController < ApplicationController
         project_id=params[:format]
         @sprint = Sprint.new
         @sprint.project_id=project_id
-        
+
     end
     
     
@@ -65,13 +67,22 @@ class SprintController < ApplicationController
       end
     
       private
-      
+        def set_sprint
+          @sprint = Sprint.find(params[:id])
+        end
+        def set_project
+          @project = Project.find(params[:format])
+        end
         def sprint_params
           params.require(:sprint).permit(:title, :description, :project_id, :expected_end_date)
         end
     
         def checking_authenticity
-          render :file => 'public/403.html' unless can? :manage, Project
+          render :file => 'public/403.html' unless can? :manage, @sprint
+        end
+
+        def checking_authenticity_create
+          render :file => 'public/403.html' unless can? :edit, @project
         end
     
 end
