@@ -22,6 +22,14 @@ Rails.application.routes.draw do
 
 
   resources :projects do
+
+    resources :sprint do
+      resources :task
+      collection do
+        
+      end
+    end
+    
     resources :task
     collection do
 
@@ -39,11 +47,6 @@ Rails.application.routes.draw do
       get "alluser"
     end
   end
-  resources :sprint do
-    resources :task
-    collection do
-      
-    end
-  end
+ 
   root "home#index"
 end
