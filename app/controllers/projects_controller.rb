@@ -1,8 +1,10 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: %i"[ show edit update destroy]"
   before_action :set_project_by_format, only: %i[project_status]
-  before_action :checking_authenticity, only: %i[edit update new destroy create show]
+  before_action :checking_authenticity_update, only: %i[edit update destroy]
+  before_action :checking_authenticity_show, only: %i[show]
   before_action :checking_authenticity_status, only: %i[ project_status ]
+  before_action :checking_authenticity_new, only: %i[new create]
   # GET /projects or /projects.json
   def index
     if current_user.has_role? 'employee'
@@ -106,18 +108,22 @@ end
       params.require(:project).permit(:name, :description, :client_id, :endingdate)
     end
 
-    def checking_authenticity
-      if (current_user.has_role? "employee") || (current_user.has_role? "customer")
+    def checking_authenticity_show
         render :file => 'public/403.html' unless can? :show, @project
-      else 
-        render :file => 'public/403.html' unless can? :manage, @project
-      end
+    end
+
+    def checking_authenticity_update
+      render :file => 'public/403.html' unless can? :update, @project
+  end
 
     def checking_authenticity_status
       render :file => 'public/403.html' unless can? :project_status, @project
     end
-      
+
+    def checking_authenticity_new
+      render :file => 'public/403.html' unless can? :new, Project
     end
+  
     def project_params_review
       params.require(:project).permit(:reviews, :rating)
     end
