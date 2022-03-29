@@ -1,6 +1,5 @@
 <div class="container"  style="width: 500px; padding-top: 50px;" >
-        <div class="col-md-6 pb-4">
-            <h4>Create User</h4>
+        <div>   <h2>Create User</h2>
           </div>
     <%= form_with model: @user,:url => {:action => "create_user"},:html => {:class => 'row g-3 my-1'}  do |form| %>
 
@@ -43,13 +42,11 @@
 
         <div class="col-12">
 
-    <%= form.submit "Create", :class=>"btn btn-primary m-2" %>
+    <%= form.submit "Create", :class=>"btn btn-primary mt-3 mb-3", style:"width: 100px" %>
            </div>
       
         <% end %>
-      </div>
-  
-         
+      <a href = "#"> Already have an account? Log-in instead </a>
       </div>
 
       

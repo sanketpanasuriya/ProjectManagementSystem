@@ -1,2 +1,27 @@
-<h1>Edit New Role</h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container-fluid">
+  
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-link active" aria-current="page" href="#">Projects</a>
+      <a class="nav-link" href="#">Projects</a>
+      <a class="nav-link" href="#">Projects</a>
+      <a class="nav-link" href="#">Projects</a>
+      </div>
+  </div>
+  <%= link_to "Logout", destroy_user_session_path, data: {
+    turbo_method: :delete,
+    turbo_confirm: "Are you sure for logout?"
+  }, class: 'btn btn-danger'%>
+</div>
+</nav>
+<div class = "container">
+
+
+<div class="card" style = "margin-top:5%">
+<div class = 'card-body' style = "margin: 10px">
+
+<h2  class="head-text ">Edit New Role</h2>
 <%= render "form", role: @role,place: :update%>
+</div>
+</div>

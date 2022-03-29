@@ -1,20 +1,50 @@
-<h1>Roles</h1>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container-fluid">
+  
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-link active" aria-current="page" href="#">Projects</a>
+      <a class="nav-link" href="#">Projects</a>
+      <a class="nav-link" href="#">Projects</a>
+      <a class="nav-link" href="#">Projects</a>
+      </div>
+  </div>
+  <%= link_to "Logout", destroy_user_session_path, data: {
+    turbo_method: :delete,
+    turbo_confirm: "Are you sure for logout?"
+  }, class: 'btn btn-danger'%>
+</div>
+</nav>
+
+<div class = "container">
+<h2>Roles</h2>
 <p><%= flash[:error_name] %>
    </p>
-<ul>
-
+<table border="10" frame="VOID" rules="ALL" class="table table-striped">
+   <tr>
+     <th>Role</th>
+     <th>Edit</th>
+     <th>Destroy</th>
+   </tr>
   <% @roles.each do |role| %>
-    <li>
-      <%= role.name %>
-      |
-      <%= link_to "Edit", edit_role_path(role) %>
-      |
+    <tr>
+      <td> <%= role.name %> </td>
+    
+      <td> 
+      <%= link_to "Edit", edit_role_path(role),class: 'btn btn-primary', style: 'width: 100px' %>
+      </td>
+      <td>
       <%= link_to "Destroy", role_path(role), data: {
                     turbo_method: :delete,
                     turbo_confirm: "Are you sure?"
-                  } %>
-    </li>
-  <% end %>
-</ul>
-<%= link_to "Create Role", new_role_path %>
+                  } ,class:'btn btn-danger', style: 'width: 100px'%>
+      </td>
+      </tr>
+      <% end %>
 
+      </table>
+</ul>
+<%= link_to "Create Role", new_role_path, class: 'btn btn-info' %>
+
+</div>
