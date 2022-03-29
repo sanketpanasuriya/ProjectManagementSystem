@@ -26,9 +26,13 @@ class SprintController < ApplicationController
     
     
       def create
-        @sprint = Sprint.new(sprint_params)
-        @project =Project.find(params[:sprint][:project_id])
+        temp=sprint_params
+        temp["project_id"]=get_project
+       
+        @sprint = Sprint.new(temp)
         
+        @project =Project.find(temp["project_id"])
+  
         respond_to do |format|
           if @sprint.save
             format.html { redirect_to project_url(@project), notice: "Sprint was successfully created." }
@@ -61,7 +65,7 @@ class SprintController < ApplicationController
         @sprint.destroy
     
         respond_to do |format|
-          format.html { redirect_to sprint_url, notice: "Sprint was successfully destroyed." }
+          format.html { redirect_to project_sprint_path, notice: "Sprint was successfully destroyed." }
           format.json { head :no_content }
         end
       end
@@ -76,7 +80,9 @@ class SprintController < ApplicationController
         def sprint_params
           params.require(:sprint).permit(:title, :description, :project_id, :expected_end_date)
         end
-    
+        def get_project
+          params[:project_id]
+        end
         def checking_authenticity
           render :file => 'public/403.html' unless can? :manage, @sprint
         end
