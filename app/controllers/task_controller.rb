@@ -1,11 +1,10 @@
 class TaskController < ApplicationController
     before_action :set_project
-    before_action :set_task, only: %i[ edit show]
+    before_action :set_task, only: %i[ edit show ]
     @@status = [['Created'],['On Going'], ['Submitted'], ['Re-Submitted'], ['Rejected'], ['Done']]
-    before_action :checking_authenticity, only: %i[update destroy create show index edit]
-    before_action :checking_authenticity_show, only: %i[ show ]
-    before_action :checking_authenticity_edit, only: %i[ edit ]
-    before_action :checking_authenticity_new, only: %i[ new ]
+    before_action :checking_authenticity_show, only: %i[ show index]
+    before_action :checking_authenticity_edit, only: %i[ edit update destroy]
+    before_action :checking_authenticity_new, only: %i[ new create]
     def index
         @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]})
     end
@@ -97,28 +96,16 @@ class TaskController < ApplicationController
             sprints
         end
 
-        def checking_authenticity
-            if (current_user.has_role? 'employee') || (current_user.has_role? 'customer')
-                render :file => 'public/403.html' unless can? :show, @project
-            else
-                render :file => 'public/403.html' unless can? :manage, Task
-            end
-        end
-
         def checking_authenticity_show
-            render :file => 'public/403.html' unless can? :show, @task
+            render :file => 'public/403.html' unless can? :show, @project
         end
 
         def checking_authenticity_edit
-            if current_user.has_role? "manager"
-                render :file => 'public/403.html' unless can? :manage, Task
-            else
-                render :file => 'public/403.html' unless can? :edit, @task.user
-            end
+            render :file => 'public/403.html' unless can? :edit, @task
         end
 
         def checking_authenticity_new
-            render :file => 'public/403.html' unless can? :new, Task
+            render :file => 'public/403.html' unless can? :edit, @project
         end
 
 end

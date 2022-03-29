@@ -1,42 +1,11 @@
-<h1>Edit New Role</h1>
+<h1>Update User</h1>
 
 <%= form_with model: @user,:url => {:action => :update}  do |form| %>
-    <div  class="field">
-        <%= form.label :name %><br>
-        <%= form.text_field :name %>
-        <% @user.errors.full_messages_for(:name).each do |message| %>
-        <div><%= message %></div>
-        <% end %>
-
-    </div>
-    <div  class="field">
-        <%= form.label :email %><br>
-        <%= form.email_field :email %>
-        <% @user.errors.full_messages_for(:email).each do |message| %>
-        <div><%= message %></div>
-        <% end %>
-
-    </div>
-    <div  class="field">
-        <%= form.label :password %><br>
-        <%= form.password_field :password %>
-        <%  @user.errors.full_messages_for(:password).each do |message| %>
-        <div><%= message %></div>
-        <% end %>
-
-    </div>
-    <div  class="field">
-      <%= form.label :password_confirmation %><br>
-      <%= form.password_field :password_confirmation %>
-    </div>
-
+  <%= render "edit",  form: form unless (can? :change_user_role, User) %>
+  <%= render "edit", form: form if (can? :change_user_role, User) && current_user.id == @user.id %>
+  <% if can? :change_user_role, User%>
   <div class="field">
-    <%= form.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= form.password_field :current_password, autocomplete: "current-password" %>
-  </div>
-  <% if current_user.has_role? 'admin'%>
-  <div class="field">
-     <%= form.label :roles %> </br>
+     <%= form.label :roles %> <br>
     <%= form.select :roles,   options_for_select( @roles,  params[:selected_value] ),required: true%>
    </div>
    <% end %>
