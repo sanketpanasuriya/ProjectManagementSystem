@@ -75,7 +75,7 @@ class SprintController < ApplicationController
           @sprint = Sprint.find(params[:id])
         end
         def set_project
-          @project = Project.find(params[:format])
+          @project = Project.find(params[:project_id])
         end
         def sprint_params
           params.require(:sprint).permit(:title, :description, :project_id, :expected_end_date)
