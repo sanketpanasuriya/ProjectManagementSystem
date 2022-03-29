@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_25_112533) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_28_062542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -24,7 +24,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_25_112533) do
     t.bigint "project_id"
     t.string "title"
     t.text "description"
-    t.string "type"
+    t.string "issue_type"
     t.string "status"
     t.bigint "creator_id"
     t.bigint "employee_id"
