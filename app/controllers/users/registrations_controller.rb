@@ -8,10 +8,7 @@ module Users
     # GET /resource/sign_up
 
     def new
-      @roles = []
-      Role.select('id', 'name').where(:role_type == 'user').each { |v| @roles << [v.name, v.id] }
-      @roles
-      @user = User.new
+      redirect_to controller: "users", action: "new"
       # super
     end
 
