@@ -1,1 +1,2 @@
-HOST: 'localhost:3000'
+# HOST: '15.207.45.169:8080' # if u run this project on cloud 
+HOST: 'localhost:3000' # if u run this project  local

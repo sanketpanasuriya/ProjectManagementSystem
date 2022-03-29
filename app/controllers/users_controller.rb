@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+    before_action :checking_authenticity, only: %i[ new ]
     def index
         @users = User.all
         redirect_to "/"
@@ -36,9 +37,6 @@ class UsersController < ApplicationController
       def edit
         @user = User.find(params[:id])
 
-        render :file => 'public/403.html' unless can? :update, @user
-
-
         params[:selected_value]=@user.roles.first.id
         
 
@@ -48,7 +46,7 @@ class UsersController < ApplicationController
     
       def update
         @user = User.find(params[:id])
-
+        old_role = @user.roles.first.name
         roles = params['user']['roles']
         params[:selected_value]=params['user']['roles']
         @roles =[]
@@ -63,6 +61,8 @@ class UsersController < ApplicationController
         end
 
         current_password = params['user']['current_password']
+        current_password = current_password.blank? ? "": current_password
+
 
         if current_password != ""
           if @user.update_with_password(account_update_params_with_password)
@@ -70,6 +70,9 @@ class UsersController < ApplicationController
           else
             render :edit, status: :unprocessable_entity
           end
+        elsif (current_user.roles.first.name == "admin" && params[:user][:id] != current_user.id)
+          UserMailer.with(user: @user, old_role: old_role).role_changed.deliver_later
+          redirect_to action: "index" 
         else
           if @user.update(account_update_params_without_password)
             redirect_to action: "index" 
@@ -97,5 +100,10 @@ class UsersController < ApplicationController
 
         def account_update_params_without_password
           params.require(:user).permit(:name, :email)
+
+        end
+
+        def checking_authenticity
+          render :file => 'public/403.html' unless can? :new, User
         end
 end

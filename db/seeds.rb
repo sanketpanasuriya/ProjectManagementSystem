@@ -13,3 +13,6 @@ admin_user = User.create(name: 'Admin', email: 'admin@admin.com', password: '123
 p admin_user.save!
 p admin_role.save!
 admin_user.add_role('admin')
+p Role.create(name: 'manager').save!
+p Role.create(name: 'developer').save!
+p Role.create(name: 'customer').save!

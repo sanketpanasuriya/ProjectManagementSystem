@@ -1,0 +1,33 @@
+<div  class="field">
+        <%= form.label :name %><br>
+        <%= form.text_field :name %>
+        <% @user.errors.full_messages_for(:name).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+
+    </div>
+    <div  class="field">
+        <%= form.label :email %><br>
+        <%= form.email_field :email %>
+        <% @user.errors.full_messages_for(:email).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+
+    </div>
+    <div  class="field">
+        <%= form.label :password %><br>
+        <%= form.password_field :password %>
+        <%  @user.errors.full_messages_for(:password).each do |message| %>
+        <div><%= message %></div>
+        <% end %>
+
+    </div>
+    <div  class="field">
+      <%= form.label :password_confirmation %><br>
+      <%= form.password_field :password_confirmation %>
+    </div>
+
+  <div class="field">
+    <%= form.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+    <%= form.password_field :current_password, autocomplete: "current-password" %>
+  </div>
