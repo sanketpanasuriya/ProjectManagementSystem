@@ -24,7 +24,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :issues
+  resources :issues do 
+    collection do 
+      get 'assign_issue_show'
+      patch 'assign_issue'
+      get 'my_issue'
+    end
+  end
 
   resources :projects do
 

@@ -1,0 +1,16 @@
+<%= form_with model: @issue ,:url => {:action => :assign_issue,:id=>@issue.id} do |form| %>
+<div class="col-md-6">  
+      <%= form.label :status, :class=>"form-label" %>
+      <%= form.select(:status,@status , {selected: params[:status_id]}, { :class => 'form-control' }) %>
+    </div>
+    <% unless current_user.has_role? "employee"%>
+
+    <div class="col-md-12">
+    <%= form.label :employee, :class=>"form-label " %>
+    <%= form.select :employee_id, @employee, :selected => params[:selected_value], :class=>'form-control bg-primary' %>
+<%end%>
+  </div>
+  <div class="col-md-4">
+    <%= form.submit %>
+  </div>
+<%end%>

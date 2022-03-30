@@ -31,10 +31,7 @@
 
   <div class="row">
 
-    <div class="col-md-6">  
-      <%= form.label :status, :class=>"form-label" %>
-      <%= form.select(:status,@status , {selected: params[:status_id]}, { :class => 'form-control' }) %>
-    </div>
+    
 
     <div class="col-md-6">
        <%= form.label :issue_type, :class=>"form-label" %>
@@ -44,11 +41,6 @@
   </div> 
  
 
-  <div class="col-md-12">
-    <%= form.label :employee, :class=>"form-label " %>
-    <%= form.select :employee_id, @employee, :selected => params[:selected_value], :class=>'form-control bg-primary' %>
-    
-  </div>
 
   <div class="col-md-4">
     <%= form.submit %>

@@ -1,14 +1,14 @@
 <p style="color: green"><%= notice %></p>
 
 <%= link_to "New issue", new_issue_path(@project_id) %>
-<h1>Issues</h1>
+<h1>My Issues</h1>
 
 <div id="issues">
   <% @issues.each do |issue| %>
     <%= render issue %>
     <p>
       <%= link_to "Show this issue", issue %>
-      |<%= link_to "Assign this issue", assign_issue_show_issues_path(issue) %>
+      |<%= link_to "Change status", assign_issue_show_issues_path(issue) %>
       
       
     </p>

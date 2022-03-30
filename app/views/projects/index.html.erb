@@ -1,18 +1,18 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Projects</h1>
-
 <div id="projects">
-  <% @projects.each do |project| %>
-    <% 
-      unless current_user.has_role? "employee"
-        next unless  can? :show, project 
-      end %>
-    <%= render project %>
-    <p>
-      <%= link_to "Show this project", project %>
-    </p>
-  <% end %>
+<h1 style="text-align:center">Projects</h1>
+<%= link_to "New project", new_project_path,class:"btn btn-warning" if can? :create, Project %>
+  
+  <div class="row p-5">
+
+<% @projects.each do |project| %>
+      <% 
+        unless current_user.has_role? "employee"
+          next unless  can? :show, project 
+        end %>
+      <%= render project %>
+    <% end %>
+</div>
 </div>
 
-<%= link_to "New project", new_project_path if can? :create, Project %>
