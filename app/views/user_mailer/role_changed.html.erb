@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h3>Congratulation <%= @user.name%></h3>
+    <h4>Your role is change <%= @old_role%> to <%= @user.roles.first.name%>
+    <h5>You can check via login to <%= root_url%></h5>
+
+  </body>
+</html>

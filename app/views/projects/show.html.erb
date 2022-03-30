@@ -6,31 +6,46 @@
   <%= link_to "Edit this project", edit_project_path(@project) if can? :update, @project %> |
   <%= link_to "Back to projects", projects_path %>
 
+
   <%= button_to "Destroy this project", @project, method: :delete if can? :destroy, @project%>
   |<%= link_to "Create Sprint", new_sprint_path(@project) if can? :create, @project %> 
+
+  |<%= link_to "Create issue", new_issue_path(@project) if can? :create, @project %>
+
+  |
+  <%= link_to "Show issues", issues_path %>
+
+ 
+  
+
     
 </div>
 <%if @project.status=="completed" && @project.client_id==current_user.id%>
   
-  <%= link_to "Review And Rating", review_rating_projects_path(@project)%>
+  <%= link_to "Review And Rating", review_rating_projects_path(@project) if can? :review_rating, @project%>
 <%end%>
 <br>
-Change project status to:
+
+<%
+  if current_user.roles.first.name == "manager"  %>
+    Change project status to:
+  <% end %>
+
 <%if @project.status=="completed"%>
-  <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :review_rating, @project %>
+  <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :update_task_status, @project %>
 
   <% else %>
-  <%= link_to "Completed", project_status_projects_path(@project,status: true) if can? :review_rating, @project %>
+  <%= link_to "Completed", project_status_projects_path(@project,status: true) if can? :update_task_status, @project %>
   
 <%end%>
 
 <h2 class="my-5">All Sprint </h2>
 <%@sprint.each do|x|%>
 <%= render "sprint",sprint: x %>
-|<%= link_to "More Detail", sprint_path(x) %>
+|<%= link_to "More Detail", project_sprint_path(project_id: @project,id:x) %>
 <%= link_to "View Task", project_task_index_path(@project)%>
-|<%= link_to "Edit Sprint", edit_sprint_path(x) if can? :update, @project%>
-|<%= link_to "Destroy", sprint_path(x), data: {
+|<%= link_to "Edit Sprint", edit_project_sprint_path(project_id: @project,id:x) if can? :update, @project%>
+|<%= link_to "Destroy", project_sprint_path(project_id: @project,id:x), data: {
                     turbo_method: :delete,
                     turbo_confirm: "Are you sure?"
                   } if can? :destroy, @project%>

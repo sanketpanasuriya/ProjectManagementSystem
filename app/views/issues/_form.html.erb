@@ -1,0 +1,57 @@
+<div   style="width: 500px; padding-top: 50px;" >
+<%= form_with model: @issue  do |form| %>
+  <% if issue.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(issue.errors.count, "error") %> prohibited this issue from being saved:</h2>
+
+      <ul>
+        <% issue.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="col-md-12">
+    <%# <%= form.label :project_id, style: "display: block" %> 
+    <%= form.hidden_field :project_id %>
+  </div>
+
+  <div class="col-md-12">
+    <%= form.label :title, :class=>"form-label" %>
+    <%= form.text_field :title,{ :class => 'form-control' } %>
+  </div>
+
+  <div class="col-md-12">
+    <%= form.label :description, :class=>"form-label"%>
+    <%= form.text_area :description ,  { :class => 'form-control' }%>
+  </div>
+
+
+
+  <div class="row">
+
+    <div class="col-md-6">  
+      <%= form.label :status, :class=>"form-label" %>
+      <%= form.select(:status,@status , {selected: params[:status_id]}, { :class => 'form-control' }) %>
+    </div>
+
+    <div class="col-md-6">
+       <%= form.label :issue_type, :class=>"form-label" %>
+       <%# <%= form.select :type ,["Bug","Error"]  %%>
+       <%= form.select(:issue_type,@type, {selected: params[:issue_type_id]}, { :class => 'form-control' }) %>
+    </div>
+  </div> 
+ 
+
+  <div class="col-md-12">
+    <%= form.label :employee, :class=>"form-label " %>
+    <%= form.select :employee_id, @employee, :selected => params[:selected_value], :class=>'form-control bg-primary' %>
+    
+  </div>
+
+  <div class="col-md-4">
+    <%= form.submit %>
+  </div>
+<% end %>
+</div>
