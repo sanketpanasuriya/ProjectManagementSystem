@@ -1,17 +1,26 @@
-<div id="<%=dom_id sprint%>">
-     <div>
-        <h4>
-            <strong>Title:</strong> 
-            <%= sprint.title %>
-        </h4>
-        <h5>
-            <strong>Description:</strong> 
-            <%= sprint.description[0..100] %>
+
+
+  <div class="col-sm-6 my-4" id="<%=dom_id sprint%>">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title h2">   <%= sprint.title %></h4>
+        <p class="card-text">
+       <%= sprint.description[0..100] %>
             <%if(sprint.description.length>10)%>
                 ...
             <%end%>
-        </h5>
-        <p><%= sprint.expected_end_date %></p>
-    </div>
+        </p>
+        <small><%= sprint.created_at.localtime. %></small><br>
+        <div class="btn-group btn-group-sm">
+            <%= link_to "View Task", project_task_index_path(project), class:"btn btn-success"%>
+            <%= link_to "Edit Sprint", edit_project_sprint_path(project_id: project,id:sprint), class:"btn btn-primary" if can? :update, @project%>
+        
+        <%= link_to "Destroy", project_sprint_path(project_id: project,id:sprint),class:"btn btn-danger", data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } if can? :destroy, @project%>
+        </div>
 
-</div>
+      </div>
+    </div>
+  </div>

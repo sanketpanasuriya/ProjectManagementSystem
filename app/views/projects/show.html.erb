@@ -1,24 +1,31 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @project %>
-
-<div>
-  <%= link_to "Edit this project", edit_project_path(@project) if can? :update, @project %> |
-  <%= link_to "Back to projects", projects_path %>
+  <%= link_to "Edit this project", edit_project_path(@project),class:"btn btn-primary" if can? :update, @project %> 
+  <%= link_to "Back to projects", projects_path, class:"btn btn-secondary"%>
 
 
-  <%= button_to "Destroy this project", @project, method: :delete if can? :destroy, @project%>
-  |<%= link_to "Create Sprint", new_project_sprint_path(@project) if can? :create, @project %> 
+  <%= link_to "Destroy this project", @project, method: :delete,class:"btn btn-danger", data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } if can? :destroy, @project%>
+  <%= link_to "Create Sprint", new_project_sprint_path(@project),class:"btn btn-success" if can? :create, @project %> 
 
-  |<%= link_to "Create issue", new_issue_path(@project) if can? :create, @project %>
+  <%= link_to "Create issue", new_issue_path(@project),class:"btn btn-warning" if can? :create, @project %>
+  
+  <%= link_to "Show issues", issues_path(@project) ,class:"btn btn-info"%>
 
-  |
-  <%= link_to "Show issues", issues_path(@project) %>
-
-  |
-<%= link_to "My Assigned issues", my_issue_issues_path(@project) %>
+  
+<%= link_to "My Assigned issues", my_issue_issues_path(@project),class:"btn btn-secondary" %>
 
  
+<h4 class="card-title h2 mt-5">
+       <%= @project.name %></h4>
+        <p class="card-text text-muted">
+          <%= @project.description %>
+        </p>
+<div>
+
+
   
 
     
@@ -29,27 +36,24 @@
 <%end%>
 <br>
 
-<%
-  if current_user.roles.first.name == "manager"  %>
-    Change project status to:
-  <% end %>
 
-<%if @project.status=="completed"%>
-  <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :update_task_status, @project %>
+  
+Project is <%=@project.status%> <br> 
+<%if can? :update_task_status, @project%>
+Change to
+<%end%>
+
+<%if @project.status=="completed" &&(can? :update_task_status, @project)%>
+   <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :update_task_status, @project %>
 
   <% else %>
-  <%= link_to "Completed", project_status_projects_path(@project,status: true) if can? :update_task_status, @project %>
+  
+   <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :update_task_status, @project %>
   
 <%end%>
 
 <h2 class="my-5">All Sprint </h2>
 <%@sprint.each do|x|%>
-<%= render "sprint",sprint: x %>
-|<%= link_to "More Detail", project_sprint_path(project_id: @project,id:x) %>
-<%= link_to "View Task", project_task_index_path(@project)%>
-|<%= link_to "Edit Sprint", edit_project_sprint_path(project_id: @project,id:x) if can? :update, @project%>
-|<%= link_to "Destroy", project_sprint_path(project_id: @project,id:x), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } if can? :destroy, @project%>
+<%= render "sprint",sprint: x,project:@project %>
+
 <%end%>

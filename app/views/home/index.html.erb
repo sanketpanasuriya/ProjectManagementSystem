@@ -1,46 +1,35 @@
-<h1>All Active Users</h1>
-<%= link_to "Add New Manager", new_user_path if can? :create_user, User%>
-<%= link_to "Edit Profile", edit_user_path(current_user) if can? :update, current_user %>   
-<%= link_to "Logout", destroy_user_session_path, data: {
-  turbo_method: :delete,
-  turbo_confirm: "Are you sure for logout?"
-}%>
+
 
 <div class = "container" style ="margin-top: 30px">
 <h2 class="head-text mt-6">All Active Users</h2>   
+<%= link_to "Add New User", new_user_path ,class: 'btn btn-primary' if can? :create_user, User%> 
 
-<table border="10" frame="VOID" rules="ALL" class="table table-striped">
-  <tr>
-    <th>User Name</th>
-    <th>Role</th>
-    <th> <%= "Action" if current_user.roles.first.name == "admin"%></th>
-  </tr>
-  <% @users.each do |user| %>
-  <tr>
-    <td>
-      <%= user.name %>
-    </td>
-    <td>
-      <%= user.roles.first.name %>
-    </td><td>
-    <% if (can? :change_user_role, user) && (current_user.id != user.id)%>
-      <ul>
-        <li>
-          <%= link_to "Edit Role", edit_user_path(user) %>
-        </li>
-      </ul>
-      <% end%>
-    </td>
-    <td>
-      <%= link_to "Edit", edit_user_path(user), class: 'btn btn-primary' if can? :update, user%>
-    </td>
-  </tr>
-    
-  <% end %>
-</table>
+<div style="display:block">
 
-<%= link_to "Add New Manager", new_user_path ,class: 'btn btn-primary' if can? :create_user, User%> 
+<% @users.each do |user| %>
+<div class="card m-4" style="width: 18rem;display:inline-block ">
+  <div class="card-body">
+    <h5 class="card-title"><%= user.name %></h5>
+    <p class="card-text">
+      <%if(user.roles.first.name=="manager")%>
+      <span class="badge badge-pill badge-primary">Manager</span>
+      <% elsif (user.roles.first.name=="admin") %>
+      <span class="badge badge-pill badge-danger">Admin</span>
+      <% elsif (user.roles.first.name=="customer") %>
+      <span class="badge badge-pill badge-secondary">Customer</span>
+      <% else %>
+      <span class="badge badge-pill badge-info">Employee</span>
+      <%end%>
+     
+    </p>
+     <%= link_to "Edit Role", edit_user_path(user),class:"btn btn-primary" %>
+   
+   </div>
+</div>
 
-<%= link_to "Project", projects_path, class: 'btn btn-primary' %> 
+<%end%>
+</div>
+
+
 
 </div>

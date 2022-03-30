@@ -15,10 +15,13 @@
 <div class="container-fluid">
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-link active" aria-current="page" href="#">Projects</a>
-      <a class="nav-link" href="#">Projects</a>
-      <a class="nav-link" href="#">Projects</a>
-      <a class="nav-link" href="#">Projects</a>
+      <%= link_to "Home" , root_path , class: "nav-link active" %>
+
+      <%= link_to "Add New User" , new_user_path , class: "nav-link active" if can? :create_user, User %>
+
+      <%= link_to "Edit Profile", edit_user_path(current_user),class: "nav-link active" if can? :update, current_user %>  
+      <%= link_to "Project", projects_path,class: "nav-link active" %>  
+      
       </div>
   </div>
   <%= link_to "Logout", destroy_user_session_path, data: {

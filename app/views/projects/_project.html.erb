@@ -1,12 +1,15 @@
-<div id="<%= dom_id project %>">
-  <p>
-    <strong>Name:</strong>
-    <%= project.name %>
-  </p>
 
-  <p>
-    <strong>Description:</strong>
-    <%= project.description %>
-  </p>
-
-</div>
+  <div class="col-sm-6 " id="<%= dom_id project %>">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title h2">   <%= project.name %></h4>
+        <p class="card-text text-muted">
+        <%= project.description[1..100] %>
+        <%if project.description.length>=100%>
+          ...
+        <%end%>
+        </p>
+        <%= link_to "Show this project", project, class:"btn btn-primary" %>
+      </div>
+    </div>
+  </div>
