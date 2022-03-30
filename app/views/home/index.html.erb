@@ -6,8 +6,10 @@
   turbo_confirm: "Are you sure for logout?"
 }%>
 
-<br><br>
-<table border="10" frame="VOID" rules="ALL">
+<div class = "container" style ="margin-top: 30px">
+<h2 class="head-text mt-6">All Active Users</h2>   
+
+<table border="10" frame="VOID" rules="ALL" class="table table-striped">
   <tr>
     <th>User Name</th>
     <th>Role</th>
@@ -29,12 +31,16 @@
       </ul>
       <% end%>
     </td>
-    
+    <td>
+      <%= link_to "Edit", edit_user_path(user), class: 'btn btn-primary' if can? :update, user%>
+    </td>
   </tr>
     
   <% end %>
 </table>
 
-<%= link_to "All User", controller:"admin",action: "alluser"  if can? :manage, User%> <br>
+<%= link_to "Add New Manager", new_user_path ,class: 'btn btn-primary' if can? :create_user, User%> 
 
-<%= link_to "Project", controller:"projects",action: "index" %> <br>
+<%= link_to "Project", projects_path, class: 'btn btn-primary' %> 
+
+</div>
