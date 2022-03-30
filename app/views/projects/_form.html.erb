@@ -1,4 +1,3 @@
-
 <%= form_with(model: project) do |form| %>
   <% if project.errors.any? %>
     <div style="color: red">
@@ -14,26 +13,26 @@
 
   <div>
   <div>
-    <%= form.label :name, style: "display: block",class:"form-label" %>
-    <%= form.text_field :name,class:"form-control" %>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
   </div>
 
   <div>
-    <%= form.label :description, style: "display: block",class:"form-label" %>
-    <%= form.text_area :description,class:"form-control" %>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_area :description %>
   </div>
 
   <div>
-    <%= form.label "Expected Ending date", style: "display: block",class:"form-label" %>
-    <%= form.date_select :endingdate,class:"form-control" %>
+    <%= form.label "Expected Ending date", style: "display: block" %>
+    <%= form.date_select :endingdate %>
   </div>
 
   <div>
-    <%= form.label :client, style: "display: block",class:"form-label" %>
+    <%= form.label :client, style: "display: block" %>
      <%= form.select :client_id , @client, :selected => params[:selected_value] %>
   </div>
 
   <div>
-    <%= form.submit:class=>"btn btn-primary" %>
+    <%= form.submit %>
   </div>
 <% end %>

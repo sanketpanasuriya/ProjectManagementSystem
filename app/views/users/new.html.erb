@@ -7,7 +7,7 @@
           <%= form.label :name, :class=>"form-label" %><br>
           <%= form.text_field :name, :class=> "form-control" %>
           <% @user.errors.full_messages_for(:name).each do |message| %>
-            <div class="text-danger"><%= message %></div>
+          <div class="text-danger"><%= message %></div>
           <% end %>
         </div>
 
@@ -15,7 +15,7 @@
         <%= form.label :email, :class=>"form-label" %><br>
         <%= form.email_field :email ,:class=>"form-control"%>
         <% @user.errors.full_messages_for(:email).each do |message| %>
-          <div class="text-danger"><%= message %></div>
+        <div class="text-danger"><%= message %></div>
         <% end %>
         </div>
 
