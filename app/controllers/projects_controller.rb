@@ -18,6 +18,8 @@ class ProjectsController < ApplicationController
   def show
     project_id=params[:id]
     @sprint=Sprint.where(project_id: project_id).all
+    @completed = Project.find(project_id).sprints.joins(:tasks).where(tasks: {status: "Done"}).count
+    @ongoing = Project.find(project_id).sprints.joins(:tasks).count - @completed
   end
 
   def new

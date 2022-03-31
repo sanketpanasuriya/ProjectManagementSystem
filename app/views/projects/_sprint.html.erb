@@ -1,6 +1,10 @@
+<%  task_percentage = 0
+    completed = sprint.tasks.where("tasks.status = 'Done'").count
+    total = sprint.tasks.count
+    task_percentage = (completed.to_f/total)*100 unless total == 0
+%>
 
-
-  <div class="col-sm-6 my-4" id="<%=dom_id sprint%>">
+  <div class="col-3 my-4" id="<%=dom_id sprint%>">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title h2">   <%= sprint.title %></h4>
@@ -10,6 +14,10 @@
                 ...
             <%end%>
         </p>
+        <p class='card-text text-info'>Total Task: <%= total%>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: <%=task_percentage%>%" aria-valuenow="<%= task_percentage%>%" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
         <small><%= sprint.created_at.localtime %></small><br>
         <div class="btn-group btn-group-sm">
             <%= link_to "View Task", project_task_index_path(project), class:"btn btn-success"%>
