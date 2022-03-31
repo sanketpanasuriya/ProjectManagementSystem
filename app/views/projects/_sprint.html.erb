@@ -10,7 +10,7 @@
                 ...
             <%end%>
         </p>
-        <small><%= sprint.created_at.localtime. %></small><br>
+        <small><%= sprint.created_at.localtime %></small><br>
         <div class="btn-group btn-group-sm">
             <%= link_to "View Task", project_task_index_path(project), class:"btn btn-success"%>
             <%= link_to "Edit Sprint", edit_project_sprint_path(project_id: project,id:sprint), class:"btn btn-primary" if can? :update, @project%>
