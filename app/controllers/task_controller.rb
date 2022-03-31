@@ -3,7 +3,7 @@ class TaskController < ApplicationController
     before_action :set_task, only: %i[ edit show ]
     @@status = [['Created'],['On Going'], ['Submitted'], ['Re-Submitted'], ['Rejected'], ['Done']]
     before_action :checking_authenticity_show, only: %i[ show index]
-    before_action :checking_authenticity_edit, only: %i[ edit update destroy]
+    before_action :checking_authenticity_edit, only: %i[ edit destroy]
     before_action :checking_authenticity_new, only: %i[ new create]
     def index
         @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]})

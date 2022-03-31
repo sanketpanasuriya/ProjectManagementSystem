@@ -38,7 +38,7 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
 
         params[:selected_value]=@user.roles.first.id
-        
+        render :file => 'public/403.html' unless can? :edit, @user
 
         @roles =[]
         Role.select("id","name").all.each {|v| @roles << [v.name, v.id]}

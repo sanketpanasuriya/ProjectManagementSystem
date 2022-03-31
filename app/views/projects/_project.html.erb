@@ -1,13 +1,26 @@
+  <%
+    task_percentage = 0
+    completed = project.sprints.joins(:tasks).select("tasks.id").where("tasks.status = 'Done'").count
+    total = project.sprints.joins(:tasks).select("tasks.*").count
+    task_percentage = (completed.to_f/total)*100 unless total == 0
+  %>
 
   <div class="col-sm-6 " id="<%= dom_id project %>">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title h2">   <%= project.name %></h4>
         <p class="card-text text-muted">
-        <%= project.description[1..100] %>
+        <%= project.description[0..100] %>
         <%if project.description.length>=100%>
           ...
         <%end%>
+        </p>
+        
+        <p class='card-text text-info'>Total Task: <%= total%>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: <%=task_percentage%>%" aria-valuenow="<%= task_percentage%>%" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <p class="card-text text-">
         </p>
         <%= link_to "Show this project", project, class:"btn btn-primary" %>
       </div>
