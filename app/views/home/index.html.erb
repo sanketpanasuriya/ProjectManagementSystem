@@ -20,7 +20,7 @@
       <%end%>
      
     </p>
-     <%= link_to "Edit Role", edit_user_path(user),class:"btn btn-primary" %>
+     <%= link_to "Edit User", edit_user_path(user),class:"btn btn-primary" if current_user.has_role? "admin" %>
    
    </div>
 </div>

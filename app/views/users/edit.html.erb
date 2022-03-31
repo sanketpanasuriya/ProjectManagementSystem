@@ -2,8 +2,7 @@
 <h2 class="head-text mt-6">Update User</h2>   
 
 <%= form_with model: @user,class:"floatingInput",:url => {:action => :update}  do |form| %>
-  <%= render "edit",  form: form unless (can? :change_user_role, User) %>
-  <%= render "edit", form: form if (can? :change_user_role, User) && current_user.id == @user.id %>
+  <%= render "edit",  form: form %>
   <% if can? :change_user_role, User%>
   <div class="field" style = "margin-top: 15px">
      <%= form.label :roles,class:"form-label" %> 
