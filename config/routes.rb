@@ -60,4 +60,5 @@ Rails.application.routes.draw do
   end
  
   root "home#index"
+  get 'employee', to: 'home#employee'
 end
