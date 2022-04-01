@@ -1,47 +1,53 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <p style="color: green"><%= notice %></p>
 
-<div id="projects">
-<h1 style="text-align:center">Projects</h1>
-<%= link_to "New project", new_project_path,class:"btn btn-warning" if can? :create, Project %>
-<canvas id="myChart" style="width:50%;max-width:600px"></canvas>  
-  <div class="row p-5">
-
-<% @projects.each do |project| %>
-      <% 
-        unless current_user.has_role? "employee"
-          next unless  can? :show, project 
-        end %>
-      <%= render project %>
-    <% end %>
-</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-6">
+      <h1>Projects</h1>
+    </div>
+    <div class="col-6 text-right">
+      <%= link_to 'New project', new_project_path, class: 'btn btn-outline-primary' if can? :create, Project %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <canvas id="myChart" style="width:50%;max-width:600px"></canvas>
+    </div>
+    <div class="col-9">
+      <% @projects.each do |project| %>
+        <%
+          unless current_user.has_role? "employee"
+            next unless  can? :show, project
+          end %>
+          <%= render project %>
+        <% end %>
+    </div>
+  </div>
 </div>
 
 <% completed = Project.where(status: "completed").count
-  on_going = @projects.count - completed
-%>
-<script>
-var xValues = ["In Progess", "Completed"];
-var yValues = [<%=on_going%>, <%= completed%>];
-var barColors = [
-  "#b91d47",
-  "#00aba9"
-];
+  on_going = @projects.count - completed %>
 
-new Chart("myChart", {
-  type: "pie",
-  data: {
-    labels: xValues,
-    datasets: [{
-      backgroundColor: barColors,
-      data: yValues
-    }]
-  },
-  options: {
-    title: {
-      display: true,
-      text: "All Projects Status"
+<script>
+  var xValues = ["In Progess", "Completed"];
+  var yValues = [<%=on_going%>, <%= completed%>];
+  var barColors = ["#b91d47", "#00aba9"];
+
+  new Chart("myChart", {
+    type: "pie",
+    data: {
+      labels: xValues,
+      datasets: [{
+        backgroundColor: barColors,
+        data: yValues
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: "All Projects Status"
+      }
     }
-  }
-});
+  });
 </script>

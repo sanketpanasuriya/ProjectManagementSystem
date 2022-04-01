@@ -8,21 +8,26 @@
   <div class="col-sm-6 " id="<%= dom_id project %>">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title h2">   <%= project.name %></h4>
+        <h4 class="card-title h2"><%= project.name %></h4>
         <p class="card-text text-muted">
-        <%= project.description[0..100] %>
-        <%if project.description.length>=100%>
-          ...
-        <%end%>
+          <%=h truncate(project.description, length: 100) %>
         </p>
-        
         <p class='card-text text-info'>Total Task: <%= total%>
         <div class="progress">
           <div class="progress-bar" role="progressbar" style="width: <%=task_percentage%>%" aria-valuenow="<%= task_percentage%>%" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         <p class="card-text text-">
         </p>
-        <%= link_to "Show this project", project, class:"btn btn-primary" %>
+        <div class="row">
+          <div class="col-12">
+            <%= link_to 'View', project,  class: "btn btn-outline-info" %>
+            <%= link_to 'Edit', edit_project_path(project),  class: 'btn btn-outline-warning' if can? :update, project %>
+            <%= link_to "Delete", project, method: :delete, class: 'btn btn-outline-danger', data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } if can? :destroy, project %>
+          </div>
+        </div>
       </div>
     </div>
   </div>
