@@ -22,8 +22,9 @@
       <%end%>
      
     </p>
+      <% if can? :change_user_role, User%>
      <%= link_to "Edit Role", edit_user_path(user),class:"btn btn-primary" %>
-   
+   <%end%>
    </div>
 </div>
 

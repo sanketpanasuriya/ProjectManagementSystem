@@ -22,22 +22,35 @@ class ProjectsController < ApplicationController
 
   def new
     @client =[]
+    @manager=[]
     User.joins(:roles).where(roles: {name: "customer"}).select(:id, :name).each {|v| @client << [v.name, v.id]}
     @project = Project.new
+    if(current_user.roles.first.name=="admin")
+      User.joins(:roles).where(roles: {name: "manager"}).select(:id, :name).each {|v| @manager << [v.name, v.id]}
+    else
+      @manager<<current_user.id
+    end
   end
 
 
   def edit
     @project = Project.find(params[:id])
     params[:selected_value]=@project.client_id
+    params[:selected_manager]=@project.creator_id
+    
     @client = []
+    @manager=[]
     User.joins(:roles).where(roles: {name: "customer"}).select(:id, :name).each {|v| @client << [v.name, v.id]}
+    if(current_user.roles.first.name=="admin")
+      User.joins(:roles).where(roles: {name: "manager"}).select(:id, :name).each {|v| @manager << [v.name, v.id]}
+    else
+      @manager<<current_user.id
+    end
   end
 
 
   def create
     @project = Project.new(project_params)
-    @project.creator_id = current_user.id
     @project.status = "Created"
     params[:selected_value]=@project.client_id
     respond_to do |format|
@@ -82,10 +95,9 @@ class ProjectsController < ApplicationController
   end
   def destroy
     @project.destroy
-    respond_to do |format|
-      format.html { redirect_to projects_url, notice: "Project was successfully destroyed." }
-      format.json { head :no_content }
-    end
+    
+      redirect_to projects_url ,notice: "Project was successfully destroyed."
+    
   end
   def project_status
     @project=Project.find(params[:format])
@@ -98,7 +110,11 @@ end
   private
   
     def set_project
-      @project = Project.find(params[:id])
+      @project= Project.find_by(id:params[:id])
+      if(@project==nil)
+        redirect_to projects_path
+      end
+      
     end
 
     def set_project_by_format
@@ -106,7 +122,7 @@ end
     end
 
     def project_params
-      params.require(:project).permit(:name, :description, :client_id, :endingdate)
+      params.require(:project).permit(:name, :description, :client_id, :endingdate,:creator_id)
     end
 
     def checking_authenticity_show

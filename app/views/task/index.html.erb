@@ -10,7 +10,10 @@
     <th>Employee Name</th>
     <th>Employee Email</th>
     <th>status</th>
+    
     <th> Action </th>
+
+    <th> Hours </th>  
   </tr>
   <% @tasks.each do |task| 
         employee = User.find(task.user_id)
@@ -43,7 +46,10 @@
                     turbo_confirm: "Are you sure?"
                   } if can? :destroy, task%>
     </td>
-    
+    <td>
+      <%= @hours[task.id] %>
+
+    </td>
   </tr>
     
   <% end %>

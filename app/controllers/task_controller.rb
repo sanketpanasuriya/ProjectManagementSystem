@@ -3,10 +3,25 @@ class TaskController < ApplicationController
     before_action :set_task, only: %i[ edit show ]
     @@status = [['Created'],['On Going'], ['Submitted'], ['Re-Submitted'], ['Rejected'], ['Done']]
     before_action :checking_authenticity_show, only: %i[ show index]
-    before_action :checking_authenticity_edit, only: %i[ edit update destroy]
+    before_action :checking_authenticity_edit, only: %i[ edit ]
     before_action :checking_authenticity_new, only: %i[ new create]
     def index
         @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]})
+        @hours={}
+        @tasks.each do|x|
+            
+            task_h=Hour.find_by(task_id:x.id)
+            if(task_h==nil)
+                @hours[x.id]="Not Started"
+            elsif(task_h.ending==nil)
+                @hours[x.id]="On Going"
+            else
+                @hours[x.id]=((task_h.ending-task_h.starting)/ 1.hour).round(2)
+            end
+        end
+        # sql="SELECT * FROM #{@tasks} LEFT JOIN Hour ON @tasks.id=Hour.task_id;"
+        # p @tasks.left_outer_joins(:hours).select("@tasks.id,hours.starting")
+        # p execute_statement(sql)
     end
 
     def show 
@@ -37,6 +52,7 @@ class TaskController < ApplicationController
     end
 
     def edit
+        # checking_authenticity_edit(:edit)
         @task = Task.find(params[:id])
         @employees = getEmployee
         @sprints = getSprint
@@ -47,17 +63,23 @@ class TaskController < ApplicationController
     end
 
     def update
+
+        # checking_authenticity_edit(:update)
         @task = Task.find(params[:id])
+    
         params[:sprint_id]=@task.sprint.id
         params[:employee_id] = @task.user_id
         params[:status_id] = @task.status
         @employees = getEmployee
         @sprints = getSprint
         @status = @@status
-
+        project_id=params[:project_id]
+        p @task
         respond_to do |format|
             if @task.update(task_params)
-              format.html { redirect_to project_task_index_path, notice: "Task was successfully updated." }
+                redirect_to (project_task_index_path) 
+                return
+            #   format.html { redirect_to project_task_index_path(project_id: project_id), notice: "Task was successfully updated." }
             else
               format.html { render :project_task_index_path, status: :unprocessable_entity }
             end
@@ -65,14 +87,21 @@ class TaskController < ApplicationController
     end
 
     def destroy
+
         @task =  Task.find(params[:id])
-        respond_to do |format|
-            if @task.destroy
-                format.html { redirect_to project_task_index_path, notice: "Task was successfully destroyed." }
-            else
-                format.html { render :new, status: :unprocessable_entity }
+         if !( can? :destroy, @task)
+            render :file => 'public/403.html'
+            # return 
+         else
+            respond_to do |format|
+                if @task.destroy
+                    format.html { redirect_to project_task_index_path, notice: "Task was successfully destroyed." }
+                else
+                    format.html { render :new, status: :unprocessable_entity }
+                end
             end
         end
+           
     end
 
     private 
@@ -107,5 +136,14 @@ class TaskController < ApplicationController
         def checking_authenticity_new
             render :file => 'public/403.html' unless can? :edit, @project
         end
-
+        # this fot exicuting sql 
+        def execute_statement(sql)
+            results = ActiveRecord::Base.connection.execute(sql)
+          
+            if results.present?
+              return results
+            else
+              return nil
+            end
+        end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_28_062542) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_31_141309) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -18,6 +18,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_28_062542) do
     t.bigint "project_id"
     t.integer "total_cost"
     t.index ["project_id"], name: "index_costs_on_project_id"
+  end
+
+  create_table "hours", force: :cascade do |t|
+    t.datetime "starting"
+    t.datetime "ending"
+    t.bigint "task_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["task_id"], name: "index_hours_on_task_id"
   end
 
   create_table "issues", force: :cascade do |t|
@@ -110,6 +119,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_28_062542) do
   end
 
   add_foreign_key "costs", "projects"
+  add_foreign_key "hours", "tasks"
   add_foreign_key "issues", "projects"
   add_foreign_key "issues", "users", column: "creator_id"
   add_foreign_key "issues", "users", column: "employee_id"

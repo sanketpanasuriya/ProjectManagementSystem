@@ -1,8 +1,7 @@
 <h1>Update User</h1>
 
 <%= form_with model: @user,:url => {:action => :update}  do |form| %>
-  <%= render "edit",  form: form unless (can? :change_user_role, User) %>
-  <%= render "edit", form: form if (can? :change_user_role, User) && current_user.id == @user.id %>
+  <%= render "edit", form: form if  current_user.id == @user.id %>
   <% if can? :change_user_role, User%>
   <div class="field">
      <%= form.label :roles %> <br>
