@@ -1,24 +1,28 @@
+
+<div class="container" style="width:2000px">
 <h1>Tasks</h1>
 <p style="color: green"><%= notice %></p>
-<%= link_to "Add New Task", new_project_task_path if can? :new, Task%>
+<div class="btn" style="background-color: #b4b4b4">
+<%= link_to "Add New Task", new_project_task_path if can? :new, Task %>
+</div>
 
 <br><br>
-<table border="10" frame="VOID" rules="ALL">
-  <tr>
-    <th>Task Name</th>
-    <th>Description</th>
-    <th>Employee Name</th>
-    <th>Employee Email</th>
-    <th>status</th>
+<table style="text-align: center; border: 1px solid black" frame="VOID" rules="ALL">
+  <tr  style="background-color: #DCDCDC;">
+    <th style="padding: 10px">Task Name</th>
+    <th style="padding: 10px">Description</th>
+    <th style="padding: 10px">Employee Name</th>
+    <th style="padding: 10px">Employee Email</th>
+    <th style="padding: 10px">status</th>
     
-    <th> Action </th>
+    <th style="padding: 10px"> Action </th>
 
-    <th> Hours </th>  
+    <th style="padding: 10px"> Hours </th>  
   </tr>
   <% @tasks.each do |task| 
         employee = User.find(task.user_id)
   %>
-  <tr>
+  <tr style="background-color: #FFF0F5; padding:10px">
     <td>
       <%= task.title %>
       <%
@@ -26,27 +30,30 @@
         params[:task] = task.id
       %>
     </td>
-     <td>
+     <td style="padding:10px">
       <%= task.description %>
     </td>
-    <td>
+    <td style="padding:10px">
       <%= employee.name%>
     </td>
-    <td>
+    <td style="padding:10px">
       <%= employee.email %>
     </td>
-    <td>
+    <td style="padding:10px">
       <%= task.status %>
     </td>
-    <td>
-      <%= link_to "View", project_task_path(id: task) if can? :show, task %>
-      <%= link_to "Edit", edit_project_task_path(id: task) if can? :edit, task %>
+    <td style="padding:10px">
+     <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
+      <%= link_to "View", project_task_path(id: task) if can? :show, task  %></span>
+      <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
+      <%= link_to "Edit", edit_project_task_path(id: task) if can? :edit, task %></span>
+     <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
       <%= link_to "Delete", [task.sprint.project, task] , data: {
                     turbo_method: :delete,
                     turbo_confirm: "Are you sure?"
-                  } if can? :destroy, task%>
+                  } if can? :destroy, task%></span>
     </td>
-    <td>
+    <td >
       <%= @hours[task.id] %>
 
     </td>
@@ -55,3 +62,4 @@
   <% end %>
 
 </table>
+</div>

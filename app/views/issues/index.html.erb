@@ -1,17 +1,18 @@
 <p style="color: green"><%= notice %></p>
 
-<%= link_to "New issue", new_issue_path(@project_id) %>
-<h1>Issues</h1>
+
+    <div class="container">
+<%= link_to "New issue", new_issue_path(@project_id) ,:class => "btn btn-primary my-4"%>
+<h3>All Issues</h3>
 
 <div id="issues">
   <% @issues.each do |issue| %>
     <%= render issue %>
-    <p>
-      <%= link_to "Show this issue", issue %>
-      |<%= link_to "Assign this issue", assign_issue_show_issues_path(issue) %>
-      
-      
+    <p style="padding-left: 50px; padding-top: 10px">
+      <%= link_to "Show this issue", issue , :class => "btn btn-primary" %>
+      <%= link_to "Assign this issue", assign_issue_show_issues_path(issue),:class => "btn btn-primary" %>
+   
     </p>
   <% end %>
 </div>
-
+</div>

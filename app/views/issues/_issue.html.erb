@@ -1,32 +1,46 @@
-<div id="<%= dom_id issue %>">
-  <p>
-    <strong>Project:</strong>
-    <%= issue.project_id %>
-  </p>
 
-  <p>
-    <strong>Title:</strong>
-    <%= issue.title %>
-  </p>
+    <div class="container">
 
-  <p>
-    <strong>Description:</strong>
-    <%= issue.description %>
-  </p>
+       
+<div class="card" style="width: auto;  border-radius: 25px;">
+  <div class="card-body " style="background-color: #b4b4b4 ; border-radius: 25px;">
 
-  <p>
-    <strong>Type:</strong>
-    <%= issue.issue_type %>
-  </p>
+                  <div id="<%= dom_id issue %>">
+                    
+                  <h3 class="card-title">
+                    <p>
+                      <strong>Title:</strong>
+                      <%= issue.title %>
+                    </p>
+                    </h3>
+                      <p>
+                      <strong>Project:</strong>
+                      <%= issue.project_id %>
+                    </p>
+                    <p>
+                      <strong>Description:</strong>
+                      <%= issue.description %>
+                    </p>
 
-  <p>
-    <strong>Status:</strong>
-    <%= issue.status %>
-  </p>
+                    <p>
+                      <strong>Type:</strong>
+                      <%= issue.issue_type %>
+                    </p>
 
-  <p>
-    <strong>Employee:</strong>
-    <%= issue.employee_id %>
-  </p>
+                    <p>
+                      <strong>Status:</strong>
+                      <%= issue.status %>
+                    </p>
 
+                    <p>
+                      <strong>Employee:</strong>
+                      <%= issue.employee_id %>
+                    </p>
+
+                  </div>
+    
+    
+  </div>
+</div>
+    
 </div>
