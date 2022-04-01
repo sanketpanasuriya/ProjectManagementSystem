@@ -1,29 +1,37 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render "task", task: @task%>
 
+
+<div class="container">
 <div>
-  <%= link_to "Edit this Task", edit_project_task_path(id: @task) %> |
-  <%= link_to "Back to Tasks", project_task_index_path(@task.sprint.project) %> 
-
-  <%= button_to "Destroy this Task", [@task.sprint.project, @task], method: :delete if can? :destroy, @task%>
-    
+  <%= link_to "Edit this Task", edit_project_task_path(id: @task)  ,:class => "btn btn-primary m-2"%> 
+  <%= link_to "Back to Tasks", project_task_index_path(@task.sprint.project) ,:class => "btn btn-primary m-2" %> 
+  <span class="btn btn-danger">
+  <%= link_to "Destroy this Task" ,[@task.sprint.project, @task], method: :delete if can? :destroy, @task%>
+    </span>
 </div>
+<%= render "task", task: @task%>
 <br>
-<div>
+
+<div class="card" style="width: auto;  border-radius: 25px;">
+  <div class="card-body " style="background-color: #e0ffff; border-radius: 25px;">
+<div class="p-2">
     <strong>Employee Name : </strong>
     <%= @task.user.name%>
 </div>
-<div>
+<div class="p-2">
     <strong>Email : </strong>
     <%= @task.user.email%>
 </div>
-<div>
+<div class="p-2">
     <strong>Due Data : </strong>
     <%= @task.due_date%>
 </div>
-<div>
+<div class="p-2">
     <strong>Status : </strong>
     <%= @task.status%>
 </div>
 <br>
+</div>
+</div>
+</div>
