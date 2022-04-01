@@ -63,7 +63,7 @@ class UsersController < ApplicationController
         current_password = params['user']['current_password']
         current_password = current_password.blank? ? "": current_password
 
-
+        
         if current_password != ""
           if @user.update_with_password(account_update_params_with_password)
             redirect_to action: "index" 
@@ -72,9 +72,16 @@ class UsersController < ApplicationController
           end
         elsif (current_user.roles.first.name == "admin" && params[:user][:id] != current_user.id)
           UserMailer.with(user: @user, old_role: old_role).role_changed.deliver_later
-          redirect_to action: "index" 
+          if @user.update(account_update_params_without_password)
+          
+            redirect_to action: "index" 
+          else
+            render :edit, status: :unprocessable_entity
+          end
+           
         else
           if @user.update(account_update_params_without_password)
+          
             redirect_to action: "index" 
           else
             render :edit, status: :unprocessable_entity

@@ -13,7 +13,7 @@ class Ability
 
     can [:edit,:update,:destroy], Issue,creator_id: user.id
     if user.has_role? "admin"
-      can [:create_user,:destroy, :new], User #Admin Can not update profile for other user  
+      can [:create_user,:destroy, :new,:edit], User #Admin Can not update profile for other user  
       can :manage, Role
       can :manage, Project
       can :manage, Task

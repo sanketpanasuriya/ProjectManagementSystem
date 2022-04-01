@@ -12,7 +12,6 @@ class User < ApplicationRecord
   has_many :creator_projects, class_name: "Project", foreign_key: "creator_id"
   has_many :client_projects, class_name: "Project", foreign_key: "client_id"
   has_many :taks, class_name: "Task"
-  
   def update_with_password(user_params)
     current_password = user_params.delete(:current_password)
 

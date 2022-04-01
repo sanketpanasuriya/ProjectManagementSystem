@@ -32,7 +32,14 @@
     <%= form.label :client, style: "display: block",class:"form-label" %>
      <%= form.select :client_id , @client, :selected => params[:selected_value] %>
   </div>
-
+  <%if(current_user.roles.first.name=="admin")%>
+      <div>
+        <%= form.label :manager, style: "display: block" %>
+        <%= form.select :creator_id , @manager, :selected => params[:selected_manager] %>
+    </div>
+  <% else %>
+    <%=form.hidden_field  :creator_id,value:current_user.id%>
+    <%end%>
   <div>
     <%= form.submit:class=>"btn btn-primary" %>
   </div>
