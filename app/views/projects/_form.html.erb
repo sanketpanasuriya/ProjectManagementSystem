@@ -1,3 +1,4 @@
+
 <%= form_with(model: project) do |form| %>
   <% if project.errors.any? %>
     <div style="color: red">
@@ -13,22 +14,22 @@
 
   <div>
   <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+    <%= form.label :name, style: "display: block",class:"form-label" %>
+    <%= form.text_field :name,class:"form-control" %>
   </div>
 
   <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
+    <%= form.label :description, style: "display: block",class:"form-label" %>
+    <%= form.text_area :description,class:"form-control" %>
   </div>
 
   <div>
-    <%= form.label "Expected Ending date", style: "display: block" %>
-    <%= form.date_select :endingdate %>
+    <%= form.label "Expected Ending date", style: "display: block",class:"form-label" %>
+    <%= form.date_select :endingdate,class:"form-control" %>
   </div>
 
   <div>
-    <%= form.label :client, style: "display: block" %>
+    <%= form.label :client, style: "display: block",class:"form-label" %>
      <%= form.select :client_id , @client, :selected => params[:selected_value] %>
   </div>
   <%if(current_user.roles.first.name=="admin")%>
@@ -40,6 +41,6 @@
     <%=form.hidden_field  :creator_id,value:current_user.id%>
     <%end%>
   <div>
-    <%= form.submit %>
+    <%= form.submit:class=>"btn btn-primary" %>
   </div>
 <% end %>
