@@ -1,6 +1,6 @@
 class IssuesController < ApplicationController
   before_action :set_issue, only: %i[ show edit update destroy ]
-  before_action :checking_authenticity_assign,only: %i[assign_issue_show assign_issue] 
+  before_action :checking_authenticity_assign,only: %i[assign_issue_show] 
   
   
   @@status = [['Created'],['On Going'], ['Submitted'], ['Re-Submitted'], ['Rejected'], ['Done']]

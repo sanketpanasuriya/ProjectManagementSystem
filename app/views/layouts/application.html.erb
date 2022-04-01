@@ -24,6 +24,20 @@
       
       </div>
   </div>
+  <div class="mx-2">
+    Hi.. <%=current_user.name%>
+      <%if(current_user.roles.first.name=="manager")%>
+      <span class="badge badge-pill badge-primary">Manager</span>
+      <% elsif (current_user.roles.first.name=="admin") %>
+      <span class="badge badge-pill badge-danger">Admin</span>
+      <% elsif (current_user.roles.first.name=="customer") %>
+      <span class="badge badge-pill badge-secondary">Customer</span>
+      <% else %>
+      <span class="badge badge-pill badge-info">Employee</span>
+      <%end%>
+     
+    
+  </div>
   <%= link_to "Logout", destroy_user_session_path, data: {
     turbo_method: :delete,
     turbo_confirm: "Are you sure for logout?"

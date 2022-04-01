@@ -7,24 +7,30 @@
 
                   <div id="<%= dom_id issue %>">
                     
-                  <h3 class="card-title">
+                  <h2 class="card-title">
                     <p>
-                      <strong>Title:</strong>
-                      <%= issue.title %>
+                      <%= issue.title.capitalize %>
                     </p>
-                    </h3>
+                    </h2>
                       <p>
-                      <strong>Project:</strong>
-                      <%= issue.project_id %>
+                      <strong>Project :</strong>
+                      <%=Project.find_by(id:issue.project_id).name.capitalize %>
                     </p>
                     <p>
                       <strong>Description:</strong>
-                      <%= issue.description %>
+                      <%= issue.description.capitalize[0..100] %>
                     </p>
 
                     <p>
                       <strong>Type:</strong>
-                      <%= issue.issue_type %>
+                      <% if (issue.issue_type=="Bug") %>
+                      <span class="badge badge-pill badge-warning">Bug</span>
+                      <% elsif (issue.issue_type=="Error") %>
+                      <span class="badge badge-pill badge-danger">Error</span>
+                      <%else%>
+                        <span class="badge badge-pill badge-info">issue.issue_type</span>
+                      
+                      <%end%>
                     </p>
 
                     <p>
@@ -34,7 +40,13 @@
 
                     <p>
                       <strong>Employee:</strong>
-                      <%= issue.employee_id %>
+                      <%if issue.employee_id==nil%>
+                      <span style="color:red">Not Assign</span>
+                      <%else%>
+                      <span style="color:green">
+                      <%= User.find_by(id:issue.employee_id).name %></span>
+                      <%end%>
+                      
                     </p>
 
                   </div>
