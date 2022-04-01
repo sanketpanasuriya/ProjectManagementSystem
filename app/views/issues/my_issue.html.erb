@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
-
-<%= link_to "New issue", new_issue_path(@project_id) %>
+<div class="container">
+<%= link_to "New issue", new_issue_path(@project_id),:class => "btn btn-primary m-2" %>
 <h1>My Issues</h1>
 
 <div id="issues">
@@ -13,5 +13,6 @@
       
     </p>
   <% end %>
+</div>
 </div>
 
