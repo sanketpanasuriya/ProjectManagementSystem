@@ -1,16 +1,3 @@
-<div class = "container" style ="margin-top: 30px">
-<h2 class="head-text mt-6">Update User</h2>   
-
-<%= form_with model: @user,class:"floatingInput",:url => {:action => :update}  do |form| %>
-  <%= render "edit",  form: form %>
-  <% if can? :change_user_role, User%>
-  <div class="field" style = "margin-top: 15px">
-     <%= form.label :roles,class:"form-label" %> 
-    <%= form.select(:roles, options_for_select( @roles,  params[:selected_value] ), {:class=>"form-select"} )%>
-   </div>
-   <% end %>
-<div>
-    <%= form.submit:class=> "btn btn-primary" %>
-  </div>
-<% end %>
+<div class = "container mt-5">
+  <%= render "form",  user: @user %>
 </div>
