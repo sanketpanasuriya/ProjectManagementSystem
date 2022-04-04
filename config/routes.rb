@@ -41,7 +41,11 @@ Rails.application.routes.draw do
       end
     end
     
-    resources :task
+    resources :task do
+      collection do 
+        put "update_task_status"
+      end
+    end
     collection do
 
       patch "save_review_rating"

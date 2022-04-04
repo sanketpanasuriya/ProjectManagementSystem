@@ -40,13 +40,26 @@
       <%= employee.email %>
     </td>
     <td style="padding:10px">
-      <%= task.status %>
+    <% if can? :edit, task%>
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="changeStatusDropDown_<%= task.id%>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= task.status%>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="changeStatusDropDown_<%= task.id%>">
+          <% @status.each do |status| %>
+            <%=  link_to(status[0], "#", {:class => "dropdown-item", "task_id" => task.id })%>
+          <% end %>
+      </div>
+      <% else %>
+      <%= task.status%>
+      <% end %>
+  </div>
     </td>
     <td style="padding:10px">
      <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
       <%= link_to "View", project_task_path(id: task) if can? :show, task  %></span>
       <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
-      <%= link_to "Edit", edit_project_task_path(id: task) if can? :edit, task %></span>
+      <%= link_to "Edit", edit_project_task_path(id: task) if (can? :edit, task) && (['manager', 'admin'].include? current_user.roles.first) %></span>
      <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
       <%= link_to "Delete", [task.sprint.project, task] , data: {
                     turbo_method: :delete,
@@ -63,3 +76,25 @@
 
 </table>
 </div>
+
+<script>
+$(".dropdown-item").click(function(){
+  // alert($(this).text());
+  form = $(this);
+  $.ajax({
+    url: "task/update_task_status",
+    type: "put",
+    dataType: "json",
+    data:  {task: {status: $(this).text(), id: form.attr('task_id')} },
+    success: function(result) {
+      button = $("#"+$(form).parent().attr('aria-labelledby'));
+     button.fadeOut(800, function(){
+        button.html(result["status"]).fadeIn().delay(850);
+
+      });
+    }
+  });
+
+      return false;
+  });
+</script>
