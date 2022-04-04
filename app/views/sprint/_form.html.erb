@@ -1,3 +1,5 @@
+<div  style="width: 500px; padding-top: 50px;" >
+
 <%= form_with(model: sprint,:url => {:action => route_path}) do |form| %>
   <% if sprint.errors.any? %>
     <div style="color: red">
@@ -13,24 +15,31 @@
 
   <div>
           <%= form.hidden_field :project_id %>
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+
+  <div class="col-md-12">
+    <%= form.label :title, style: "display: block",:class=>"form-label" %>
+    <%= form.text_field :title ,:class => 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label :description, style: "display: block" %>
-    <%= form.text_area :description %>
+  
+  <div class="col-md-12">
+    <%= form.label :description, style: "display: block",:class=>"form-label" %>
+    <%= form.text_area :description ,:class => 'form-control' %>
   </div>
 
-  <div>
-    <%= form.label "Expected Ending date", style: "display: block" %>
-    <%= form.date_select :expected_end_date %>
+  
+  <div class="col-md-12">
+    <%= form.label "Expected Ending date", style: "display: block",:class=>"form-label" %>
+    <%= form.date_select :expected_end_date ,:class => 'form-control' %>
   </div>
   <div>
-    <%= form.submit %>
+  <div class="col-md-4 my-4">
+   
+   <%= form.submit :class=>"btn btn-primary"%>
+    
   </div>
 <% end %>
 
 <br>
 
+</div>
