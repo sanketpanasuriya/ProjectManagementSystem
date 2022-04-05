@@ -1,13 +1,14 @@
 class TaskController < ApplicationController
     before_action :set_project,except:[:change_status]
+
     before_action :set_task, only: %i[ edit show ]
     @@status = [['Created'],['On Going'], ['Submitted'], ['Re-Submitted'], ['Rejected'], ['Done']]
     before_action :checking_authenticity_show, only: %i[ show index]
     before_action :checking_authenticity_edit, only: %i[ edit ]
     before_action :checking_authenticity_new, only: %i[ new create]
     def index
-        @status=@@status
-        @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]})
+        @status = @@status
+        @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]}).order(created_at: :asc)
         @hours={}
         @tasks.each do|x|
             
@@ -78,9 +79,10 @@ class TaskController < ApplicationController
         p @task
         respond_to do |format|
             if @task.update(task_params)
-                redirect_to (project_task_index_path) 
-                return
-            #   format.html { redirect_to project_task_index_path(project_id: project_id), notice: "Task was successfully updated." }
+                # redirect_to (project_task_index_path) 
+                # return
+              format.html { redirect_to project_task_index_path(project_id: project_id), notice: "Task was successfully updated." }
+              format.js
             else
               format.html { render :project_task_index_path, status: :unprocessable_entity }
             end
