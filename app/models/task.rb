@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Task < ApplicationRecord
+  acts_as_paranoid
   belongs_to :sprint, class_name: 'Sprint'
   belongs_to :user, class_name: 'User'
   has_many :hours,class_name: "Hour" ,dependent: :delete_all

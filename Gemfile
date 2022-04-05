@@ -5,6 +5,8 @@ ruby "3.0.0"
 # for bootstrap
 gem 'bootstrap', '~> 4.3.1'
 
+# for soft delete
+gem 'paranoia', git: 'git@github.com:rubysherpas/paranoia.git', branch: 'core'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.0.2", ">= 7.0.2.3"
 
