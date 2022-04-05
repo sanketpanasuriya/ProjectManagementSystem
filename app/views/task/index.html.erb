@@ -58,22 +58,22 @@
     </td>
     <td style="padding:10px">
     <% if can? :show, task %>
-     <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
-      <%= link_to "View", project_task_path(id: task)%></span> 
+    
+      <%= link_to "View", project_task_path(id: task) , style:"background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px"%></span> 
     <% end
       if (can? :edit, task) && (['manager', 'admin'].include? current_user.roles.first) 
     %>
-      <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
-      <%= link_to "Edit", edit_project_task_path(id: task)%></span>
+    
+      <%= link_to "Edit", edit_project_task_path(id: task) ,style:"background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px"%>
 
       <% end
         if can? :destroy, task
       %>
-     <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
+    
       <%= link_to "Delete", [task.sprint.project, task] , data: {
                     turbo_method: :delete,
                     turbo_confirm: "Are you sure?"
-                  } %></span>
+                  } , style:"background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px" %>
     </td>
     <% end%>
     <td >
