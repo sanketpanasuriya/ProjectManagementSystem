@@ -15,6 +15,7 @@ Rails.application.routes.draw do
 
 
   patch 'task/change_status', action: :change_status, controller: 'task'
+  get 'schedule', to: 'schedule#index'
 
   # patch "task/change_status" , to:"tasks#change_status"
   

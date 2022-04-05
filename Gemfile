@@ -33,6 +33,7 @@ gem "jbuilder"
 gem "rolify"
 gem "devise"
 gem "cancan"
+gem "simple_calendar"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 

@@ -1,0 +1,31 @@
+<%= month_calendar attribute: :created_at, end_attribute: :due_date, events: @tasks_created do |date,tasks| %>
+  <%= date.day %>
+  <% tasks.each do |task| %>
+    <div>
+        <% if task.status == "Done"%>
+        <del>
+            <%= link_to task.title, project_task_path(project_id: task.sprint.project,id: task), :class=> "text-"+@status[task.status] if can? :show, task%>
+        </del>
+        <% else%>
+        <%= link_to task.title, project_task_path(project_id: task.sprint.project,id: task), :class=> "text-"+@status[task.status]  if can? :show, task%>
+        <%end%>
+    </div>
+  <% end %>
+<% end %>
+
+<div>
+<table class="table d-flex justify-content-center my-4">
+    <tr>
+    <% @status.each do |k,v|%>
+        <td width="50px" class="bg-<%= v%>"></td>
+        <td><%=k%></td>
+    <% end %>
+    </tr>
+<table>
+</div>
+
+<script>
+$(".calendar-title").addClass("btn")
+$(".calendar-heading").children("a").addClass("btn btn-primary")
+$(".calendar-heading").addClass("d-flex justify-content-center my-4")
+</script>
