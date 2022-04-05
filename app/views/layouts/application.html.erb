@@ -21,6 +21,7 @@
       <%= link_to "Home" , root_path , class: "nav-link active" %>
       <%= link_to "Edit Profile", edit_user_path(current_user),class: "nav-link active" if can? :update, current_user %>
       <%= link_to "Project", projects_path,class: "nav-link active" %>
+      <%= link_to "schedule", schedule_path, class: "nav-link active"%>
     </div>
   </div>
   <div class="mx-2">
