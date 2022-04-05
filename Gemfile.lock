@@ -1,3 +1,11 @@
+GIT
+  remote: git@github.com:rubysherpas/paranoia.git
+  revision: c0d1d9a3478bea09feb529d2dc0eb8c9b8d7e805
+  branch: core
+  specs:
+    paranoia (2.6.0)
+      activerecord (>= 5.1, < 7.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -275,6 +283,7 @@ DEPENDENCIES
   devise
   importmap-rails
   jbuilder
+  paranoia!
   pg
   puma (~> 5.0)
   rails (~> 7.0.2, >= 7.0.2.3)

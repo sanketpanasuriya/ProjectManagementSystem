@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_31_141309) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_05_084839) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -39,7 +39,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_141309) do
     t.bigint "employee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
     t.index ["creator_id"], name: "index_issues_on_creator_id"
+    t.index ["deleted_at"], name: "index_issues_on_deleted_at"
     t.index ["employee_id"], name: "index_issues_on_employee_id"
     t.index ["project_id"], name: "index_issues_on_project_id"
   end
@@ -55,8 +57,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_141309) do
     t.bigint "client_id", null: false
     t.text "reviews"
     t.integer "rating"
+    t.datetime "deleted_at"
     t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["creator_id"], name: "index_projects_on_creator_id"
+    t.index ["deleted_at"], name: "index_projects_on_deleted_at"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -78,6 +82,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_141309) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_sprints_on_deleted_at"
     t.index ["project_id"], name: "index_sprints_on_project_id"
   end
 
@@ -92,6 +98,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_141309) do
     t.string "task_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_tasks_on_deleted_at"
     t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
@@ -106,6 +114,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_31_141309) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "delete_user", default: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
