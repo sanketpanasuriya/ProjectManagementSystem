@@ -4,6 +4,8 @@ class HomeController < ApplicationController
   def index
     if(current_user.roles.first.name=="employee")
       redirect_to "/employee"
+    elsif((current_user.has_role? "manager") || (current_user.has_role? "customer"))
+      redirect_to "/projects/index"
     end
     @users = User.where(delete_user: false).all.paginate(page: params[:page], :per_page => 6)
   end
