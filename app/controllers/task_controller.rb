@@ -1,6 +1,6 @@
 class TaskController < ApplicationController
-    protect_from_forgery with: :null_session
-    before_action :set_project
+    before_action :set_project,except:[:change_status]
+
     before_action :set_task, only: %i[ edit show ]
     @@status = [['Created'],['On Going'], ['Submitted'], ['Re-Submitted'], ['Rejected'], ['Done']]
     before_action :checking_authenticity_show, only: %i[ show index]
@@ -89,13 +89,6 @@ class TaskController < ApplicationController
         end
     end
 
-    def update_task_status
-        @task = Task.find(params[:task][:id])
-        status = params[:task][:status]
-        @task.update(params.require(:task).permit(:id, :status))
-        render :json => { data: "Success", status: @task.status}
-    end
-
     def destroy
 
         @task =  Task.find(params[:id])
@@ -112,6 +105,27 @@ class TaskController < ApplicationController
             end
         end
            
+    end
+   # this method for AJAX call.it is use for status update
+   def change_status
+    json = JSON.parse request.body.read
+        task=Task.find_by(id:json["id"])
+        task.status=json["status"]
+
+        task.save!        
+        task_h=Hour.find_by(task_id:json["id"])
+
+        # change hours variable calculate hours spend in task
+        respons_message=""
+        if(task_h==nil)
+            respons_message="Not Started"
+        elsif(task_h.ending==nil)
+            respons_message="On Going"
+        else
+            respons_message=((task_h.ending-task_h.starting)/ 1.hour).round(2)
+        end
+
+        return render json: { respons_message: respons_message}
     end
 
     private 

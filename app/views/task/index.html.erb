@@ -17,7 +17,8 @@
     
     <th style="padding: 10px"> Action </th>
 
-    <th style="padding: 10px"> Hours </th>  
+    <th style="padding: 10px"> Hours </th>
+    
   </tr>
   <% @tasks.each do |task| 
         employee = User.find(task.user_id)
@@ -47,7 +48,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="changeStatusDropDown_<%= task.id%>">
           <% @status.each do |status| %>
-            <%=  link_to(status[0], "#", {:class => "dropdown-item", "task_id" => task.id })%>
+            <%=  link_to(status[0], "#", {:class => "dropdown-item", "task_id" => task.id,  "onClick" => "changeStatus('#{task.id}','#{status[0]}')" })%>
           <% end %>
       </div>
       <% else %>
@@ -76,34 +77,38 @@
     </td>
     <% end%>
     <td >
-      <%= @hours[task.id] %>
-
+      <div id="hours_<%=task.id%>"><%= @hours[task.id] %>
+      </div>
     </td>
+    
   </tr>
     
   <% end %>
 
 </table>
 </div>
-
 <script>
-$(".dropdown-item").click(function(){
-  // alert($(this).text());
-  form = $(this);
-  $.ajax({
-    url: "task/update_task_status",
-    type: "put",
-    dataType: "json",
-    data:  {task: {status: $(this).text(), id: form.attr('task_id')} },
-    success: function(result) {
-      button = $("#"+$(form).parent().attr('aria-labelledby'));
-     button.fadeOut(800, function(){
-        button.html(result["status"]).fadeIn().delay(850);
+// ajax method for change project status 
+// change no of hours
 
-      });
-    }
-  });
-
-      return false;
-  });
+function changeStatus(id,drop_option) {
+  select_id="#select_id_"+id;
+  console.log(drop_option);
+  $.ajax
+  ({
+    type: "patch",
+    url: "/task/change_status",
+    dataType: 'json',
+    async: false,
+    data: '{"id": "' + id + '", "status" : "' + drop_option + '"}',
+    success: function (x){
+      select_hours_id="#hours_"+id;
+      $(select_hours_id).html(x["respons_message"])
+      drop_button_id="#changeStatusDropDown_"+id;
+     $(drop_button_id).html(drop_option)
+      
+ }
+    
+});
+}
 </script>

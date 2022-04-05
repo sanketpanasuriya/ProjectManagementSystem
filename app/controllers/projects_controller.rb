@@ -101,6 +101,7 @@ class ProjectsController < ApplicationController
       redirect_to projects_url ,notice: "Project was successfully destroyed."
     
   end
+   
   def project_status
     @project=Project.find(params[:format])
     @project.status=params[:status]=="true" ? "completed" : "ongoing"
