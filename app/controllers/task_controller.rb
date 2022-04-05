@@ -1,11 +1,12 @@
 class TaskController < ApplicationController
-    before_action :set_project
+    before_action :set_project,except:[:change_status]
     before_action :set_task, only: %i[ edit show ]
     @@status = [['Created'],['On Going'], ['Submitted'], ['Re-Submitted'], ['Rejected'], ['Done']]
     before_action :checking_authenticity_show, only: %i[ show index]
     before_action :checking_authenticity_edit, only: %i[ edit ]
     before_action :checking_authenticity_new, only: %i[ new create]
     def index
+        @status=@@status
         @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]})
         @hours={}
         @tasks.each do|x|
@@ -102,6 +103,27 @@ class TaskController < ApplicationController
             end
         end
            
+    end
+   # this method for AJAX call.it is use for status update
+   def change_status
+    json = JSON.parse request.body.read
+        task=Task.find_by(id:json["id"])
+        task.status=json["status"]
+
+        task.save!        
+        task_h=Hour.find_by(task_id:json["id"])
+
+        # change hours variable calculate hours spend in task
+        respons_message=""
+        if(task_h==nil)
+            respons_message="Not Started"
+        elsif(task_h.ending==nil)
+            respons_message="On Going"
+        else
+            respons_message=((task_h.ending-task_h.starting)/ 1.hour).round(2)
+        end
+
+        return render json: { respons_message: respons_message}
     end
 
     private 

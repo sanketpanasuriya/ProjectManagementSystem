@@ -17,7 +17,9 @@
     
     <th style="padding: 10px"> Action </th>
 
-    <th style="padding: 10px"> Hours </th>  
+    <th style="padding: 10px"> Hours </th>
+    
+    <th style="padding: 10px"> Change Task Status </th>  
   </tr>
   <% @tasks.each do |task| 
         employee = User.find(task.user_id)
@@ -40,7 +42,9 @@
       <%= employee.email %>
     </td>
     <td style="padding:10px">
+    <div id="status_<%=task.id%>">
       <%= task.status %>
+      </div>
     </td>
     <td style="padding:10px">
      <span style="background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px">
@@ -54,8 +58,12 @@
                   } if can? :destroy, task%></span>
     </td>
     <td >
-      <%= @hours[task.id] %>
+      <div id="hours_<%=task.id%>"><%= @hours[task.id] %>
+      </div>
+    </td>
+    <td >
 
+      <%=select_tag(:status,options_for_select(@status.map {|row| row[0]},task.status),id:"select_id_#{task.id}",onchange: "changeStatus(#{task.id})") %>
     </td>
   </tr>
     
@@ -63,3 +71,28 @@
 
 </table>
 </div>
+<script>
+// ajax method for change project status 
+// change no of hours
+
+function changeStatus(id) {
+  select_id="#select_id_"+id;
+  drop_option=$(select_id).find(":selected").text();
+  
+  $.ajax
+  ({
+    type: "patch",
+    url: "/task/change_status",
+    dataType: 'json',
+    async: false,
+    data: '{"id": "' + id + '", "status" : "' + drop_option + '"}',
+    success: function (x){
+      select_hours_id="#hours_"+id;
+      $(select_hours_id).html(x["respons_message"])
+      select_status_id="#status_"+id;
+      $(select_status_id).html(drop_option)
+ }
+    
+});
+}
+</script>

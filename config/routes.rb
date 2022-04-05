@@ -14,8 +14,10 @@ Rails.application.routes.draw do
   # root "articles#index"
 
 
-  
+  patch 'task/change_status', action: :change_status, controller: 'task'
 
+  # patch "task/change_status" , to:"tasks#change_status"
+  
   resources :role
   resources :users do
     collection do
@@ -61,4 +63,5 @@ Rails.application.routes.draw do
  
   root "home#index"
   get 'employee', to: 'home#employee'
+  
 end
