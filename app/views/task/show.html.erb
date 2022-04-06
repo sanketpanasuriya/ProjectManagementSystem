@@ -1,9 +1,14 @@
 <div class="container">
 <div>
-  <%= link_to "Edit this Task", edit_project_task_path(id: @task)  ,:class => "btn btn-primary m-2"%> 
-  <%= link_to "Back to Tasks", project_task_index_path(@task.sprint.project) ,:class => "btn btn-primary m-2" %> 
+  <% has_sprint_id = params.has_key?(:sprint_id)%>
+  <%= link_to "Edit this Task", edit_project_task_path(id: @task)  ,:class => "btn btn-primary m-2" unless has_sprint_id%> 
+  <%= link_to "Edit this Task", edit_project_sprint_task_path(id: @task)  ,:class => "btn btn-primary m-2" if has_sprint_id%>
   
-  <%= link_to "Destroy this Task" ,[@task.sprint.project, @task],class:"btn btn-danger text-white", method: :delete if can? :destroy, @task %>
+  <%= link_to "Back to Tasks", project_task_index_path(@task.sprint.project) ,:class => "btn btn-primary m-2" unless has_sprint_id%> 
+  <%= link_to "Back to Tasks", project_sprint_task_index_path(@task.sprint.project) ,:class => "btn btn-primary m-2" if has_sprint_id%> 
+  
+  <%= link_to "Destroy this Task", 'javascript:;' , "onClick" => "deleteTask('#{request.fullpath.to_s()}')" ,:class => "btn btn-primary m-2" ,class:"btn btn-danger text-white"if (can? :destroy, @task )%> 
+    
    
 </div>
 <%= render "task", task: @task%>
@@ -31,3 +36,28 @@
 </div>
 </div>
 </div>
+<script>
+
+function deleteTask(s) {
+    after_delete_url=s.split("/").slice(0,-1).join("/")
+    
+    url_str=s
+    if (confirm('Are you sure?')) {
+      $.ajax
+      ({
+        type: "delete",
+        url: url_str,
+        async: false,
+        data: '{form_where:"ajax"}',
+    
+        success: function (x){
+        
+          window.location.href=after_delete_url;
+        }
+        
+      });
+
+    }
+   
+}
+</script>

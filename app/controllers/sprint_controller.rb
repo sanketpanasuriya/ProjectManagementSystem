@@ -63,11 +63,7 @@ class SprintController < ApplicationController
         @sprint=Sprint.find(params[:id])
         @project=Project.find(@sprint.project_id)
         @sprint.destroy
-    
-        respond_to do |format|
-          format.html { redirect_to project_sprint_path, notice: "Sprint was successfully destroyed." }
-          format.json { head :no_content }
-        end
+        return render json: { respons_message: "Sprint is deleted"}
       end
     
       private

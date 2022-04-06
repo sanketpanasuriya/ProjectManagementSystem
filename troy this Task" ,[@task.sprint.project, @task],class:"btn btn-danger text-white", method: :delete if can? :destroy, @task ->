@@ -1,0 +1,15 @@
+
+[1mFrom:[0m /home/yashgarala29/A Bacancy/Project/ProjectManagementSystem/app/views/task/show.html.erb:16 #<Class:0x00007f58a05d1560>#_app_views_task_show_html_erb___2751366908427548332_39780:
+
+    [1;34m11[0m:   <%= link_to "Back to Tasks", project_task_index_path(@task.sprint.project) ,:class => "btn btn-primary m-2" unless has_sprint_id%> 
+    [1;34m12[0m:   <%= link_to "Back to Tasks", project_sprint_task_index_path(@task.sprint.project) ,:class => "btn btn-primary m-2" if has_sprint_id%> 
+    [1;34m13[0m:   
+    [1;34m14[0m:   <%# <%= link_to "Destroy this Task" ,[@task.sprint.project, @task],class:"btn btn-danger text-white", method: :delete if ((can? :destroy, @task) && !has_sprint_id) %>
+    [1;34m15[0m:    <%# <%= link_to "Destroy this Task" ,[@task.sprint.project,@task.sprint, @task],class:"btn btn-danger text-white", method: :delete if ((can? :destroy, @task ) && has_sprint_id)%> %> %>
+ => [1;34m16[0m:     <% binding.pry %>
+    [1;34m17[0m:    
+    [1;34m18[0m:      <%= link_to "Destroy this Task" ,[@task.sprint.project, @task],class:"btn btn-danger text-white", method: :delete if can? :destroy, @task %>
+    [1;34m19[0m: 
+    [1;34m20[0m: </div>
+    [1;34m21[0m: <%= render "task", task: @task%>
+

@@ -8,7 +8,11 @@ class TaskController < ApplicationController
     before_action :checking_authenticity_new, only: %i[ new create]
     def index
         @status = @@status
-        @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]}).order(created_at: :asc)
+        if params.has_key?(:sprint_id) 
+            @tasks = Task.where(sprint_id: params[:sprint_id]).order(created_at: :asc)
+        else
+            @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]}).order(created_at: :asc)
+        end
         @hours={}
         @tasks.each do|x|
             
@@ -38,6 +42,7 @@ class TaskController < ApplicationController
     end
 
     def create
+        flag= params.has_key?(:sprint_id)
         @task = Task.new(task_params)
         params[:sprint_id]=@task.sprint.id
         params[:employee_id] = @task.user_id
@@ -46,7 +51,13 @@ class TaskController < ApplicationController
         @status = @@status
         respond_to do |format|
             if @task.save
-              format.html { redirect_to project_task_index_path, notice: "Task was successfully created." }
+              format.html { 
+                if  flag
+                    redirect_to project_sprint_task_index_path, notice: "Task was successfully created." 
+                else
+                    redirect_to project_task_index_path, notice: "Task was successfully created." 
+                end
+                }
             else
               format.html { render :new, status: :unprocessable_entity }
             end
@@ -81,28 +92,39 @@ class TaskController < ApplicationController
             if @task.update(task_params)
                 # redirect_to (project_task_index_path) 
                 # return
-              format.html { redirect_to project_task_index_path(project_id: project_id), notice: "Task was successfully updated." }
+              format.html { 
+                if params.has_key?(:sprint_id) 
+                    redirect_to project_sprint_task_index_path(project_id: project_id, sprint_id: params[:sprint_id]), notice: "Task was successfully updated." 
+                else
+                    redirect_to project_task_index_path(project_id: project_id), notice: "Task was successfully updated." 
+                end
+              }
               format.js
             else
-              format.html { render :project_task_index_path, status: :unprocessable_entity }
+              format.html { 
+                if params.has_key?(:sprint_id) 
+                    render :project_sprint_task_index_path, status: :unprocessable_entity  
+                else
+                    render :project_task_index_path, status: :unprocessable_entity 
+                end
+                }
             end
         end
     end
 
     def destroy
-
         @task =  Task.find(params[:id])
-         if !( can? :destroy, @task)
-            render :file => 'public/403.html'
-            # return 
+        @project=@task.sprint.project
+        if !( can? :destroy, @task)
+            render :file => 'public/403.html' 
          else
-            respond_to do |format|
                 if @task.destroy
-                    format.html { redirect_to project_task_index_path, notice: "Task was successfully destroyed." }
+                    flash[:notice]="Task is deleted"
+                        return render json: { respons_message: "Task is deleted"}
+                   
                 else
                     format.html { render :new, status: :unprocessable_entity }
                 end
-            end
         end
            
     end
