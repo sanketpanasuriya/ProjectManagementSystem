@@ -119,7 +119,7 @@ class TaskController < ApplicationController
             render :file => 'public/403.html' 
          else
                 if @task.destroy
-                        notice: "Task is deleted"
+                    flash[:notice]="Task is deleted"
                         return render json: { respons_message: "Task is deleted"}
                    
                 else

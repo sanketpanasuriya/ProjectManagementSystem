@@ -132,10 +132,10 @@ class IssuesController < ApplicationController
   end
   def my_issue
    
-  project_id = params[:format]
+  @project_id = params[:format]
   current_user_id=current_user.id
 
-  @issues=Issue.where(employee_id: current_user_id , project_id: project_id ).all
+  @issues=Issue.where(employee_id: current_user_id , project_id: @project_id ).all
   end
   private
     def checking_authenticity(issue,opration)

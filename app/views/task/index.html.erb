@@ -1,7 +1,6 @@
 
 <div class="container">
 <h1>Tasks</h1>
-<p style="color: green" id="notice"><%= notice %></p>
 <div class="btn" style="background-color: #b4b4b4">
 <%= link_to "Add New Task", new_project_task_path if ((can? :new, Task) && !(params.has_key?(:sprint_id))) %>
 <%= link_to "Add New Task", new_project_sprint_task_path if ((can? :new, Task) && (params.has_key?(:sprint_id))) %>
