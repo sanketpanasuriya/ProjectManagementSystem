@@ -23,12 +23,35 @@
             <%= link_to "View Task", project_task_index_path(project), class:"btn btn-success"%>
             <%= link_to "Edit Sprint", edit_project_sprint_path(project_id: project,id:sprint), class:"btn btn-primary" if can? :update, @project%>
         
-        <%= link_to "Destroy", project_sprint_path(project_id: project,id:sprint),class:"btn btn-danger", data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } if can? :destroy, @project%>
+          <%= link_to "Delete", 'javascript:;',class:"btn btn-danger" , "onClick" => "deleteSprint('#{project.id}','#{sprint.id}')" if can? :destroy, @project  %>
         </div>
 
       </div>
     </div>
   </div>
+
+<script>
+  function deleteSprint(project_id,id) {
+    console.log(id,project_id);
+    column_id="#sprint_"+id;
+    url_str="/projects/"+project_id+"/sprint/"+id;
+    // projects/:project_id/sprint/:id
+    if (confirm('Are you sure?')) {
+      $.ajax
+      ({
+        type: "delete",
+        url: url_str,
+        async: false,
+        success: function (x){
+          $(column_id).remove();
+          console.log(x);
+          $("#notice").html(x["respons_message"]);
+        }
+        
+      });
+
+    }
+   
+}
+
+</script>

@@ -94,10 +94,11 @@ class IssuesController < ApplicationController
   def destroy
 
     checking_authenticity(@issue,:destroy)
+    @project=@issue.project
     @issue.destroy
 
     respond_to do |format|
-      format.html { redirect_to issues_url, notice: "Issue was successfully destroyed." }
+      format.html { redirect_to issues_url(@project), notice: "Issue was successfully destroyed." }
       format.json { head :no_content }
     end
   end

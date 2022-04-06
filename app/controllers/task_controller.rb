@@ -90,19 +90,24 @@ class TaskController < ApplicationController
     end
 
     def destroy
-
         @task =  Task.find(params[:id])
-         if !( can? :destroy, @task)
+        @project=@task.sprint.project
+        if !( can? :destroy, @task)
             render :file => 'public/403.html'
             # return 
          else
-            respond_to do |format|
                 if @task.destroy
-                    format.html { redirect_to project_task_index_path, notice: "Task was successfully destroyed." }
-                else
-                    format.html { render :new, status: :unprocessable_entity }
+                    if(request.body.read!="")
+                        return render json: { respons_message: "Task is deleted"}
+                    else
+                        respond_to do |format|
+                            format.html { redirect_to project_task_index_path ,status: 303, notice: "Task is deleted" }
+                            format.js {}
+                          end
+                                            
+                    end
+
                 end
-            end
         end
            
     end

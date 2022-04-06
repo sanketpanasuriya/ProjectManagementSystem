@@ -6,8 +6,11 @@
 <div>
   <%= link_to "Edit this Task", edit_project_task_path(id: @task)  ,:class => "btn btn-primary m-2"%> 
   <%= link_to "Back to Tasks", project_task_index_path(@task.sprint.project) ,:class => "btn btn-primary m-2" %> 
-  
-  <%= link_to "Destroy this Task" ,[@task.sprint.project, @task],class:"btn btn-danger text-white", method: :delete if can? :destroy, @task %>
+  <%# ,[@task.sprint.project, @task] %>
+  <%= link_to "Destroy this Task",[@task.sprint.project,@task],class:"btn btn-danger text-white",  data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+                  } if can? :destroy, @task %>
    
 </div>
 <%= render "task", task: @task%>

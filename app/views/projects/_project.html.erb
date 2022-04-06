@@ -22,12 +22,34 @@
           <div class="col-12">
             <%= link_to 'View', project,  class: "btn btn-outline-info" %>
             <%= link_to 'Edit', edit_project_path(project),  class: 'btn btn-outline-warning' if can? :update, project %>
-            <%= link_to "Delete", project, method: :delete, class: 'btn btn-outline-danger', data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } if can? :destroy, project %>
+            <%= link_to "Delete", 'javascript:;',class:"btn btn-outline-danger" , "onClick" => "deleteProject('#{project.id}')" if can? :destroy, project  %>
           </div>
         </div>
       </div>
     </div>
   </div>
+<script>
+  function deleteProject(id) {
+    console.log(id);
+    column_id="#project_"+id;
+    url_str="/projects/"+id;
+    // projects/:project_id/sprint/:id
+    if (confirm('Are you sure?')) {
+      $.ajax
+      ({
+        type: "delete",
+        url: url_str,
+        async: false,
+        success: function (x){
+          $(column_id).remove();
+          console.log(x);
+          $("#notice").html(x["respons_message"]);
+        }
+        
+      });
+
+    }
+   
+}
+
+</script>
