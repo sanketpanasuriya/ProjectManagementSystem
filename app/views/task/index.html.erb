@@ -1,9 +1,10 @@
 
-<div class="container" style="width:2000px">
+<div class="container">
 <h1>Tasks</h1>
 <p style="color: green"><%= notice %></p>
 <div class="btn" style="background-color: #b4b4b4">
-<%= link_to "Add New Task", new_project_task_path if can? :new, Task %>
+<%= link_to "Add New Task", new_project_task_path if ((can? :new, Task) && !(params.has_key?(:sprint_id))) %>
+<%= link_to "Add New Task", new_project_sprint_task_path if ((can? :new, Task) && (params.has_key?(:sprint_id))) %>
 </div>
 
 <br><br>
@@ -58,13 +59,14 @@
     </td>
     <td style="padding:10px">
     <% if can? :show, task %>
-    
-      <%= link_to "View", project_task_path(id: task) , style:"background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px"%></span> 
+      <%= link_to "View", project_task_path(id: task) , class: "badge badge-primary" unless params.has_key?(:sprint_id)%>
+      <%= link_to "View", project_sprint_task_path(id: task) , class: "badge badge-primary" if params.has_key?(:sprint_id)%>
+      </span> 
     <% end
-      if (can? :edit, task) && (['manager', 'admin'].include? current_user.roles.first) 
+      if ((can? :edit, Task) && (['manager', 'admin'].include? current_user.roles.first.name))
     %>
     
-      <%= link_to "Edit", edit_project_task_path(id: task) ,style:"background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px"%>
+      <%= link_to "Edit", edit_project_task_path(id: task) , class: "badge badge-success"%>
 
       <% end
         if can? :destroy, task
@@ -73,7 +75,7 @@
       <%= link_to "Delete", [task.sprint.project, task] , data: {
                     turbo_method: :delete,
                     turbo_confirm: "Are you sure?"
-                  } , style:"background-color: #DDA0DD; margin:5px;padding:5px; border-radius:5px" %>
+                  } , class: "badge badge-danger" %>
     </td>
     <% end%>
     <td >
