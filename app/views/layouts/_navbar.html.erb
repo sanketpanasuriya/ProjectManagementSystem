@@ -1,0 +1,27 @@
+<% if current_user %>
+  <nav class="navbar navbar-expand-lg fixed_navbar">
+    <div class="container-fluid">
+      <div class="navbar-nav">
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <%= link_to "Home" , root_path , class: "nav-link active" %>
+          <%= link_to "Project", projects_path,class: "nav-link active" %>
+          <%= link_to "schedule", schedule_path, class: "nav-link active"%>
+        </div>
+      </div>
+      <div class="text-right mr-3">
+        <div class="dropdown">
+          <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= current_user.name %>
+          </div>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <p class="dropdown-item mb-0"><%= current_user.roles&.first&.name.capitalize %></p>
+            <%= link_to "Edit Profile", edit_user_path(current_user), class: "dropdown-item" if can? :update, current_user %>
+            <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure for logout?" }, class: 'dropdown-item'%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+<% end %>
+
+
