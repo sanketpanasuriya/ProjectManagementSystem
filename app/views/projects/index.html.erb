@@ -1,27 +1,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-<p style="color: green" id="notice"><%= notice %></p>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-6">
-      <h1>Projects</h1>
-    </div>
-    <div class="col-6 text-right">
-      <%= link_to 'New project', new_project_path, class: 'btn btn-outline-primary' if can? :create, Project %>
-    </div>
+<div class="row">
+  <div class="col-3">
+    <h1>Projects</h1>
   </div>
-  <div class="row">
-    <div class="col-3">
-      <canvas id="myChart" style="width:50%;max-width:600px"></canvas>
-    </div>
-    <div class="col-9">
+  <div class="col-9">
+    <%= link_to 'New project', new_project_path, class: 'btn btn-outline-primary' if can? :create, Project %>
+  </div>
+</div>
+<div class="row">
+  <div class="col-3">
+    <canvas id="myChart" style="width:50%;max-width:600px"></canvas>
+  </div>
+  <div class="col-9">
+    <div class="row">
       <% @projects.each do |project| %>
         <%
           unless current_user.has_role? "employee"
             next unless  can? :show, project
           end %>
-          <%= render project %>
-        <% end %>
+        <%= render project %>
+      <% end %>
     </div>
   </div>
 </div>

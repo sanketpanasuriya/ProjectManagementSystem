@@ -1,33 +1,29 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-<p style="color: green"><%= notice %></p>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-12 text-right">
-      <%= link_to "Tasks", project_task_index_path(@project.id),class:"btn btn-outline-secondary" %>
-      <%= link_to "My Assigned issues", my_issue_issues_path(@project),class:"btn btn-outline-secondary" %>
-      <%= link_to "Create Sprint", new_project_sprint_path(@project), class: "btn btn-outline-success mr-1" if can? :create, @project %>
-      <%= link_to "Create issue", new_issue_path(@project), class: "btn btn-outline-warning mr-1" if can? :create, @project %>
-      <%= link_to "Show issues", issues_path(@project), class: "btn btn-outline-info mr-1" %>
-      <%= link_to "Back", projects_path, class: "btn btn-outline-secondary mr-3" %>
+<div class="row">
+  <div class="col-12 text-right">
+    <%= link_to "My Assigned issues", my_issue_issues_path(@project),class:"btn btn-outline-secondary" %>
+    <%= link_to "Create Sprint", new_project_sprint_path(@project), class: "btn btn-outline-success mr-1" if can? :create, @project %>
+    <%= link_to "Create issue", new_issue_path(@project), class: "btn btn-outline-danger mr-1" if can? :create, @project %>
+    <%= link_to "Show issues", issues_path(@project), class: "btn btn-outline-warning mr-1" %>
+    <%= link_to "Back", projects_path, class: "btn btn-outline-info mr-3" %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 mt-5"><h4><%= @project.name %></h4></div>
+  <div class="col-12 mt-3 text-muted"><%= @project.description %></div>
+  <div class="col-12 mt-3"><b>Status: </b><%= @project.status %></div>
+  <% if can? :update_task_status, @project %>
+    <div class="col-12 mt-3">
+      <b>Change to: </b>
+      <% if @project.status=="completed" &&(can? :update_task_status, @project) %>
+         <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :update_task_status, @project %>
+      <% else %>
+         <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :update_task_status, @project %>
+      <% end %>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="col-12 mt-5"><h4><%= @project.name %></h4></div>
-    <div class="col-12 mt-3 text-muted"><%= @project.description %></div>
-    <div class="col-12 mt-3"><b>Status: </b><%= @project.status %></div>
-    <% if can? :update_task_status, @project %>
-      <div class="col-12 mt-3">
-        <b>Change to: </b>
-        <% if @project.status=="completed" &&(can? :update_task_status, @project) %>
-           <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :update_task_status, @project %>
-        <% else %>
-           <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :update_task_status, @project %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
+  <% end %>
 </div>
 
 <% if @project.status=="completed" && @project.client_id==current_user.id %>
@@ -36,11 +32,14 @@
 <br>
 
 <canvas id="myChart" style="width:50%;max-width:600px"></canvas>  
-
-<h2 class="my-5">All Sprint</h2>
-<% @sprint.each do |x| %>
-  <%= render "sprint",sprint: x,project:@project %>
-<% end %>
+<div class="row">
+  <div class="col-12">
+    <h2>All Sprints</h2>
+    <% @sprint.each do |sprint| %>
+      <%= render 'sprint', sprint: sprint, project: @project %>
+    <% end %>
+  </div>
+</div>
 
 <script>
 var xValues = ["In Progess", "Completed"];

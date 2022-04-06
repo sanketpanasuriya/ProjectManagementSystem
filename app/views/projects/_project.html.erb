@@ -1,9 +1,9 @@
-  <%
-    task_percentage = 0
-    completed = project.sprints.joins(:tasks).select("tasks.id").where("tasks.status = 'Done'").count
-    total = project.sprints.joins(:tasks).select("tasks.*").count
-    task_percentage = (completed.to_f/total)*100 unless total == 0
-  %>
+<%
+  task_percentage = 0
+  completed = project.sprints.joins(:tasks).select("tasks.id").where("tasks.status = 'Done'").count
+  total = project.sprints.joins(:tasks).select("tasks.*").count
+  task_percentage = (completed.to_f/total)*100 unless total == 0
+%>
 
   <div class="col-sm-6 " id="<%= dom_id project %>">
     <div class="card">
