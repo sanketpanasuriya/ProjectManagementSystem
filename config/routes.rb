@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
   patch 'task/change_status', action: :change_status, controller: 'task'
   get 'schedule', to: 'schedule#index'
+  get 'kanban', to: 'task#kanban'
 
   # patch "task/change_status" , to:"tasks#change_status"
   
@@ -38,7 +39,11 @@ Rails.application.routes.draw do
   resources :projects do
 
     resources :sprint do
-      resources :task
+      resources :task do
+        collection do 
+          get "kanban"
+        end
+      end
       collection do
         
       end
@@ -46,6 +51,7 @@ Rails.application.routes.draw do
     
     resources :task do
       collection do 
+        get "kanban"
       end
     end
     collection do

@@ -1,5 +1,5 @@
 class TaskController < ApplicationController
-    before_action :set_project,except:[:change_status]
+    before_action :set_project,except:[:change_status, :kanban]
 
     before_action :set_task, only: %i[ edit show ]
     @@status = [['Created'],['On Going'], ['Submitted'], ['Re-Submitted'], ['Rejected'], ['Done']]
@@ -28,6 +28,31 @@ class TaskController < ApplicationController
         # sql="SELECT * FROM #{@tasks} LEFT JOIN Hour ON @tasks.id=Hour.task_id;"
         # p @tasks.left_outer_joins(:hours).select("@tasks.id,hours.starting")
         # p execute_statement(sql)
+    end
+
+    def kanban 
+        @status = @@status
+        if params.has_key?(:project_id)
+            if params.has_key?(:sprint_id) 
+                @tasks = Task.where(sprint_id: params[:sprint_id]).order(created_at: :asc)
+            else
+                @tasks = Task.joins(:sprint).where(sprint: {project_id: params[:project_id]}).order(created_at: :asc)
+            end
+        else
+            @tasks = Task.all
+        end
+        @hours={}
+        @tasks.each do|x|
+            
+            task_h=Hour.find_by(task_id:x.id)
+            if(task_h==nil)
+                @hours[x.id]="Not Started"
+            elsif(task_h.ending==nil)
+                @hours[x.id]="On Going"
+            else
+                @hours[x.id]=((task_h.ending-task_h.starting)/ 1.hour).round(2)
+            end
+        end
     end
 
     def show 
@@ -119,6 +144,13 @@ class TaskController < ApplicationController
             render :file => 'public/403.html' 
          else
                 if @task.destroy
+                    format.html { 
+                        if params.has_key?(:sprint_id) 
+                            redirect_to project_sprint_task_index_path(project_id: :project_id, sprint_id: params[:sprint_id]), notice: "Task was successfully destroyed." 
+                        else
+                            redirect_to project_task_index_path(project_id: :project_id), notice: "Task was successfully destroyed." 
+                        end
+                    }
                     flash[:notice]="Task is deleted"
                         return render json: { respons_message: "Task is deleted"}
                    

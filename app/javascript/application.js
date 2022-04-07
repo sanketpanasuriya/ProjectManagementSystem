@@ -3,4 +3,5 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import * as bootstrap from "bootstrap"
 
-// import Sortable from 'sortablejs';
+import Sortable from 'sortablejs';
+import "plugins/KanBanSortable"
