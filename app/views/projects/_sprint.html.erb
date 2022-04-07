@@ -3,8 +3,7 @@
     total = sprint.tasks.count
     task_percentage = (completed.to_f/total)*100 unless total == 0
 %>
-<div class="row">
-  <div class="col-sm-6" id="<%=dom_id sprint%>">
+  <div class="col-sm-6 my-1" id="<%=dom_id sprint%>" style="display: inline-block;">
     <div class="card">
       <div class="card-body">
         <h4 class="card-title h2"><%= sprint.title %></h4>
@@ -23,9 +22,9 @@
         
           <%= link_to "Delete", 'javascript:;',class:"btn btn-danger" , "onClick" => "deleteSprint('#{project.id}','#{sprint.id}')" if can? :destroy, @project  %>
         </div>
-      </div>
     </div>
   </div>
+</div>
 
 <script>
   function deleteSprint(project_id,id) {
