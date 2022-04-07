@@ -30,7 +30,7 @@ class Ability
 
       can :project_status, Project, creator_id: user.id
       can :assign_issue, Project, creator_id: user.id # manager assign issue to other employee 
-
+      can [:edit,:destroy], Issue, project: {creator_id: user.id}  # manager can edit issue if Manager is creator of project
       
 
     elsif user.has_role? "employee"

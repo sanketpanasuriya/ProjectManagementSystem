@@ -1,9 +1,11 @@
 
 <div class="container">
 <h1>Tasks</h1>
-<div class="btn" style="background-color: #b4b4b4">
-<%= link_to "Add New Task", new_project_task_path if ((can? :new, Task) && !(params.has_key?(:sprint_id))) %>
-<%= link_to "Add New Task", new_project_sprint_task_path if ((can? :new, Task) && (params.has_key?(:sprint_id))) %>
+<div>
+<%= link_to "Add New Task", new_project_task_path,class: "btn btn-primary" if ((can? :new, Task) && !(params.has_key?(:sprint_id))) %>
+<%= link_to "Add New Task", new_project_sprint_task_path,class: "btn btn-primary" if ((can? :new, Task) && (params.has_key?(:sprint_id)))%>
+<%= link_to "View Kanban", kanban_project_task_index_path,class: "btn btn-primary" if ((can? :new, Task) && !(params.has_key?(:sprint_id))) %>
+<%= link_to "View Kanban", kanban_project_sprint_task_index_path,class: "btn btn-primary" if ((can? :new, Task) && (params.has_key?(:sprint_id)))%>
 </div>
 
 <br><br>
@@ -60,7 +62,6 @@
     <% if can? :show, task %>
       <%= link_to "View", project_task_path(id: task) , class: "badge badge-primary" unless params.has_key?(:sprint_id)%>
       <%= link_to "View", project_sprint_task_path(id: task) , class: "badge badge-primary" if params.has_key?(:sprint_id)%>
-      </span> 
     <% end
       if ((can? :edit, Task) && (['manager', 'admin'].include? current_user.roles.first.name))
     %>
