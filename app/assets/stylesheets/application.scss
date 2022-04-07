@@ -2,5 +2,15 @@
  // Custom bootstrap variables must be set or imported *before* bootstrap.
  @import "bootstrap";
  @import "pagination.css";
- @import "simple_calendar";
+
  @import "kanban.css";
+ @import "custom.css";
+ @import "simple_calendar";
+
+body { padding-top: 60px; padding-bottom: 40px; }
+.container-fluid { margin: 0 auto; }
+.fixed_navbar, .fixed_footer { width: 100%; position: fixed; background: #333; color: #fff; }
+.fixed_navbar .navbar-nav a { color: #fff; text-decoration: none; display: inline-block; }
+.fixed_navbar { top: 0; z-index: 10; }
+.fixed_footer { bottom: 0; }
+.desc-min-height { min-height: 46px; }

@@ -1,7 +1,6 @@
 
 <div class="container">
 <h1>Tasks</h1>
-<p style="color: green"><%= notice %></p>
 <div class="btn" style="background-color: #b4b4b4">
 <%= link_to "Add New Task", new_project_task_path if ((can? :new, Task) && !(params.has_key?(:sprint_id))) %>
 <%= link_to "Add New Task", new_project_sprint_task_path if ((can? :new, Task) && (params.has_key?(:sprint_id))) %>
@@ -24,7 +23,7 @@
   <% @tasks.each do |task| 
         employee = User.find(task.user_id)
   %>
-  <tr style="background-color: #FFF0F5; padding:10px">
+  <tr style="background-color: #FFF0F5; padding:10px" id="column_<%= task.id%>">
     <td>
       <%= task.title %>
       <%
@@ -72,10 +71,8 @@
         if can? :destroy, task
       %>
     
-      <%= link_to "Delete", [task.sprint.project, task] , data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-                  } , class: "badge badge-danger" %>
+      <%= link_to "Delete", 'javascript:;' , "onClick" => "deleteTask('#{task.sprint.project.id}','#{task.id}')"  , class: "badge badge-danger" %>
+      
     </td>
     <% end%>
     <td >
@@ -113,4 +110,29 @@ function changeStatus(id,drop_option) {
     
 });
 }
+
+function deleteTask(project_id,id) {
+    console.log(id,project_id);
+    column_id="#column_"+id;
+    url_str="/projects/"+project_id+"/task/"+id;
+    if (confirm('Are you sure?')) {
+      $.ajax
+      ({
+        type: "delete",
+        url: url_str,
+        async: false,
+        data: '{form_where:"ajax"}',
+    
+        success: function (x){
+          $(column_id).remove();
+          console.log(x);
+          $("#notice").html(x["respons_message"]);
+        }
+        
+      });
+
+    }
+   
+}
+
 </script>

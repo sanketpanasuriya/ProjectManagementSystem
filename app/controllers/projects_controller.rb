@@ -97,8 +97,7 @@ class ProjectsController < ApplicationController
   end
   def destroy
     @project.destroy
-    
-      redirect_to projects_url ,notice: "Project was successfully destroyed."
+    return render json: { respons_message: "Project was successfully destroyed."}
     
   end
    

@@ -67,6 +67,7 @@ class TaskController < ApplicationController
     end
 
     def create
+        flag= params.has_key?(:sprint_id)
         @task = Task.new(task_params)
         params[:sprint_id]=@task.sprint.id
         params[:employee_id] = @task.user_id
@@ -76,7 +77,7 @@ class TaskController < ApplicationController
         respond_to do |format|
             if @task.save
               format.html { 
-                if params.has_key?(:sprint_id) 
+                if  flag
                     redirect_to project_sprint_task_index_path, notice: "Task was successfully created." 
                 else
                     redirect_to project_task_index_path, notice: "Task was successfully created." 
@@ -137,13 +138,11 @@ class TaskController < ApplicationController
     end
 
     def destroy
-
         @task =  Task.find(params[:id])
-         if !( can? :destroy, @task)
-            render :file => 'public/403.html'
-            # return 
+        @project=@task.sprint.project
+        if !( can? :destroy, @task)
+            render :file => 'public/403.html' 
          else
-            respond_to do |format|
                 if @task.destroy
                     format.html { 
                         if params.has_key?(:sprint_id) 
@@ -152,10 +151,12 @@ class TaskController < ApplicationController
                             redirect_to project_task_index_path(project_id: :project_id), notice: "Task was successfully destroyed." 
                         end
                     }
+                    flash[:notice]="Task is deleted"
+                        return render json: { respons_message: "Task is deleted"}
+                   
                 else
                     format.html { render :new, status: :unprocessable_entity }
                 end
-            end
         end
            
     end
