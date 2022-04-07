@@ -8,7 +8,7 @@ module Users
     # GET /resource/sign_up
 
     def new
-      redirect_to controller: "users", action: "new"
+      redirect_to controller: 'users', action: 'new'
       # super
     end
 

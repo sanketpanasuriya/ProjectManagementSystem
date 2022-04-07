@@ -36,9 +36,13 @@
 <div class="row">
   <div class="col-12">
     <h2>All Sprints</h2>
+    
+<div class="row m-4" >
     <% @sprint.each do |sprint| %>
+
       <%= render 'sprint', sprint: sprint, project: @project %>
     <% end %>
+  </div>
   </div>
 </div>
 
