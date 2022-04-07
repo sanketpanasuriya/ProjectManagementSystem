@@ -1,0 +1,18 @@
+<% status_class = {'Created'=> "info", 'On Going' => "primary", 'Submitted'=> "secondary", 'Re-Submitted' => "warning", 'Rejected'=>"danger", 'Done'=>"success"}%>
+<div class="kanban d-flex flex-wrap">
+  <% @status.each_with_index do |status,index|%>
+    <% if index ==1%>
+      <ul class="kanban-col col" id="on_going" data-id="<%=index%>">
+      <% elsif index == 3 %>
+        <ul class="kanban-col col" id="Re_Submitted" data-id="<%=index%>">
+    <% else %>
+      <ul class="kanban-col col" id="<%= status[0] %>" data-id="<%= index%>">
+      <% end%>
+        <li class="kanban-col-name py-2 bg-<%=status_class[status[0]]%>"><b><%= status[0] %></b></li>
+        <% @tasks.where(status: status[0]).each do |task|%>
+        <% next unless can? :edit, task%>
+        <li class="kanban-col-item py-4" data-id="<%=task.id%>"><%=task.title%></li>
+    <% end%>
+      </ul>
+  <% end%>
+</div>
