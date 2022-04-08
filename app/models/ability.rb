@@ -25,6 +25,8 @@ class Ability
       can %i[new create], Project
       can :manage, Task, sprint: { project: { creator_id: user.id } }
 
+      can [:edit,:destroy], Issue, project: {creator_id: user.id}  # manager can edit issue if Manager is creator of project
+      
       can :manage, Sprint, project: { creator_id: user.id }
 
       can :project_status, Project, creator_id: user.id

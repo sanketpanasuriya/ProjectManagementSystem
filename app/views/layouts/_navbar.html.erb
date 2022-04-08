@@ -1,11 +1,12 @@
 <% if current_user %>
-  <nav class="navbar navbar-expand-lg fixed_navbar">
+  <nav class="navbar navbar-expand-lg fixed_navbar bg-primary">
     <div class="container-fluid">
       <div class="navbar-nav">
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <%= link_to "Home" , root_path , class: "nav-link active" %>
           <%= link_to "Project", projects_path,class: "nav-link active" %>
           <%= link_to "schedule", schedule_path, class: "nav-link active"%>
+          <%= link_to "task kanban", kanban_path, class: "nav-link active"%>
         </div>
       </div>
       <div class="text-right mr-3">
