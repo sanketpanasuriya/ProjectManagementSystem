@@ -15,13 +15,13 @@
   <div class="col-12 mt-5"><h4><%= @project.name %></h4></div>
   <div class="col-12 mt-3 text-muted"><%= @project.description %></div>
   <div class="col-12 mt-3"><b>Status: </b><%= @project.status %></div>
-  <% if can? :update_task_status, @project %>
+  <% if can? :project_status, @project %>
     <div class="col-12 mt-3">
       <b>Change to: </b>
-      <% if @project.status=="completed" &&(can? :update_task_status, @project) %>
-         <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :update_task_status, @project %>
+      <% if @project.status=="completed" &&(can? :project_status, @project) %>
+         <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :project_status, @project %>
       <% else %>
-         <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :update_task_status, @project %>
+         <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :project_status, @project %>
       <% end %>
     </div>
   <% end %>
