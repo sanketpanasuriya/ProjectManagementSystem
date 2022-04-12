@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-12 text-right">
     <%= link_to "Kanban", kanban_project_task_index_path(@project),class:"btn btn-outline-primary" unless current_user.has_role? "customer"%>
-    <%= link_to "Kanban", project_task_index_path(@project),class:"btn btn-outline-dark"%>
+    <%= link_to "Tasks", project_task_index_path(@project),class:"btn btn-outline-dark"%>
     <%= link_to "My Assigned issues", my_issue_issues_path(@project),class:"btn btn-outline-secondary" %>
     <%= link_to "Create Sprint", new_project_sprint_path(@project), class: "btn btn-outline-success mr-1" if can? :create, @project %>
     <%= link_to "Create issue", new_issue_path(@project), class: "btn btn-outline-danger mr-1" if can? :create, @project %>
