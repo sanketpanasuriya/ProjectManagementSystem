@@ -2,7 +2,8 @@
 
 <div class="row">
   <div class="col-12 text-right">
-    <%= link_to "Kanban", kanban_project_task_index_path(@project),class:"btn btn-outline-primary" %>
+    <%= link_to "Kanban", kanban_project_task_index_path(@project),class:"btn btn-outline-primary" unless current_user.has_role? "customer"%>
+    <%= link_to "Tasks", project_task_index_path(@project),class:"btn btn-outline-dark"%>
     <%= link_to "My Assigned issues", my_issue_issues_path(@project),class:"btn btn-outline-secondary" %>
     <%= link_to "Create Sprint", new_project_sprint_path(@project), class: "btn btn-outline-success mr-1" if can? :create, @project %>
     <%= link_to "Create issue", new_issue_path(@project), class: "btn btn-outline-danger mr-1" if can? :create, @project %>
@@ -15,13 +16,13 @@
   <div class="col-12 mt-5"><h4><%= @project.name %></h4></div>
   <div class="col-12 mt-3 text-muted"><%= @project.description %></div>
   <div class="col-12 mt-3"><b>Status: </b><%= @project.status %></div>
-  <% if can? :update_task_status, @project %>
+  <% if can? :project_status, @project %>
     <div class="col-12 mt-3">
       <b>Change to: </b>
-      <% if @project.status=="completed" &&(can? :update_task_status, @project) %>
-         <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :update_task_status, @project %>
+      <% if @project.status=="completed" &&(can? :project_status, @project) %>
+         <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :project_status, @project %>
       <% else %>
-         <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :update_task_status, @project %>
+         <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :project_status, @project %>
       <% end %>
     </div>
   <% end %>

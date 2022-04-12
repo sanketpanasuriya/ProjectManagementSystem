@@ -32,6 +32,7 @@ class TaskController < ApplicationController
   end
 
   def kanban
+    render file: 'public/403.html' if current_user.has_role? "customer"
     @status = @@status
     @tasks = if params.key?(:project_id)
                if params.key?(:sprint_id)
