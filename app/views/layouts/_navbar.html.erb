@@ -6,7 +6,7 @@
           <%= link_to "Home" , root_path , class: "nav-link active" %>
           <%= link_to "Project", projects_path,class: "nav-link active" %>
           <%= link_to "schedule", schedule_path, class: "nav-link active"%>
-          <%= link_to "task kanban", kanban_path, class: "nav-link active"%>
+          <%= link_to "task kanban", kanban_path, class: "nav-link active" unless current_user.has_role? "customer"%>
         </div>
       </div>
       <div class="text-right mr-3">

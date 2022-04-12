@@ -4,8 +4,8 @@
 <div>
 <%= link_to "Add New Task", new_project_task_path,class: "btn btn-primary" if ((can? :new, Task) && !(params.has_key?(:sprint_id))) %>
 <%= link_to "Add New Task", new_project_sprint_task_path,class: "btn btn-primary" if ((can? :new, Task) && (params.has_key?(:sprint_id)))%>
-<%= link_to "View Kanban", kanban_project_task_index_path,class: "btn btn-primary" if ((can? :new, Task) && !(params.has_key?(:sprint_id))) %>
-<%= link_to "View Kanban", kanban_project_sprint_task_index_path,class: "btn btn-primary" if ((can? :new, Task) && (params.has_key?(:sprint_id)))%>
+<%= link_to "View Kanban", kanban_project_task_index_path,class: "btn btn-primary" if (!(current_user.has_role? "customer") && !(params.has_key?(:sprint_id))) %>
+<%= link_to "View Kanban", kanban_project_sprint_task_index_path,class: "btn btn-primary" if (!(current_user.has_role? "customer") && (params.has_key?(:sprint_id)))%>
 </div>
 
 <br><br>
