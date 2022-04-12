@@ -2,10 +2,10 @@
 <h2 class="head-text mt-6">All Active Users</h2>   
 <%= link_to "Add New User", new_user_path ,class: 'btn btn-primary' if can? :create_user, User%> 
 
-<div style="display:block">
+<div style="display:block;margin-bottom:10%;">
 
 <% @users.each do |user| %>
-<div class="card m-4" style="width: 18rem;display:inline-block ">
+<div class="card m-4" style="width: 18rem;height:15rem;display:inline-block">
   <div class="card-body">
     <h5 class="card-title"><%= user.name %></h5>
     <p class="card-text">
