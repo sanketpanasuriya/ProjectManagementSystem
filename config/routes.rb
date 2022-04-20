@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       post 'create_user'
-      
+      patch 'change_image'
     end
   end
 

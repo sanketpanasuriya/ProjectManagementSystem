@@ -1,0 +1,37 @@
+
+
+<div class="container h5 py-4">
+   <div class="row py-2">
+    
+    <div class="col-sm">
+      <button id="changeToform" class="btn btn-primary" style="float: right" onclick="changeToform()">
+        <img src="https://img.icons8.com/material-sharp/24/ffffff/edit--v1.png" />    
+      </button>
+    </div>
+  </div>
+
+   <div class="row py-2">
+    <div class="col-sm bold">
+      <strong> Name</strong>
+    </div>
+    <div class="col-sm">
+      <%=user.name%>
+    </div>
+  </div>
+   <div class="row py-2">
+    <div class="col-sm bold">
+      <strong>Email</strong>
+    </div>
+    <div class="col-sm">
+      <%=user.email%>
+    </div>
+  </div>
+   <div class="row py-2">
+    <div class="col-sm bold">
+      <strong>Role</strong>
+    </div>
+    <div class="col-sm">
+      <%=sanitize get_user_role(user)%>
+    </div>
+  </div>
+</div>

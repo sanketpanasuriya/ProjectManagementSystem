@@ -1,0 +1,12 @@
+ <%= form_with model: user, class: 'floatingInput', url: { action: :change_image }  do |form| %>
+
+  <div class="modal-body"> 
+  <%=form.hidden_field :id %>
+  <%= form.file_field :user_image %>
+  </div>
+  <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <%# <button type="button" class="btn btn-primary">Save Image</button> %>
+        <%= form.submit "Save" ,class: 'btn btn-primary' %>
+  </div>
+<%end%>
