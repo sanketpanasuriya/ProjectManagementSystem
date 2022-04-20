@@ -89,6 +89,15 @@ class UsersController < ApplicationController
     redirect_to action: 'index'
   end
 
+  def change_image
+    data= params.require(:user).permit(:id,:user_image)
+    @user = User.find(data[:id])
+    @user.user_image=data[:user_image]
+    @user.save
+    flash[:notice] = 'image is changed'
+    redirect_to action: 'edit',id: @user.id
+  end
+  # private 
   private
 
   def user_params

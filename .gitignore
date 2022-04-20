@@ -10,7 +10,7 @@
 # Ignore the default database files.
 /db/schema.rb
 /config/database.yml
-
+/public/uploads
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
