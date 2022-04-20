@@ -1,0 +1,70 @@
+<div class="row">
+    <div class="col-12">
+ <button id="changeToinfo" class="btn btn-primary" style="float: right" onclick="changeToinfo()">
+    <img src="https://img.icons8.com/material/24/ffffff/delete-sign--v1.png"/>
+      </button>
+    </div>
+  </div>
+
+<%= form_with model: @user, class: 'floatingInput', url: { action: :update }  do |form| %>
+  
+  <div class="row">
+    <div class="col-12">
+      <div class="field">
+        <%= form.label :name,class:"form-label" %><br>
+        <%= form.text_field :name,class:"form-control" %>
+        <% @user.errors.full_messages_for(:name).each do |message| %>
+            <div><%= message %></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col-12">
+      <div  class="field">
+        <%= form.label :email,class:"form-label"%><br>
+        <%= form.email_field :email,class:"form-control" %>
+        <% @user.errors.full_messages_for(:email).each do |message| %>
+          <div><%= message %></div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <% unless current_user.roles == 'admin' || current_user.id != @user.id %>
+    <div class="row mt-2">
+      <div class="col-6">
+        <div class="field">
+          <%= form.label :password,class:"form-label" %><br>
+          <%= form.password_field :password,class: "form-control"%>
+          <% @user.errors.full_messages_for(:password).each do |message| %>
+            <div><%= message %></div>
+          <% end %>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="field">
+          <%= form.label :current_password,class:"form-label" %> <i>(we need your current password to confirm your changes)</i><br />
+          <%= form.password_field :current_password,class:"form-control", autocomplete: "current-password"%>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% if can? :change_user_role, User %>
+    <div class="row mt-2">
+      <div class="col-12">
+        <div class="field">
+          <%= form.label :roles, class:"form-label" %>
+          <%= form.select(:roles, options_for_select(@roles, params[:selected_value] ), {}, { class: 'form-select w-100 form-control' } )%>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <div class="row mt-3 justify-content-end">
+    <%= form.submit class: 'btn btn-success mr-2' %>
+    <%= link_to 'Back', users_path, class: 'btn btn-info mr-2' %>
+  </div>
+<% end %>
