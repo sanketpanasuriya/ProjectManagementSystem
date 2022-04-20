@@ -1,33 +1,62 @@
+<style>
+.card .label {
+  position: absolute;
+    right: 6px;
+    top: -5px;
+}
+</style>
+<div class="row project-row">
+      <% projects.each do |project| %>
+        <%
+          unless current_user.has_role? "employee"
+            next unless  can? :show, project
+          end %>
+
 <%
   task_percentage = 0
   completed = project.sprints.joins(:tasks).select("tasks.id").where("tasks.status = 'Done'").count
   total = project.sprints.joins(:tasks).select("tasks.*").count
   task_percentage = (completed.to_f/total)*100 unless total == 0
+  day_left = project.endingdate - Date.today
 %>
 
-  <div class="col-sm-6 " id="<%= dom_id project %>">
-    <div class="card" style="margin-bottom:20px">
+  <div class="col-sm-9 col-lg-6 col-xl-4 card-sorting" id="<%= dom_id project %>">
+    <div class="card card-wrapper" style="margin-bottom:20px">
       <div class="card-body">
         <h4 class="card-title h2"><%= project.name %></h4>
+        <%= hidden_field_tag "card-enddate",project.endingdate, :class=>"card-enddate"%>
+        <%= hidden_field_tag "card-startdate", project.created_at, :class=>"card-startdate"%>
+        <%= hidden_field_tag "card-tasks", total, :class=>"card-tasks"%>
         <p class="card-text text-muted">
           <%=h truncate(project.description, length: 100) %>
         </p>
         <p class='card-text text-info'>Total Task: <%= total%>
+         <p class='card-text text-success'>Start Date: <%= project.created_at.to_date%>
+         <p class='card-text text-danger'>End Date: <%= project.endingdate%>
         <div class="progress">
           <div class="progress-bar" role="progressbar" style="width: <%=task_percentage%>%" aria-valuenow="<%= task_percentage%>%" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <p class="card-text text-">
-        </p>
+
+        <% if project.status == "completed"%>
+          <div class="label  badge badge-success rounded">Completed</div>
+        <%elsif day_left < 8 && day_left > 0%>
+         <div class="label bg-info rounded text-white">day left <span class="lable badge badge-danger rounded-circle mb-1"><%= day_left.to_i%></span></div>
+        <% elsif day_left < 0 %>
+          <div class="label bg-info rounded text-white">Project is overdue by <span class="lable badge badge-danger rounded-circle mb-1"><%= day_left.to_i.abs%></span> days</div>
+        <% end%>
+      </div>
+      <div class="card-footer bg-white">
         <div class="row">
-          <div class="col-12">
-            <%= link_to 'View', project,  class: "btn btn-outline-info" %>
-            <%= link_to 'Edit', edit_project_path(project),  class: 'btn btn-outline-warning' if can? :update, project %>
-            <%= link_to "Delete", 'javascript:;',class:"btn btn-outline-danger" , "onClick" => "deleteProject('#{project.id}')" if can? :destroy, project  %>
+            <div class="col-12">
+              <%= link_to 'View', project,  class: "badge badge-info p-2 mt-1 text-white" %>
+              <%= link_to 'Edit', edit_project_path(project),  class: 'badge badge-warning p-2 mt-1 text-white' if can? :update, project %>
+              <%= link_to "Delete", 'javascript:;',class:"badge badge-danger p-2 mt-1 text-white" , "onClick" => "deleteProject('#{project.id}')" if can? :destroy, project  %>
+            </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
+    <% end%>
 <script>
   function deleteProject(id) {
     console.log(id);
