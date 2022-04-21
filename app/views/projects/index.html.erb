@@ -4,29 +4,69 @@
   <div class="col-3">
     <h1>Projects</h1>
   </div>
-  <div class="col-9">
-    <%= link_to 'New project', new_project_path, class: 'btn btn-outline-primary' if can? :create, Project %>
-  </div>
-</div>
-<div class="row">
-  <div class="col-3">
-    <canvas id="myChart" style="width:50%;max-width:600px"></canvas>
-  </div>
-  <div class="col-9">
-    <div class="row">
-      <% @projects.each do |project| %>
-        <%
-          unless current_user.has_role? "employee"
-            next unless  can? :show, project
-          end %>
-        <%= render project %>
-      <% end %>
+  <div class="col-9 d-flex align-items-center">
+    <div>
+        <%= link_to 'New project', new_project_path, class: 'btn btn-outline-primary' if can? :create, Project %>
     </div>
+  <%= form_for_filterrific @filterrific, html: { id: 'filterrific-no-ajax-auto-submit', class:"form-inline ml-4" } do |f| %>
+  <div class= "d-flex align-items-center justify-content-around">
+      <div>
+        <%= f.text_field(
+          :search_query,
+          class: 'filterrific-periodically-observed form-control',
+          placeholder: "Search"
+        ) %>
+   
+      <%= f.select(
+        :with_status, 
+        @filterrific.select_options[:with_status],
+        { include_blank: '- Status -'},
+        {class:"form-control"}
+      ) %>
+   
+      <%= f.select(
+        :sorted_by, 
+        @filterrific.select_options[:sorted_by], 
+        { include_blank: '- Sorted By -' },
+        {class:"form-control"}
+        ) %>
+      <%= f.submit 'Filter', class: "btn btn-primary" %>
+      <%= link_to(
+        'Reset filters',
+        reset_filterrific_url,
+        :class=>"btn btn-secondary"
+      ) %>
+   </div>
+  </div>
+  <%# add an automated spinner to your form when the list is refreshed %>
+  <%# render_filterrific_spinner %>
+<% end %>
+
+  </div>
+  </div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-6 col-lg-3">
+    <canvas id="myChart" ></canvas>
+  </div>
+  <div class="col-sm-12 col-md-6 col-lg-9 filterrific_results">
+     <%= render(
+          partial: 'projects/project',
+          locals: { projects: @projects }
+        ) %>
   </div>
 </div>
 
 <% completed = Project.where(status: "completed").count
-  on_going = @projects.count - completed %>
+  if @projects.count.is_a?(Hash)
+    count=0
+    @projects.count.each do |k,v|
+      count = count + v.to_i
+    end
+  else
+    count = @projects.count
+  end
+  on_going = count - completed %>
 
 <script>
   var xValues = ["In Progess", "Completed"];

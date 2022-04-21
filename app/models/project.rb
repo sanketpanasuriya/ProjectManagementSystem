@@ -5,4 +5,57 @@ class Project < ApplicationRecord
   belongs_to :creator, class_name: 'User'
   belongs_to :client, class_name: 'User'
   has_many :sprints, class_name: 'Sprint', dependent: :destroy
+  filterrific(
+    default_filter_params: { sorted_by: 'created_at_desc' },
+    available_filters: [
+      :sorted_by,
+      :search_query,
+      :with_status
+    ]
+  )
+
+  scope :search_query, ->(query) {
+    return nil  if query.blank?
+    Project.where('description LIKE :search OR name LIKE :search', search: "%#{query}%")
+  }
+
+  scope :with_status, ->(status) {
+    where(:status => [status])
+  }
+
+  scope :sorted_by, ->(sort_option) {
+    # extract the sort direction from the param value.
+    direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+    projects = Project.arel_table
+    tasks = Task.arel_table
+    case sort_option.to_s
+    when /^created_at_/
+      order(projects[:created_at].send(direction))
+    when /^name_/
+      order(projects[:name].lower.send(direction))
+    when /^endingdate/
+      order(projects[:endingdate].send(direction))
+    when /^task/
+      Project.joins(sprints: :tasks).group("projects.id").order('COUNT(project_id) asc')
+      # Project.where(id:ids)
+    else
+      raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+    end
+  }
+
+  def self.options_for_sorted_by
+    [
+      ['Name (a-z)', 'name_asc'],
+      ['Project start date', 'created_at_asc'],
+      ['Project End date', 'endingdate'],
+      ['Tasks', 'task']
+    ]
+  end
+
+  def self.options_for_with_status
+    [
+      ['Completed', 'completed'],
+      ['On Going', 'ongoing']
+    ]
+  end
 end

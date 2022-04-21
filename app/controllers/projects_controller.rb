@@ -9,12 +9,45 @@ class ProjectsController < ApplicationController
   before_action :checking_authenticity_new, only: %i[new create]
   # GET /projects or /projects.json
   def index
+    # if current_user.has_role? 'employee'
+    #   arr = Task.select(:sprint_id).where(user_id: current_user.id).map(&:sprint_id).uniq
+    #   @projects = Project.joins(:sprints).where(sprints: { id: arr })
+    #   return @projects
+    # end
+    # @projects = Project.all
+
+
+    @filterrific = initialize_filterrific(
+      Project,
+      params[:filterrific],
+      select_options: {
+        sorted_by: Project.options_for_sorted_by,
+        with_status: Project.options_for_with_status,
+      },
+      persistence_id: "shared_key",
+      default_filter_params: {},
+      available_filters: [:sorted_by, :with_status, :search_query],
+      sanitize_params: true,
+    ) || return
+    # Get an ActiveRecord::Relation for all students that match the filter settings.
+    # You can paginate with will_paginate or kaminari.
+    # NOTE: filterrific_find returns an ActiveRecord Relation that can be
+    # chained with other scopes to further narrow down the scope of the list,
+    # e.g., to apply permissions or to hard coded exclude certain types of records.
     if current_user.has_role? 'employee'
       arr = Task.select(:sprint_id).where(user_id: current_user.id).map(&:sprint_id).uniq
-      @projects = Project.joins(:sprints).where(sprints: { id: arr })
-      return @projects
+      @projects = @filterrific.joins(:sprints).where(sprints: { id: arr }).find.page(params[:page])
+      # return @projects
+    else 
+      @projects = @filterrific.find.page(params[:page])
     end
-    @projects = Project.all
+    # @projects = Project.all
+
+    # Respond to html for initial page load and to js for AJAX filter updates.
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
@@ -53,7 +86,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.new(project_params)
-    @project.status = 'Created'
+    @project.status = 'ongoing'
     params[:selected_value] = @project.client_id
     respond_to do |format|
       if @project.save

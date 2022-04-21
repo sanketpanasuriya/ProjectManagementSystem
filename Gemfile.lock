@@ -123,6 +123,7 @@ GEM
     erubi (1.10.0)
     execjs (2.8.1)
     ffi (1.15.5)
+    filterrific (5.2.3)
     globalid (1.0.0)
       activesupport (>= 5.0)
     i18n (1.10.0)
@@ -303,6 +304,7 @@ DEPENDENCIES
   carrierwave
   debug
   devise
+  filterrific
   importmap-rails
   jbuilder
   paranoia!
