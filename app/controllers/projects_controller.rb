@@ -36,10 +36,10 @@ class ProjectsController < ApplicationController
     # e.g., to apply permissions or to hard coded exclude certain types of records.
     if current_user.has_role? 'employee'
       arr = Task.select(:sprint_id).where(user_id: current_user.id).map(&:sprint_id).uniq
-      @projects = @filterrific.joins(:sprints).where(sprints: { id: arr }).find.page(params[:page])
+      @projects = @filterrific.joins(:sprints).where(sprints: { id: arr }).find.page(params[:page]).paginate(page: params[:page], per_page: 9)
       # return @projects
     else 
-      @projects = @filterrific.find.page(params[:page])
+      @projects = @filterrific.find.page(params[:page]).paginate(page: params[:page], per_page: 9)
     end
     # @projects = Project.all
 

@@ -56,7 +56,6 @@
         ) %>
   </div>
 </div>
-
 <% completed = Project.where(status: "completed").count
   if @projects.count.is_a?(Hash)
     count=0
@@ -67,6 +66,15 @@
     count = @projects.count
   end
   on_going = count - completed %>
+
+<% if count > 9%>
+<div class="col-12">
+   <div class="apple_pagination">
+    <%= will_paginate @users, :container => false %>
+  </div>
+</div>
+<% end %>
+
 
 <script>
   var xValues = ["In Progess", "Completed"];
