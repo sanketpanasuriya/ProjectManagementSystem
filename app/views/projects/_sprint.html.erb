@@ -1,13 +1,25 @@
-<%  task_percentage = 0
-    completed = sprint.tasks.where("tasks.status = 'Done'").count
-    total = sprint.tasks.count
-    task_percentage = (completed.to_f/total)*100 unless total == 0
-%>
-  <div class="col-sm-6 my-1" id="<%=dom_id sprint%>" style="display: inline-block;">
-    <div class="card">
+<style>
+.card .label {
+  position: absolute;
+    right: 6px;
+    top: -5px;
+}
+</style>
+
+<% sprints.each do |sprint| %>
+  <% project = sprint.project%>
+  <%  task_percentage = 0
+      completed = sprint.tasks.where("tasks.status = 'Done'").count
+      total = sprint.tasks.count
+      task_percentage = (completed.to_f/total)*100 unless total == 0
+      day_left = sprint.expected_end_date - Date.today
+  %>
+
+  <div class="col-sm-12 col-lg-6 col-xl-4 my-1" id="<%=dom_id sprint%>">
+    <div class="card card-wrapper">
       <div class="card-body">
         <h4 class="card-title h2"><%= sprint.title %></h4>
-        <small>Start At: <%= sprint.created_at.strftime('%d-%m-%y') %></small>
+        <small>Start At: <%= sprint.created_at.strftime('%d-%m-%y') %></small><br>
         <small>Expected End At: <%= sprint.expected_end_date&.strftime('%d-%m-%y') %></small><br>
         <p class="card-text text-muted">
           <%=h truncate(sprint.description, length: 100) %>
@@ -16,16 +28,19 @@
         <div class="progress">
           <div class="progress-bar" role="progressbar" style="width: <%=task_percentage%>%" aria-valuenow="<%= task_percentage%>%" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <div class="btn-group btn-group-sm">
-            <%= link_to "View Task", project_sprint_task_index_path(project, sprint), class:"btn btn-success"%>
-            <%= link_to "Edit Sprint", edit_project_sprint_path(project_id: project,id:sprint), class:"btn btn-primary" if can? :update, @project%>
-        
-          <%= link_to "Delete", 'javascript:;',class:"btn btn-danger" , "onClick" => "deleteSprint('#{project.id}','#{sprint.id}')" if can? :destroy, @project  %>
-        </div>
     </div>
+        <%=sanitize getAlertLabel(day_left, total==completed)%>
+    <div class="row d-table-row">
+        <div class="col-12 card-footer bg-white">
+            <%= link_to "View Task", project_sprint_task_index_path(project, sprint), class:"badge badge-success p-1"%>
+            <%= link_to "Edit Sprint", edit_project_sprint_path(project_id: project,id:sprint), class:"badge badge-primary p-1" if can? :update, @project%>
+            <%= link_to "Delete", 'javascript:;',class:"badge badge-danger p-1" , "onClick" => "deleteSprint('#{project.id}','#{sprint.id}')" if can? :destroy, @project  %>
+        </div>
+      </div>
   </div>
 </div>
 
+<% end %>
 <script>
   function deleteSprint(project_id,id) {
     console.log(id,project_id);

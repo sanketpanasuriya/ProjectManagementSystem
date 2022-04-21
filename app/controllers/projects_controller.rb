@@ -36,7 +36,7 @@ class ProjectsController < ApplicationController
     # e.g., to apply permissions or to hard coded exclude certain types of records.
     if current_user.has_role? 'employee'
       arr = Task.select(:sprint_id).where(user_id: current_user.id).map(&:sprint_id).uniq
-      @projects = @filterrific.joins(:sprints).where(sprints: { id: arr }).find.page(params[:page]).paginate(page: params[:page], per_page: 9)
+      @projects = @filterrific.find.page(params[:page]).joins(:sprints).where(sprints: { id: arr }).uniq.paginate(page: params[:page], per_page: 9)
       # return @projects
     else 
       @projects = @filterrific.find.page(params[:page]).paginate(page: params[:page], per_page: 9)
@@ -51,10 +51,33 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    # project_id = params[:id]
+    # @sprint = Sprint.where(project_id: project_id).all
+    # @completed = Project.find(project_id).sprints.joins(:tasks).where(tasks: { status: 'Done' }).count
+    # @ongoing = Project.find(project_id).sprints.joins(:tasks).count - @completed
+
+    @filterrific = initialize_filterrific(
+      Sprint,
+      params[:filterrific],
+      select_options: {
+        sprint_sorted_by: Sprint.options_for_sorted_by,
+        with_sprint_status: Sprint.options_for_with_status,
+      },
+      persistence_id: "shared_key",
+      default_filter_params: {},
+      available_filters: [:sprint_sorted_by, :sprint_search_query, :with_sprint_status],
+      sanitize_params: true,
+    ) || return
+
     project_id = params[:id]
-    @sprint = Sprint.where(project_id: project_id).all
+    @sprint = @filterrific.find.page(params[:page]).where(project_id: project_id).paginate(page: params[:page], per_page: 9)
     @completed = Project.find(project_id).sprints.joins(:tasks).where(tasks: { status: 'Done' }).count
     @ongoing = Project.find(project_id).sprints.joins(:tasks).count - @completed
+    
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

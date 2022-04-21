@@ -37,15 +37,7 @@
           <div class="progress-bar" role="progressbar" style="width: <%=task_percentage%>%" aria-valuenow="<%= task_percentage%>%" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
 
-        <% if project.status == "completed"%>
-          <div class="label  badge badge-success rounded">Completed</div>
-        <%elsif day_left < 8 && day_left > 0%>
-         <div class="label bg-info rounded text-white">day left <span class="lable badge badge-danger rounded-circle mb-1"><%= day_left.to_i%></span></div>
-        <%elsif day_left == 0 %>
-          <div class="label bg-danger rounded text-white">Complete Project By Today</div>
-        <% elsif day_left < 0 %>
-          <div class="label bg-info rounded text-white">Project is overdue by <span class="lable badge badge-danger rounded-circle mb-1"><%= day_left.to_i.abs%></span> days</div>
-        <% end%>
+        <%=sanitize getAlertLabel(day_left, project.status == "completed")%>
       </div>
       <div class="card-footer bg-white">
         <div class="row">
