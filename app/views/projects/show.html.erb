@@ -13,37 +13,83 @@
 </div>
 
 <div class="row">
-  <div class="col-12 mt-5"><h4><%= @project.name %></h4></div>
-  <div class="col-12 mt-3 text-muted"><%= @project.description %></div>
-  <div class="col-12 mt-3"><b>Status: </b><%= @project.status %></div>
-  <% if can? :project_status, @project %>
-    <div class="col-12 mt-3">
-      <b>Change to: </b>
-      <% if @project.status=="completed" &&(can? :project_status, @project) %>
-         <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :project_status, @project %>
-      <% else %>
-         <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :project_status, @project %>
+  <div class="col-lg-12 col-xl-3">
+    <div class="col-12 mt-5"><h4><%= @project.name %></h4></div>
+    <div class="col-12 mt-3 text-muted"><%= @project.description %></div>
+    <div class="col-12 mt-3"><b>Status: </b><%= @project.status %></div>
+    <% if can? :project_status, @project %>
+      <div class="col-12 mt-3">
+        <b>Change to: </b>
+        <% if @project.status=="completed" &&(can? :project_status, @project) %>
+          <%= link_to "Ongoing", project_status_projects_path(@project,status: false) if can? :project_status, @project %>
+        <% else %>
+          <%= link_to "Completed", project_status_projects_path(@project,status: true),class:"text-success" if can? :project_status, @project %>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="col-12">
+      <% if @project.status=="completed" && @project.client_id==current_user.id %>
+      <%= link_to "Review And Rating", review_rating_projects_path(@project) if can? :review_rating, @project %>
       <% end %>
     </div>
-  <% end %>
-</div>
-
-<% if @project.status=="completed" && @project.client_id==current_user.id %>
-  <%= link_to "Review And Rating", review_rating_projects_path(@project) if can? :review_rating, @project %>
-<% end %>
-<br>
-
-<canvas id="myChart" style="width:50%;max-width:600px"></canvas>  
-<div class="row">
-  <div class="col-12">
-    <h2>All Sprints</h2>
-    
-<div class="row m-4" >
-    <% @sprint.each do |sprint| %>
-
-      <%= render 'sprint', sprint: sprint, project: @project %>
-    <% end %>
+    <div  class="col-12 mt-3">
+      <canvas id="myChart" style="width:50%;max-width:600px"></canvas>  
+    </div>
   </div>
+  <div class="col-lg-12 col-xl-9">
+    <div class="row">
+      <div class="col-12">
+        <h2>All Sprints</h2>
+      </div>
+    </div>
+    <div class="row">
+      <%= form_for_filterrific @filterrific, html: { id: 'filterrific-no-ajax-auto-submit', class:"form-inline ml-4" } do |f| %>
+        <div class= "d-flex align-items-center justify-content-around">
+            <div>
+              <%= f.text_field(
+                :sprint_search_query,
+                class: 'filterrific-periodically-observed form-control',
+                placeholder: "Search"
+              ) %>
+              <%= f.select(
+                :with_sprint_status, 
+                @filterrific.select_options[:with_sprint_status],
+                { include_blank: '- Status -'},
+                {class:"form-control"}
+              ) %>
+              <%= f.select(
+                :sprint_sorted_by, 
+                @filterrific.select_options[:sprint_sorted_by], 
+                { include_blank: '- Sorted By -' },
+                {class:"form-control"}
+                ) %>
+              <%= f.submit 'Filter', class: "btn btn-primary" %>
+              <%= link_to(
+                'Reset filters',
+                reset_filterrific_url,
+                :class=>"btn btn-secondary"
+              ) %>
+          </div>
+        </div>
+        <%# add an automated spinner to your form when the list is refreshed %>
+        <%# render_filterrific_spinner %>
+      <% end %> 
+    </div>
+    <div class="row filterrific_results_sprint" >
+          <%=
+          render(
+            :partial => 'projects/sprint',
+            :locals => { :sprints => @sprint }
+          )
+          %>
+    </div>
+    <% if (@ongoing + @completed) > 9%>
+      <div class="col-12">
+        <div class="apple_pagination">
+          <%= will_paginate @sprint, :container => false %>
+        </div>
+      </div>
+      <% end %>
   </div>
 </div>
 

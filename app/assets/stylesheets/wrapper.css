@@ -12,24 +12,28 @@
  }
 
  .wrapper {
-     max-width: 350px;
-     min-height: 500px;
+     max-width: 450px;
+     min-height: 600px;
      margin: 80px auto;
-     padding: 40px 30px 30px 30px;
+     padding: 20px 10px 10px 10px;
      background-color: #ecf0f3;
      border-radius: 15px;
      box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff
  }
 
  .card-wrapper {
-    max-width: 400px;
-    min-height: 450px;
-    max-height: 550px;
-    margin: 80px auto;
-    padding: 40px 30px 30px 30px;
-    background-color: #a1cbeb;
-    border-radius: 15px;
-    box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff
+     max-width: 400px;
+     min-height: 450px;
+     max-height: 550px;
+     margin: 80px auto;
+     padding: 40px 30px 30px 30px;
+     background-color: #abd2f3;
+     border-radius: 50px;
+     box-shadow: 13px 13px 20px #28527a, -13px -13px 20px #fff
+ }
+
+ .card-wrapper:hover {
+    transform: scale(1.1); 
  }
 
  .logo {
@@ -92,7 +96,7 @@
 
  .wrapper a {
      text-decoration: none;
-     font-size: 0.8rem;
+     font-size: 0.9rem;
      color: #03A9F4
  }
 
