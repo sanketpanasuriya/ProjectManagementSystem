@@ -7,7 +7,7 @@ class HomeController < ApplicationController
     elsif (current_user.has_role? 'manager') || (current_user.has_role? 'customer')
       redirect_to '/projects/index'
     end
-    @users = User.where(delete_user: false).all.paginate(page: params[:page], per_page: 6)
+    @users = User.where(delete_user: false).all.paginate(page: params[:page], per_page: 9)
   end
 
   def employee
