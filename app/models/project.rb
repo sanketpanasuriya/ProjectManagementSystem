@@ -6,7 +6,7 @@ class Project < ApplicationRecord
   belongs_to :client, class_name: 'User'
   has_many :sprints, class_name: 'Sprint', dependent: :destroy
   filterrific(
-    default_filter_params: { sorted_by: 'created_at_desc' },
+    default_filter_params: { sorted_by: 'name_asc' },
     available_filters: [
       :sorted_by,
       :search_query,
@@ -20,7 +20,11 @@ class Project < ApplicationRecord
   }
 
   scope :with_status, ->(status) {
-    where(:status => [status])
+    if(status == "overdue")
+      where("endingdate < '#{Time.now}'")
+    else
+      where(:status => [status])
+    end
   }
 
   scope :sorted_by, ->(sort_option) {
@@ -29,12 +33,14 @@ class Project < ApplicationRecord
     projects = Project.arel_table
     tasks = Task.arel_table
     case sort_option.to_s
-    when /^created_at_/
-      order(projects[:created_at].send(direction))
     when /^name_/
       order(projects[:name].lower.send(direction))
+    when /^created_at_/
+      order(projects[:created_at].send(direction))
     when /^endingdate/
       order(projects[:endingdate].send(direction))
+    when /^updated_at/
+      order(projects[:updated_at].send('desc'))
     when /^task/
       Project.joins(sprints: :tasks).group("projects.id").order('COUNT(project_id) asc')
       # Project.where(id:ids)
@@ -48,6 +54,7 @@ class Project < ApplicationRecord
       ['Name (a-z)', 'name_asc'],
       ['Project start date', 'created_at_asc'],
       ['Project End date', 'endingdate'],
+      ['Last Modified', 'updated_at'],
       ['Tasks', 'task']
     ]
   end
@@ -55,7 +62,8 @@ class Project < ApplicationRecord
   def self.options_for_with_status
     [
       ['Completed', 'completed'],
-      ['On Going', 'ongoing']
+      ['On Going', 'ongoing'],
+      ['Over Due', 'overdue']
     ]
   end
 end
