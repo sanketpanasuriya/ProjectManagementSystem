@@ -5,9 +5,12 @@
 <div style="display:block;margin-bottom:10%;">
 
 <% @users.each do |user| %>
-<div class="card m-4" style="width: 18rem;height:15rem;display:inline-block">
+<div class="card m-4" style="width: 18rem;display:inline-block">
+<div style="text-align:center">
+ <%=image_tag( user_image(user), :style=>"width: 15rem;height: 15rem; border-radius: 100%;",:class=>"card-img-top") %>
+    </div>
   <div class="card-body">
-    <h5 class="card-title"><%= user.name %></h5>
+    <h5 class="card-title"><%= user.name[0..19] %></h5>
     <p class="card-text">
       <%if(user.roles.first.name=="manager")%>
       <span class="badge badge-pill badge-primary">Manager</span>
