@@ -4,36 +4,36 @@
 
 <div style="display:block;margin-bottom:10%;">
 
-<% @users.each do |user| %>
-<div class="card m-4" style="width: 18rem;display:inline-block">
-<div style="text-align:center">
- <%=image_tag( user_image(user), :style=>"width: 15rem;height: 15rem; border-radius: 100%;",:class=>"card-img-top") %>
+<div class="row">
+  <% @users.each do |user| %>
+  <div class= "col-sm-12 col-md-6 col-lg-4">
+    <div class="user-wrapper m-4 d-flex"  >
+      <div class="logo">
+        <%=image_tag( user_image(user))%>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><%= user.name[0..19] %></h5>
+        <div class="card-text">
+          <%=sanitize get_user_role(user) %>
+        </div>
+        <div class="card-text">
+          <p>Total Projects: <%=sanitize getTotalProjects(user)%></p>
+        </div>
+        <div>
+        <%= link_to "Edit User", edit_user_path(user),class:"btn btn-primary" if current_user.has_role? "admin" %>
+        </div>
+      </div>
     </div>
-  <div class="card-body">
-    <h5 class="card-title"><%= user.name[0..19] %></h5>
-    <p class="card-text">
-      <%if(user.roles.first.name=="manager")%>
-      <span class="badge badge-pill badge-primary">Manager</span>
-      <% elsif (user.roles.first.name=="admin") %>
-      <span class="badge badge-pill badge-danger">Admin</span>
-      <% elsif (user.roles.first.name=="customer") %>
-      <span class="badge badge-pill badge-secondary">Customer</span>
-      <% else %>
-      <span class="badge badge-pill badge-info">Employee</span>
-      <%end%>
-     
-    </p>
-     <%= link_to "Edit User", edit_user_path(user),class:"btn btn-primary" if current_user.has_role? "admin" %>
-   
-   </div>
-</div>
-
-<%end%>
-</div>
-
-<div class="apple_pagination">
-    <%= will_paginate @users, :container => false %>
   </div>
+
+  <%end%>
+</div>
+</div>
+  <% if @users.count > 9%>
+    <div class="apple_pagination">
+        <%= will_paginate @users, :container => false %>
+    </div>
+  <% end%>
 </div>
 
 </div>
