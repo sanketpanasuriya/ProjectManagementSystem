@@ -10,7 +10,7 @@
     <%= form_with model: @user,:url => {:controller=>"users" ,:action => "create_user"},:html => {:class => 'p-3 mt-3'}  do |form| %>
 
         <div class="form-field d-flex align-items-center">
-          
+          <i class="fa fa-user" aria-hidden="true"></i>
           <%= form.text_field :name, :class=> "form-control",:placeholder=>"User Name" %>
           <% @user.errors.full_messages_for(:name).each do |message| %>
             <div class="text-danger"><%= message %></div>
@@ -18,16 +18,18 @@
         </div>
 
         <div class="form-field d-flex align-items-center">
+        <i class="fa fa-envelope" aria-hidden="true"></i>
         <%= form.email_field :email ,:class=>"form-control",:placeholder=>"Email"%>
         
         </div>
 
         <div class="form-field d-flex align-items-center">
-        
+          <i class="fa fa-key" aria-hidden="true"></i>
           <%= form.password_field :password ,:class=>"form-control",:placeholder=>"Password"%>
          
       </div>
         <div class="form-field d-flex align-items-center">
+        <i class="fa fa-check" aria-hidden="true"></i>
         <%= form.password_field :password_confirmation,:class=>"form-control",:placeholder=>"Password Confirmation" %>
         
           </div>
@@ -35,7 +37,7 @@
     
 
         <div class="form-field d-flex align-items-center">
-        <%= form.label :roles,:class=>"my-1" %> 
+        <i class="fas fa-users"></i>
         <%= form.select(:roles,get_allRole , { :class => 'form-control' }) %>
         </div>
         <div class="col-12">
