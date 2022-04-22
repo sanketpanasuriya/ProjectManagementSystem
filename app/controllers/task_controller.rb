@@ -9,11 +9,23 @@ class TaskController < ApplicationController
   before_action :checking_authenticity_edit, only: %i[edit]
   before_action :checking_authenticity_new, only: %i[new create]
   def index
+    @filterrific = initialize_filterrific(
+      Task,
+      params[:filterrific],
+      select_options: {
+        task_sorted_by: Task.options_for_sorted_by,
+        with_task_status: Task.options_for_with_status,
+      },
+      persistence_id: "shared_key",
+      default_filter_params: {},
+      available_filters: [:task_sorted_by, :with_task_status, :task_search_query],
+      sanitize_params: true,
+    ) || return
     @status = @@status
     @tasks = if params.key?(:sprint_id)
-               Task.where(sprint_id: params[:sprint_id]).order(created_at: :asc)
+                @filterrific.find.page(params[:page]).where(sprint_id: params[:sprint_id]).order(created_at: :asc)
              else
-               Task.joins(:sprint).where(sprint: { project_id: params[:project_id] }).order(created_at: :asc)
+                @filterrific.find.page(params[:page]).joins(:sprint).where(sprint: { project_id: params[:project_id] }).order(created_at: :asc)
              end
     @hours = {}
     @tasks.each do |x|
