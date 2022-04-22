@@ -8,7 +8,7 @@
     <div>
         <%= link_to 'New project', new_project_path, class: 'btn btn-outline-primary' if can? :create, Project %>
     </div>
-  <%= form_for_filterrific @filterrific, html: { id: 'filterrific-no-ajax-auto-submit', class:"form-inline ml-4" } do |f| %>
+  <%= form_for_filterrific @filterrific, html: { id: '', class:"form-inline ml-4" } do |f| %>
   <div class= "d-flex align-items-center justify-content-around">
       <div>
         <%= f.text_field(
@@ -97,4 +97,5 @@
       }
     }
   });
+
 </script>

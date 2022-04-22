@@ -33,6 +33,72 @@ class Task < ApplicationRecord
     end
   end
 
+  filterrific(
+    default_filter_params: { task_sorted_by: 'name_asc' },
+    available_filters: [
+      :task_sorted_by,
+      :task_search_query,
+      :with_task_status
+    ]
+  )
+
+  scope :task_search_query, ->(query) {
+    return nil  if query.blank?
+    Task.where('lower(tasks.description) LIKE :search OR lower(tasks.title) LIKE :search', search: "%#{query.downcase}%")
+  }
+
+  scope :with_task_status, ->(status) {
+    sprint_id = Task.where("tasks.status != 'Done'").select("tasks.sprint_id").map(&:sprint_id).uniq
+    case status
+      when /^overdue/
+        where("tasks.due_date <  '#{Time.now}'")
+      when status
+        where(status: status)
+      else
+        raise(ArgumentError, "Invalid status option: #{status.inspect}")
+      end
+  }
+
+
+  scope :task_sorted_by, ->(sort_option) {
+    # extract the sort direction from the param value.
+    direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+    tasks = Task.arel_table
+    case sort_option.to_s
+      when /^name_/
+        order(tasks[:title].send(direction))
+      when /^created_at_/
+        order(tasks[:created_at].send(direction))
+      when /^due_date/
+        order(tasks[:due_date].send(direction))
+      when /^updated_at_/
+        order(tasks[:updated_at].send(direction))
+      else
+        raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+    end
+  }
+
+  def self.options_for_sorted_by
+    [
+      ['Name (a-z)', 'name_asc'],
+      ['Task start date', 'created_at_asc'],
+      ['Task End date', 'due_date'],
+      ['Last Modified', 'updated_at_desc']
+    ]
+  end
+
+  def self.options_for_with_status
+    [
+      ['Done', 'Done'],
+      ['On Going', 'On Going'],
+      ['Created', 'Created'],
+      ['Submitted','Submitted'],
+      ['Re-Submitted','Re-Submitted'],
+      ['Rejected','Rejected'],
+      ['Over Due', 'overdue']
+    ]
+  end
+
   private
 
   def check_date

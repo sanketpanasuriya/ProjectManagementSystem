@@ -7,9 +7,41 @@
 <%= link_to "View Kanban", kanban_project_task_index_path,class: "btn btn-primary" if (!(current_user.has_role? "customer") && !(params.has_key?(:sprint_id))) %>
 <%= link_to "View Kanban", kanban_project_sprint_task_index_path,class: "btn btn-primary" if (!(current_user.has_role? "customer") && (params.has_key?(:sprint_id)))%>
 </div>
-
+<div>
+<%= form_for_filterrific @filterrific, html: { id: 'filterrific-no-ajax-auto-submit', class:"form-inline mt-3" } do |f| %>
+        <div class= "d-flex align-items-center justify-content-around">
+            <div>
+              <%= f.text_field(
+                :task_search_query,
+                class: 'filterrific-periodically-observed form-control',
+                placeholder: "Search"
+              ) %>
+              <%= f.select(
+                :with_task_status, 
+                @filterrific.select_options[:with_task_status],
+                { include_blank: '- Status -'},
+                {class:"form-control"}
+              ) %>
+              <%= f.select(
+                :task_sorted_by, 
+                @filterrific.select_options[:task_sorted_by], 
+                { include_blank: '- Sorted By -' },
+                {class:"form-control"}
+                ) %>
+              <%= f.submit 'Filter', class: "btn btn-primary" %>
+              <%= link_to(
+                'Reset filters',
+                reset_filterrific_url,
+                :class=>"btn btn-secondary"
+              ) %>
+          </div>
+        </div>
+        <%# add an automated spinner to your form when the list is refreshed %>
+        <%# render_filterrific_spinner %>
+      <% end %> 
+</div>
 <br><br>
-<table style="text-align: center; border: 1px solid black" frame="VOID" rules="ALL">
+<table class="table" style="text-align: center; border: 1px solid black" frame="VOID" rules="ALL">
   <tr  style="background-color: #DCDCDC;">
     <th style="padding: 10px">Task Name</th>
     <th style="padding: 10px">Description</th>

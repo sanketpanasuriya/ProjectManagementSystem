@@ -16,7 +16,7 @@ class Project < ApplicationRecord
 
   scope :search_query, ->(query) {
     return nil  if query.blank?
-    Project.where('description LIKE :search OR name LIKE :search', search: "%#{query}%")
+    Project.where('lower(projects.description) LIKE :search OR lower(projects.name) LIKE :search', search: "%#{query.downcase}%")
   }
 
   scope :with_status, ->(status) {
