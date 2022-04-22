@@ -1,28 +1,43 @@
 <% if current_user %>
   <nav class="navbar navbar-expand-lg fixed_navbar bg-primary">
-    <div class="container-fluid">
+    <div class="container-fluid  d-flex align-items-sm-start align-items-lg-center">
       <div class="navbar-nav">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="fa fa-list mt-2"></span>
+        </button>
+       
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <%= link_to "Home" , root_path , class: "nav-link active" %>
-          <%= link_to "Project", projects_path,class: "nav-link active" %>
-          <%= link_to "schedule", schedule_path, class: "nav-link active"%>
-          <%= link_to "task kanban", kanban_path, class: "nav-link active" unless current_user.has_role? "customer"%>
+          
+            <div class = "nav-item">
+              <%= link_to "Home" , root_path , class: "nav-link" %>
+            </div>
+            <div class = "nav-item">
+              <%= link_to "Project", projects_path,class: "nav-link" %>
+            </div>
+            <div class = "nav-item">
+              <%= link_to "schedule", schedule_path, class: "nav-link "%>
+            </div>
+            <div class = "nav-item">
+              <%= link_to "kanban", kanban_path, class: "nav-link" unless current_user.has_role? "customer"%>
+            </div>
+          
+          <div class="col-3">
+          </div>
         </div>
       </div>
-      <div class=" d-flex my-lg-1 align-items-center">
-        <div class="dropdown">
-          <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <%= current_user.name %>
+      <div class="nav-item d-flex my-lg-1 align-items-center justify-content-end">
+            <div class="dropdown">
+                <div class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <%= current_user.name %>
+                </div>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <p class="dropdown-item mb-0"><%= current_user.roles&.first&.name.capitalize %></p>
+                  <%= link_to "Edit Profile", edit_user_path(current_user), class: "dropdown-item" if can? :update, current_user %>
+                  <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure for logout?" }, class: 'dropdown-item'%>
+                </div>
+            </div>
+            <%=image_tag( user_image(current_user), :style=>"width: 3rem;height: 3rem; border-radius: 100%; display") %>
           </div>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <p class="dropdown-item mb-0"><%= current_user.roles&.first&.name.capitalize %></p>
-            <%= link_to "Edit Profile", edit_user_path(current_user), class: "dropdown-item" if can? :update, current_user %>
-            <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure for logout?" }, class: 'dropdown-item'%>
-          </div>
-        </div>
-        <%=image_tag( user_image(current_user), :style=>"width: 3rem;height: 3rem; border-radius: 100%; display") %>
-      
-      </div>
     </div>
   </nav>
 <% end %>

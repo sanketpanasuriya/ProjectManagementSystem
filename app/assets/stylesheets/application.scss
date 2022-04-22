@@ -1,13 +1,14 @@
 
  // Custom bootstrap variables must be set or imported *before* bootstrap.
  @import "bootstrap";
+ @import url("https://use.fontawesome.com/releases/v5.7.2/css/all.css");
  @import "pagination.css";
 
  @import "kanban.css";
  @import "simple_calendar";
  @import "wrapper.css";
 
-body { padding-top: 60px; padding-bottom: 40px; }
+body { padding-top: 60px; padding-bottom: 40px; background: #25d7ee2d;}
 .container-fluid { margin: 0 auto; }
 .fixed_navbar, .fixed_footer { width: 100%; position: fixed; background: #333; color: #fff; }
 .fixed_navbar .navbar-nav a { color: #fff; text-decoration: none; display: inline-block; }
