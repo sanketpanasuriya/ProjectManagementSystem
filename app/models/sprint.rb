@@ -17,7 +17,7 @@ class Sprint < ApplicationRecord
 
   scope :sprint_search_query, ->(query) {
     return nil  if query.blank?
-    Sprint.where('description LIKE :search OR title LIKE :search', search: "%#{query}%")
+    Sprint.where('lower(sprints.description) LIKE :search OR lower(sprints.title) LIKE :search', search: "%#{query.downcase}%")
   }
 
   scope :with_sprint_status, ->(status) {

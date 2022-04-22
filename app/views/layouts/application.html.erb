@@ -30,4 +30,8 @@
       'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
     }
   });
+
+  $('.nav-link active').click(function() {
+    location.reload();
+  });
 </script>
