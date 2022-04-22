@@ -1,11 +1,13 @@
 
-<div class="wrapper" style="min-height: 530px;">
+<div class="modal  bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  
+<div class="wrapper" style="min-height: 530px;box-shadow:none;">
 
 <div class="container"  >
           <div class="text-center mt-4 name"> New User </div>
 <div class="col-auto">
 
-    <%= form_with model: @user,:url => {:action => "create_user"},:html => {:class => 'p-3 mt-3'}  do |form| %>
+    <%= form_with model: @user,:url => {:controller=>"users" ,:action => "create_user"},:html => {:class => 'p-3 mt-3'}  do |form| %>
 
         <div class="form-field d-flex align-items-center">
           
@@ -34,11 +36,12 @@
 
         <div class="form-field d-flex align-items-center">
         <%= form.label :roles,:class=>"my-1" %> 
-        <%= form.select(:roles,@roles , {selected: params[:selected_value]}, { :class => 'form-control' }) %>
+        <%= form.select(:roles,get_allRole , { :class => 'form-control' }) %>
         </div>
         <div class="col-12">
 
-    <%= form.submit "Create", :class=>"btn btn-primary mt-3 mb-3", style:"width: 100px" %>
+        <%= form.submit "Create", :class=>"btn btn-primary mt-3 mb-3"%>
+<button id='closeModal' type="button" class="btn btn-danger" data-dismiss="modal" style="color: #fff;background-color: #dc3545;border-color: #dc3545;">Close</button>
            </div>
       
         <% end %>
@@ -46,3 +49,4 @@
 
       </div>
       </div>
+</div>

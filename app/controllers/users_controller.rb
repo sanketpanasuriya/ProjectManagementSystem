@@ -29,7 +29,7 @@ class UsersController < ApplicationController
       PasswordMailer.with(user: @user, password: @user.password).new_cridential_mail.deliver_later
       redirect_to '/'
     else
-      render :new, status: :unprocessable_entity
+      # render :new, status: :unprocessable_entity
     end
   end
 

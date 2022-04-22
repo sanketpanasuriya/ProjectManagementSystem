@@ -36,4 +36,9 @@ module UsersHelper
             "<span class='badge badge-pill badge-warning'>#{total_project}</span>"
         end
     end
+    def get_allRole()
+        @roles = []
+    Role.select('id', 'name').all.each { |v| @roles << [v.name, v.id] }
+    return @roles
+    end
 end

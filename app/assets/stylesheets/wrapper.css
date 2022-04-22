@@ -10,7 +10,6 @@
  body {
      background: #ecf0f3
  }
-
  .wrapper {
      max-width: 450px;
      min-height: 600px;
@@ -66,7 +65,7 @@
      color: #555
  }
 
- .wrapper .form-field input {
+ .wrapper .form-field input  {
      width: 100%;
      display: block;
      border: none;
@@ -76,6 +75,21 @@
      color: #666;
      padding: 10px 15px 10px 10px
  }
+
+ .wrapper .form-field select {
+    width: 100%;
+    display: block;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 10px 15px 10px 10px
+}
+.wrapper .form-field label {
+    font-size: 1.2rem;
+    color: #666;
+}
 
  .wrapper .form-field {
      padding-left: 10px;
