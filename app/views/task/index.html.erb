@@ -41,40 +41,41 @@
       <% end %> 
 </div>
 <br><br>
-<table class="table" style="text-align: center; border: 1px solid black" frame="VOID" rules="ALL">
-  <tr  style="background-color: #DCDCDC;">
-    <th style="padding: 10px">Task Name</th>
-    <th style="padding: 10px">Description</th>
-    <th style="padding: 10px">Employee Name</th>
-    <th style="padding: 10px">Employee Email</th>
-    <th style="padding: 10px">status</th>
+<table class="table  table-striped table-hover table-bordered border-primary" style="text-align: center;" frame="VOID" rules="ALL">
+  <thead  class="bg-info table-info">
+    <th>Task Name</th>
+    <th>Description</th>
+    <th>Employee Name</th>
+    <th>Employee Email</th>
+    <th>status</th>
     
-    <th style="padding: 10px"> Action </th>
+    <th> Action </th>
 
-    <th style="padding: 10px"> Hours </th>
+    <th> Hours </th>
     
-  </tr>
+  </thead>
+  <tbody class="table-info">
   <% @tasks.each do |task| 
         employee = User.find(task.user_id)
   %>
-  <tr style="background-color: #FFF0F5; padding:10px" id="column_<%= task.id%>">
-    <td>
+  <tr d="column_<%= task.id%>">
+    <td scope="row">
       <%= task.title %>
       <%
         # params[:project_id] = task.sprint.project_id
         params[:task] = task.id
       %>
-    </td>
-     <td style="padding:10px">
+    </td >
+     <td scope="row">
       <%= task.description %>
     </td>
-    <td style="padding:10px">
+    <td scope="row">
       <%= employee.name%>
     </td>
-    <td style="padding:10px">
+    <td scope="row">
       <%= employee.email %>
     </td>
-    <td style="padding:10px">
+    <td scope="row">
     <% if can? :edit, task%>
       <div class="dropdown">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="changeStatusDropDown_<%= task.id%>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -88,27 +89,28 @@
       <% else %>
       <%= task.status%>
       <% end %>
-  </div>
     </td>
-    <td style="padding:10px">
-    <% if can? :show, task %>
-      <%= link_to "View", project_task_path(id: task) , class: "badge badge-primary" unless params.has_key?(:sprint_id)%>
-      <%= link_to "View", project_sprint_task_path(id: task) , class: "badge badge-primary" if params.has_key?(:sprint_id)%>
-    <% end
-      if ((can? :edit, Task) && (['manager', 'admin'].include? current_user.roles.first.name))
-    %>
-    
-      <%= link_to "Edit", edit_project_task_path(id: task) , class: "badge badge-success"%>
-
-      <% end
-        if can? :destroy, task
-      %>
-    
-      <%= link_to "Delete", 'javascript:;' , "onClick" => "deleteTask('#{task.sprint.project.id}','#{task.id}')"  , class: "badge badge-danger" %>
-      
+    <td scope="row">
+      <div class="row px-3">
+        <div class="col-4">
+          <% if can? :show, task %>
+            <%= link_to "", project_task_path(id: task) , class: "fa fa-eye text-primary" unless params.has_key?(:sprint_id)%>
+            <%= link_to "", project_sprint_task_path(id: task) , class: "fa fa-eye text-primary" if params.has_key?(:sprint_id)%>
+          <% end %>
+        </div>
+        <div class="col-4">
+          <%if ((can? :edit, Task) && (['manager', 'admin'].include? current_user.roles.first.name)) %>
+            <%=link_to "", edit_project_task_path(id: task) , class: "fa fa-edit text-success"%>
+          <% end %>  
+         </div>
+         <div class="col-4">
+          <% if can? :destroy, task %>
+          <%= link_to "", 'javascript:;' , "onClick" => "deleteTask('#{task.sprint.project.id}','#{task.id}')"  , class: "fa fa-trash text-danger" %>
+        </div>
+      </div>
     </td>
     <% end%>
-    <td >
+    <td scope="row">
       <div id="hours_<%=task.id%>"><%= @hours[task.id] %>
       </div>
     </td>
@@ -116,6 +118,7 @@
   </tr>
     
   <% end %>
+    </tbody>
 
 </table>
 </div>
