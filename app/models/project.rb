@@ -21,7 +21,7 @@ class Project < ApplicationRecord
 
   scope :with_status, ->(status) {
     if(status == "overdue")
-      where("endingdate < '#{Time.now}'")
+      where("endingdate < '#{Time.now}' and status!='completed'")
     else
       where(:status => [status])
     end
