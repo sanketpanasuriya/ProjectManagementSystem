@@ -16,10 +16,12 @@
                       <strong>Project :</strong>
                       <%=Project.find_by(id:issue.project_id).name.capitalize %>
                     </p>
-                    <p>
-                      <strong>Description:</strong>
-                      <%= issue.description.capitalize[0..100] %>
+                    <p class="text-muted description" data-toggle="tooltip" data-placement="bottom" title="<%=issue.description%>">
+                      <strong class="text-dark">Description:</strong>
+                      <%=issue.description%>
                     </p>
+
+                    
 
                     <p>
                       <strong>Type:</strong>

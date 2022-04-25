@@ -21,9 +21,7 @@
         <h4 class="card-title h2"><%= sprint.title %></h4>
         <small>Start At: <%= sprint.created_at.strftime('%d-%m-%y') %></small><br>
         <small>Expected End At: <%= sprint.expected_end_date&.strftime('%d-%m-%y') %></small><br>
-        <p class="card-text text-muted">
-          <%=h truncate(sprint.description, length: 100) %>
-        </p>
+        <p class="card-text text-muted description" data-toggle="tooltip" data-placement="bottom" title="<%=sprint.description%>"><%=sprint.description%></p>
         <p class='card-text text-info'>Total Task: <%= total%></p>
         <div class="progress">
           <div class="progress-bar" role="progressbar" style="width: <%=task_percentage%>%" aria-valuenow="<%= task_percentage%>%" aria-valuemin="0" aria-valuemax="100"></div>

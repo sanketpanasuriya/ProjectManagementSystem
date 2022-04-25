@@ -1,16 +1,21 @@
-<div class="m-5 content-center">
+<div class="m-5 d-block">
+<div class="row">
   <% for item in @task_list %>
-    
-    <div class="card m-5" style="width: 18rem;display:inline-block">
-    <div class="card-body">
-        <h5 class="card-title"><%=item.title%></h5>
-        <h6 class="card-subtitle mb-2 text-muted"><%=item.due_date.strftime("%d-%m-%Y")%>
-        <div style="color:blue"><%=item.status%></div></h6>
-        <p class="card-text"><%=item.description[0..100]%></p>
-        <%project_id =Project.joins(sprints: :tasks).where("tasks.id=#{item.id}")%>
-        <%= link_to "View", project_task_path(id: item.id,project_id: project_id.ids.first),class:"card-link" if can? :show, item %>
-      <%= link_to "Change Status", edit_project_task_path(id: item.id,project_id: project_id.ids.first),class:"card-link" if can? :edit, item %>
-    </div>
+    <div class="col-sm-12 col-md-6 col-lg-4">
+      <div class="card m-3 user-wrapper" style="display:block">
+        <div class="card-body">
+            <h5 class="card-title"><%=item.title%></h5>
+            <h6 class="card-subtitle mb-2 text-muted"><%=item.due_date.strftime("%d-%m-%Y")%>
+            <div style="color:blue"><%=item.status%></div></h6>
+            <p class="card-text description" data-toggle="tooltip" data-placement="bottom" title="<%=item.description%>"><%=item.description%></p>
+            <%project_id =Project.joins(sprints: :tasks).where("tasks.id=#{item.id}")%>
+            <%= link_to "View", project_task_path(id: item.id,project_id: project_id.ids.first),class:"card-link" if can? :show, item %>
+          <%= link_to "Change Status", edit_project_task_path(id: item.id,project_id: project_id.ids.first),class:"card-link" if can? :edit, item %>
+        </div>
+      </div>
     </div>
   <% end %>
 </div>
+<script>
+    $('[data-toggle="tooltip"]').tooltip();
+</script>

@@ -126,7 +126,21 @@
  .wrapper a:hover {
      color: #039BE5
  }
-
+ .description {
+    max-width:100%;
+    white-space:nowrap; 
+    overflow:hidden;
+    text-overflow:ellipsis;
+    }
+ .tooltip-inner {
+    background-color: #00b9d1 !important;
+    color: #f8f9fa!important;
+    font-weight: bold;
+ }
+ 
+ .bs-tooltip-bottom .arrow::before, .bs-tooltip-auto[x-placement^="bottom"] .arrow::before {
+    border-bottom-color: #00b9d1 !important;
+ }
  @media(max-width: 380px) {
      .wrapper {
          margin: 30px 20px;

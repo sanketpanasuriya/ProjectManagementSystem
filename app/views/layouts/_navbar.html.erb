@@ -1,6 +1,6 @@
 <% if current_user %>
   <nav class="navbar navbar-expand-lg fixed_navbar bg-primary">
-    <div class="container-fluid  d-flex align-items-sm-start align-items-lg-center">
+    <div class="container-fluid  d-flex  align-items-start align-items-sm-start align-items-lg-center">
       <div class="navbar-nav">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
           <span class="fa fa-list mt-2"></span>
@@ -31,7 +31,7 @@
                   <%= current_user.name %>
                 </div>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <p class="dropdown-item mb-0"><%= current_user.roles&.first&.name.capitalize %></p>
+                  <p class="dropdown-item mb-0 bg-info" script="padding-top: 5px;"><%= current_user.roles&.first&.name.capitalize %></p>
                   <%= link_to "Edit Profile", edit_user_path(current_user), class: "dropdown-item" if can? :update, current_user %>
                   <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure for logout?" }, class: 'dropdown-item'%>
                 </div>

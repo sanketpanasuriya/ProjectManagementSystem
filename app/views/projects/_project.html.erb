@@ -24,12 +24,7 @@
     <div class="card card-wrapper" style="margin-bottom:20px">
       <div class="card-body">
         <h4 class="card-title h2"><%= project.name %></h4>
-        <%= hidden_field_tag "card-enddate",project.endingdate, :class=>"card-enddate"%>
-        <%= hidden_field_tag "card-startdate", project.created_at, :class=>"card-startdate"%>
-        <%= hidden_field_tag "card-tasks", total, :class=>"card-tasks"%>
-        <p class="card-text text-muted">
-          <%=h truncate(project.description, length: 100) %>
-        </p>
+        <p class="card-text text-muted description" data-toggle="tooltip" data-placement="bottom" title="<%=project.description%>"><%=project.description%></p>
         <p class='card-text text-info'>Total Task: <%= total%>
          <p class='card-text text-success'>Start Date: <%= project.created_at.to_date%>
          <p class='card-text text-danger'>End Date: <%= project.endingdate%>
