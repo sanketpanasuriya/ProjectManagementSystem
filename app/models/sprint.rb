@@ -24,7 +24,7 @@ class Sprint < ApplicationRecord
     sprint_id = Task.where("tasks.status != 'Done'").select("tasks.sprint_id").map(&:sprint_id).uniq
     case status
       when /^overdue/
-        where("sprints.expected_end_date <  '#{Time.now}'")
+        where("sprints.expected_end_date <  '#{Time.now}'").where(id: sprint_id)
       when /^completed/
         where(id: sprint_id).invert_where
       when /^ongoing/
