@@ -2,6 +2,7 @@
 
 class HomeController < ApplicationController
   def index
+    flash[:notice]="Yash Garala"
     if current_user.roles.first.name == 'employee'
       redirect_to '/employee'
     elsif (current_user.has_role? 'manager') || (current_user.has_role? 'customer')

@@ -5,3 +5,4 @@ import * as bootstrap from "bootstrap"
 
 import Sortable from 'sortablejs';
 import "plugins/KanBanSortable";
+import "toastr";
