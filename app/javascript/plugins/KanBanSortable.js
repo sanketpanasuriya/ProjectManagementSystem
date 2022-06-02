@@ -87,6 +87,7 @@ function onEndFun(/**Event*/evt) {
     status = "On Going";
   else if (status == "Re_Submitted")
     status = "Re-Submitted";
+    
   $.ajax
   ({
     type: "patch",
@@ -95,6 +96,7 @@ function onEndFun(/**Event*/evt) {
     async: false,
     data: '{"id": "' + itemEl.getAttribute("data-id") + '", "status" : "' + status + '"}',
     success: function (x){
+      console.log(x);
     },
     error: function(x) {
       alert("Something went wrong");

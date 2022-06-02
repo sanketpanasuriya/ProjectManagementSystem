@@ -90,13 +90,16 @@ class TaskController < ApplicationController
     respond_to do |format|
       if @task.save
         format.html do
+
+        add_flash_message('notice', 'Task was successfully created.')
           if flag
-            redirect_to project_sprint_task_index_path, notice: 'Task was successfully created.'
+            redirect_to project_sprint_task_index_path
           else
-            redirect_to project_task_index_path, notice: 'Task was successfully created.'
+            redirect_to project_task_index_path
           end
         end
       else
+        add_flash_message('warning', 'Task is not created please try again.')
         format.html { render :new, status: :unprocessable_entity }
       end
     end
@@ -130,12 +133,11 @@ class TaskController < ApplicationController
         # redirect_to (project_task_index_path)
         # return
         format.html do
+          add_flash_message('notice', 'Task was successfully updated.')
           if params.key?(:sprint_id)
-            redirect_to project_sprint_task_index_path(project_id: project_id, sprint_id: params[:sprint_id]),
-                        notice: 'Task was successfully updated.'
+            redirect_to project_sprint_task_index_path(project_id: project_id, sprint_id: params[:sprint_id])
           else
-            redirect_to project_task_index_path(project_id: project_id),
-                        notice: 'Task was successfully updated.'
+            redirect_to project_task_index_path(project_id: project_id)
           end
         end
         format.js
@@ -158,10 +160,13 @@ class TaskController < ApplicationController
       render file: 'public/403.html'
     elsif @task.destroy
       flash[:notice] = 'Task is deleted'
+      add_flash_message('notice', 'Task was  deleted')
+          
       render json: { respons_message: 'Task is deleted' }
     
       
     else
+      add_flash_message('error', 'Something went wrong please try again.')
       format.html { render :new, status: :unprocessable_entity }
     end
   end
@@ -184,7 +189,11 @@ class TaskController < ApplicationController
                       else
                         ((task_h.ending - task_h.starting) / 1.hour).round(2)
                       end
-
+  p "-----------task status change ------- "  
+  add_flash_message('notice', "Task status is changed to<b> #{json['status']}</b>.")
+  helpers.flash_messages()
+  
+  # ApplicationHelper.flash_messages()
     render json: { respons_message: respons_message }
   end
 

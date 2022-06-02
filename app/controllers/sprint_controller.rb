@@ -33,9 +33,12 @@ class SprintController < ApplicationController
 
     respond_to do |format|
       if @sprint.save
-        format.html { redirect_to project_url(@project), notice: 'Sprint was successfully created.' }
+        add_flash_message("notice",'Sprint was successfully created.')
+        format.html { redirect_to project_url(@project) }
         format.json { render :show, status: :created, location: @sprint }
       else
+        add_flash_message("error",'Sprint was not created.')
+        
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @sprint.errors, status: :unprocessable_entity }
       end
@@ -47,7 +50,8 @@ class SprintController < ApplicationController
     @project = Project.find(params[:sprint][:project_id])
     respond_to do |format|
       if @sprint.update(sprint_params)
-        format.html { redirect_to project_url(@project), notice: 'Sprint was successfully updated.' }
+        add_flash_message('notice', 'Sprint was successfully updated.')
+        format.html { redirect_to project_url(@project) }
         format.json { render :show, status: :ok, location: @sprint }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -60,6 +64,8 @@ class SprintController < ApplicationController
     @sprint = Sprint.find(params[:id])
     @project = Project.find(@sprint.project_id)
     @sprint.destroy
+
+    add_flash_message('notice', 'Sprint was deleted.')
     render json: { respons_message: 'Sprint is deleted' }
   end
 

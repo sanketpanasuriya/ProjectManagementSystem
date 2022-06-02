@@ -83,7 +83,7 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="changeStatusDropDown_<%= task.id%>">
           <% @status.each do |status| %>
-            <%=  link_to(status[0], "#", {:class => "dropdown-item", "task_id" => task.id,  "onClick" => "changeStatus('#{task.id}','#{status[0]}')" })%>
+            <%=  link_to(status[0], "", {:class => "dropdown-item", "task_id" => task.id,  "onClick" => "changeStatus('#{task.id}','#{status[0]}')" })%>
           <% end %>
       </div>
       <% else %>
