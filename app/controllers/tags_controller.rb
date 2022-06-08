@@ -28,8 +28,12 @@ class TagsController < ApplicationController
     def edit
     end
     def update
+        f=0
     respond_to do |format|
       if @tag.update(tag_params)
+        if(f==1)
+            @tag.where(tag_type: tag_params[:tag_type])
+        end
         add_flash_message('notice', "Book was successfully updated.")
         format.html { redirect_to tag_url(@tag) }
         format.json { render :show, status: :ok, location: @book }

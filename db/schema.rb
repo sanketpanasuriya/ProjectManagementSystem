@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_06_06_091654) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_08_100938) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -87,15 +87,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_06_091654) do
     t.index ["project_id"], name: "index_sprints_on_project_id"
   end
 
+  create_table "taggings", force: :cascade do |t|
+    t.bigint "tag_id"
+    t.string "taggable_type"
+    t.bigint "taggable_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable"
+  end
+
   create_table "tags", force: :cascade do |t|
     t.string "tag_type"
     t.string "tag_name"
     t.string "color"
-    t.string "label_type"
-    t.bigint "label_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["label_type", "label_id"], name: "index_tags_on_label"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -148,6 +155,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_06_06_091654) do
   add_foreign_key "projects", "users", column: "client_id"
   add_foreign_key "projects", "users", column: "creator_id"
   add_foreign_key "sprints", "projects"
+  add_foreign_key "taggings", "tags"
   add_foreign_key "tasks", "sprints"
   add_foreign_key "tasks", "users"
 end

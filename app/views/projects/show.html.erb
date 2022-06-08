@@ -20,7 +20,7 @@
     <div class="col-12 mt-3">
     <%@project.tags.each do |x|%>
     
-    <span class="rectangle" style="background:<%=x.color%>;color:<%=get_font_color(x.color)%>"><%=x.tag_name%></span>
+      <span class="rectangle" style="background:<%=x.color%>;color:<%=get_font_color(x.color)%>"><%=x.tag_name%></span>
     <%end%>
     </div>
     <% if can? :project_status, @project %>
