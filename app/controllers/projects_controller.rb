@@ -83,6 +83,7 @@ class ProjectsController < ApplicationController
   def new
     @client = []
     @manager = []
+    @project_tag=Tag.where(tag_type:"Project")
     User.joins(:roles).where(roles: { name: 'customer' }).select(:id, :name).each { |v| @client << [v.name, v.id] }
     @project = Project.new
     if current_user.roles.first.name == 'admin'
@@ -93,10 +94,18 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+
+    @project_tag=Tag.where(tag_type:"Project")
+    
+    
     @project = Project.find(params[:id])
+    @project_tag_selected=[]
+    @project.tags.select("id").each do |x|
+      @project_tag_selected.<<x.id
+    end
     params[:selected_value] = @project.client_id
     params[:selected_manager] = @project.creator_id
-
+    params[:tages]=@project.tags
     @client = []
     @manager = []
     User.joins(:roles).where(roles: { name: 'customer' }).select(:id, :name).each { |v| @client << [v.name, v.id] }
@@ -110,9 +119,15 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.status = 'ongoing'
+    tage = params.require(:tages)
+    # raise "a"
     params[:selected_value] = @project.client_id
+    tage.each do |x|
+      @project.tags<<Tag.find(x)
+    end
     respond_to do |format|
       if @project.save
+        
         ProjectMailer.with(project: @project).project_created.deliver_later
         format.html { redirect_to project_url(@project), notice: 'Project was successfully created.' }
         format.json { render :show, status: :created, location: @project }
@@ -124,6 +139,11 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    tage = params.require(:tages)
+    @project.tags.clear()
+    tage.each do |x|
+      @project.tags<<Tag.find(x)
+    end
     respond_to do |format|
       if @project.update(project_params)
         format.html { redirect_to project_url(@project), notice: 'Project was successfully updated.' }

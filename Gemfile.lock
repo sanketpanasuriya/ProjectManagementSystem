@@ -107,6 +107,7 @@ GEM
       mini_mime (>= 0.1.3)
       ssrf_filter (~> 1.0)
     childprocess (4.1.0)
+    chroma (0.2.0)
     coderay (1.1.3)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
@@ -302,6 +303,7 @@ DEPENDENCIES
   cancan
   capybara
   carrierwave
+  chroma
   debug
   devise
   filterrific

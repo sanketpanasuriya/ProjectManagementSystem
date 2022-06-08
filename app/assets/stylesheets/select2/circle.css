@@ -1,0 +1,11 @@
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: red;
+    border-radius: 50%;
+    display: inline-block;
+  }
+.customclass
+{
+  color:red;
+}

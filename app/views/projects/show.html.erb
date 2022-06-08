@@ -17,6 +17,12 @@
     <div class="col-12 mt-5"><h4><%= @project.name %></h4></div>
     <div class="col-12 mt-3 text-muted"><%= @project.description %></div>
     <div class="col-12 mt-3"><b>Status: </b><%= @project.status %></div>
+    <div class="col-12 mt-3">
+    <%@project.tags.each do |x|%>
+    
+    <span class="rectangle" style="background:<%=x.color%>;color:<%=get_font_color(x.color)%>"><%=x.tag_name%></span>
+    <%end%>
+    </div>
     <% if can? :project_status, @project %>
       <div class="col-12 mt-3">
         <b>Change to: </b>

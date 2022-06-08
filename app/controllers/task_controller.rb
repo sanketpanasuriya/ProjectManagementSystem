@@ -189,7 +189,6 @@ class TaskController < ApplicationController
                       else
                         ((task_h.ending - task_h.starting) / 1.hour).round(2)
                       end
-  p "-----------task status change ------- "  
   add_flash_message('notice', "Task status is changed to<b> #{json['status']}</b>.")
   helpers.flash_messages()
   

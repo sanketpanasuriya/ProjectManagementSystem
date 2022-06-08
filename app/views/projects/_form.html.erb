@@ -1,3 +1,5 @@
+<%= stylesheet_link_tag "select2_scss", :media => "all" %>
+    
 <%= form_with(model: project) do |form| %>
   <% if project.errors.any? %>
     <div style="color: red">
@@ -46,6 +48,12 @@
         <%= form.select :creator_id , @manager, :selected => params[:selected_manager] %>
       </div>
     </div>
+    <span class="dot"></span>
+    <select class="js-example-basic-multiple form-control" name="tages[]" multiple="multiple" id="tag_id">
+      <%@project_tag.each do |x|%>
+        <option value="<%=x.id%>" color="<%=x.color%>"><%=x.tag_name%></option>
+      <%end%>
+  </select>
   <% else %>
     <%= form.hidden_field  :creator_id, value:current_user.id%>
   <% end %>
@@ -55,3 +63,7 @@
     <%= link_to 'Back', projects_path, class: 'btn btn-info mr-2' %>
   </div>
 <% end %>
+<div data-controller="select2" data-selectedTag='<%=@project_tag_selected%>'>
+</div>
+<script>
+</script>

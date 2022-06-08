@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_19_105515) do
+ActiveRecord::Schema[7.0].define(version: 2022_06_06_091654) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -32,7 +32,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_19_105515) do
   create_table "issues", force: :cascade do |t|
     t.bigint "project_id"
     t.string "title"
-    t.text "description"
     t.string "issue_type"
     t.string "status"
     t.bigint "creator_id"
@@ -40,6 +39,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_19_105515) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "description"
     t.index ["creator_id"], name: "index_issues_on_creator_id"
     t.index ["deleted_at"], name: "index_issues_on_deleted_at"
     t.index ["employee_id"], name: "index_issues_on_employee_id"
@@ -50,7 +50,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_19_105515) do
     t.string "name", null: false
     t.string "status", null: false
     t.date "endingdate", null: false
-    t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "creator_id", null: false
@@ -58,6 +57,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_19_105515) do
     t.text "reviews"
     t.integer "rating"
     t.datetime "deleted_at"
+    t.text "description"
     t.index ["client_id"], name: "index_projects_on_client_id"
     t.index ["creator_id"], name: "index_projects_on_creator_id"
     t.index ["deleted_at"], name: "index_projects_on_deleted_at"
@@ -79,12 +79,23 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_19_105515) do
     t.bigint "project_id"
     t.string "title"
     t.date "expected_end_date"
-    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "description"
     t.index ["deleted_at"], name: "index_sprints_on_deleted_at"
     t.index ["project_id"], name: "index_sprints_on_project_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "tag_type"
+    t.string "tag_name"
+    t.string "color"
+    t.string "label_type"
+    t.bigint "label_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["label_type", "label_id"], name: "index_tags_on_label"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -94,11 +105,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_19_105515) do
     t.date "due_date"
     t.string "status"
     t.date "status_update_date"
-    t.text "description"
     t.string "task_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
+    t.text "description"
     t.index ["deleted_at"], name: "index_tasks_on_deleted_at"
     t.index ["sprint_id"], name: "index_tasks_on_sprint_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"

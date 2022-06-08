@@ -1,0 +1,21 @@
+<%= form_with(model: tag) do |form| %>
+  
+  <div>
+    <%= form.label :tag_name, style: "display: block" %>
+    <%= form.text_field :tag_name %>
+  </div>
+  <div>
+    <%= form.label :tag_type, style: "display: block" %>
+    <%= form.select :tag_type,Tag.type_of_lables %>
+  </div>
+
+  <div>
+    <%= form.label :color, style: "display: block" %>
+    <%= form.color_field :color %>
+  </div>
+</div>
+
+  <div>
+    <%= form.submit :class => "btn btn-primary" %>
+  </div>
+<% end %>

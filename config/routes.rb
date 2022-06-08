@@ -35,7 +35,9 @@ Rails.application.routes.draw do
       get 'my_issue'
     end
   end
-
+  resources :tags   do 
+     
+  end
   resources :projects do
 
     resources :sprint do

@@ -1,0 +1,12 @@
+<h1>Editing tag</h1>
+
+<%= render "form", tag: @tag %>
+
+<br>
+
+<div>
+<%=link_to "Show",tag_path(id:@tag) %><br>
+    
+<%=link_to "back to Tags ", tags_path %><br>
+
+</div>

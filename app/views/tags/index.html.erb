@@ -1,0 +1,5 @@
+<%@tags.each do |x|%>
+    <%=x.tag_name%>---------<%=x.tag_type%> 
+<%=link_to "Show",tag_path(id:x) %><br>
+    
+<%end%>
